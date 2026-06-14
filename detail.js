@@ -1047,60 +1047,66 @@ const motions = [
     prompt: "请帮我实现一个网页动效：动态噪点材质（Dynamic Noise Texture）。利用 SVG feTurbulence 噪点滤镜，在卡片或背景图层上渲染动态纤维纹路，Hover 时微调噪点频率模拟动态杂讯颗粒效果。",
     render: (container) => {
       container.innerHTML = `
-        <div class="noise-texture-full-page">
-          <svg style="position: absolute; width: 0; height: 0;" width="0" height="0">
-            <filter id="noiseFilter">
-              <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise" />
-              <feColorMatrix type="matrix" values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.12 0" />
-              <feComposite operator="in" in2="SourceGraphic" />
-            </filter>
-          </svg>
-          <div class="noise-overlay-layer" style="filter: url(#noiseFilter);"></div>
-          <div class="noise-card-wrapper">
+        <div class="noise-texture-full-page" style="position:relative; overflow:hidden;">
+          <canvas class="noise-canvas" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;opacity:0.18;"></canvas>
+          <div class="noise-card-wrapper" style="position:relative;z-index:2;">
             <h1>NOISE GRAIN</h1>
-            <p>Hover anywhere to excite the noise particles</p>
+            <p>悬停以激活噪点震动 · Hover to excite the grain</p>
           </div>
         </div>
       `;
-      
+
       const page = container.querySelector(".noise-texture-full-page");
-      const turbulence = container.querySelector("#noiseFilter feTurbulence");
+      const canvas = container.querySelector(".noise-canvas");
+      const ctx = canvas.getContext("2d");
       let animationFrameId = null;
-      let targetFrequency = 0.65;
-      let currentFrequency = 0.65;
-      let time = 0;
       let isHovered = false;
+      let frameCount = 0;
 
-      page.addEventListener("mouseenter", () => {
-        isHovered = true;
-      });
+      function resizeCanvas() {
+        const rect = page.getBoundingClientRect();
+        canvas.width = Math.floor(rect.width);
+        canvas.height = Math.floor(rect.height);
+      }
 
-      page.addEventListener("mouseleave", () => {
-        isHovered = false;
-        targetFrequency = 0.65;
-      });
+      function drawNoise(speed) {
+        const w = canvas.width;
+        const h = canvas.height;
+        if (w === 0 || h === 0) return;
+
+        // Only redraw every N frames to control speed
+        frameCount++;
+        if (frameCount % speed !== 0) return;
+
+        const imageData = ctx.createImageData(w, h);
+        const data = imageData.data;
+
+        for (let i = 0; i < data.length; i += 4) {
+          const v = (Math.random() * 255) | 0;
+          data[i]     = v; // R
+          data[i + 1] = v; // G
+          data[i + 2] = v; // B
+          data[i + 3] = 255; // A
+        }
+
+        ctx.putImageData(imageData, 0, 0);
+      }
 
       function animate() {
-        if (isHovered) {
-          time += 0.15;
-          currentFrequency = 0.65 + Math.sin(time) * 0.05;
-        } else {
-          currentFrequency += (targetFrequency - currentFrequency) * 0.1;
-        }
-        
-        if (turbulence) {
-          turbulence.setAttribute("baseFrequency", currentFrequency.toFixed(4));
-        }
-        
+        // speed=1 → every frame (fast/excited), speed=3 → every 3rd frame (slow/calm)
+        const speed = isHovered ? 1 : 3;
+        drawNoise(speed);
         animationFrameId = requestAnimationFrame(animate);
       }
-      
+
+      page.addEventListener("mouseenter", () => { isHovered = true; });
+      page.addEventListener("mouseleave", () => { isHovered = false; });
+
+      resizeCanvas();
       animate();
-      
+
       container.addEventListener("cleanup", () => {
-        if (animationFrameId) {
-          cancelAnimationFrame(animationFrameId);
-        }
+        if (animationFrameId) cancelAnimationFrame(animationFrameId);
       });
     }
   },
