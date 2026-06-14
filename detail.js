@@ -1043,67 +1043,85 @@ const motions = [
     zhName: "动态噪点材质",
     enName: "Dynamic Noise Texture",
     category: "反馈",
-    description: "利用 SVG Turbulence 滤镜渲染出动态的颗粒噪点纹理，Hover 时改变噪点振动，带来越野工业粗野材质感。",
-    prompt: "请帮我实现一个网页动效：动态噪点材质（Dynamic Noise Texture）。利用 SVG feTurbulence 噪点滤镜，在卡片或背景图层上渲染动态纤维纹路，Hover 时微调噪点频率模拟动态杂讯颗粒效果。",
+    description: "利用 Canvas 逐像素渲染胶片颗粒，噪点附着于卡片表面。Hover 时颗粒高频震动，带来工业粗野的材质激活感。",
+    prompt: "请帮我实现一个网页动效：动态噪点材质（Dynamic Noise Texture）。利用 Canvas 逐像素绘制随机颗粒，将噪点覆盖在卡片表面，Hover 时提高颗粒刷新频率并增强透明度，模拟胶片材质激活的粗野质感。",
     render: (container) => {
       container.innerHTML = `
-        <div class="noise-texture-full-page" style="position:relative; overflow:hidden;">
-          <canvas class="noise-canvas" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;opacity:0.18;"></canvas>
-          <div class="noise-card-wrapper" style="position:relative;z-index:2;">
-            <h1>NOISE GRAIN</h1>
-            <p>悬停以激活噪点震动 · Hover to excite the grain</p>
+        <div class="noise-texture-full-page">
+          <div class="noise-card-wrapper" id="noiseCard">
+            <canvas id="noiseCanvas" style="
+              position: absolute;
+              top: 0; left: 0;
+              width: 100%; height: 100%;
+              border-radius: inherit;
+              pointer-events: none;
+              opacity: 0.07;
+              transition: opacity 0.4s ease;
+              mix-blend-mode: overlay;
+            "></canvas>
+            <div style="position:relative; z-index: 2;">
+              <h1>NOISE GRAIN</h1>
+              <p>Hover to activate the grain</p>
+            </div>
           </div>
         </div>
       `;
 
-      const page = container.querySelector(".noise-texture-full-page");
-      const canvas = container.querySelector(".noise-canvas");
+      const card = container.querySelector("#noiseCard");
+      const canvas = container.querySelector("#noiseCanvas");
       const ctx = canvas.getContext("2d");
       let animationFrameId = null;
       let isHovered = false;
       let frameCount = 0;
 
+      // Size canvas to the physical card pixel size
       function resizeCanvas() {
-        const rect = page.getBoundingClientRect();
+        const rect = card.getBoundingClientRect();
         canvas.width = Math.floor(rect.width);
         canvas.height = Math.floor(rect.height);
       }
 
-      function drawNoise(speed) {
+      // Draw a full frame of random gray pixels
+      function drawGrain() {
         const w = canvas.width;
         const h = canvas.height;
         if (w === 0 || h === 0) return;
-
-        // Only redraw every N frames to control speed
-        frameCount++;
-        if (frameCount % speed !== 0) return;
-
         const imageData = ctx.createImageData(w, h);
         const data = imageData.data;
-
         for (let i = 0; i < data.length; i += 4) {
           const v = (Math.random() * 255) | 0;
-          data[i]     = v; // R
-          data[i + 1] = v; // G
-          data[i + 2] = v; // B
-          data[i + 3] = 255; // A
+          data[i] = data[i + 1] = data[i + 2] = v;
+          data[i + 3] = 255;
         }
-
         ctx.putImageData(imageData, 0, 0);
       }
 
-      function animate() {
-        // speed=1 → every frame (fast/excited), speed=3 → every 3rd frame (slow/calm)
-        const speed = isHovered ? 1 : 3;
-        drawNoise(speed);
-        animationFrameId = requestAnimationFrame(animate);
+      function tick() {
+        frameCount++;
+        // Idle: refresh every 8 frames (subtle slow film grain)
+        // Hovered: refresh every frame (fast excited grain)
+        const interval = isHovered ? 1 : 8;
+        if (frameCount % interval === 0) {
+          drawGrain();
+        }
+        animationFrameId = requestAnimationFrame(tick);
       }
 
-      page.addEventListener("mouseenter", () => { isHovered = true; });
-      page.addEventListener("mouseleave", () => { isHovered = false; });
+      card.addEventListener("mouseenter", () => {
+        isHovered = true;
+        canvas.style.opacity = "0.22";
+        card.style.boxShadow = "0 0 0 2px var(--accent-color), var(--shadow-lg)";
+      });
+
+      card.addEventListener("mouseleave", () => {
+        isHovered = false;
+        canvas.style.opacity = "0.07";
+        card.style.boxShadow = "";
+      });
 
       resizeCanvas();
-      animate();
+      drawGrain(); // draw initial static frame immediately
+      tick();
 
       container.addEventListener("cleanup", () => {
         if (animationFrameId) cancelAnimationFrame(animationFrameId);

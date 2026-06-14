@@ -1999,6 +1999,8 @@ body {
   position: relative;
   z-index: 2;
   overflow: hidden;
+  cursor: pointer;
+  transition: box-shadow var(--transition-fast);
 }
 
 .noise-card-wrapper h1 {
@@ -2014,20 +2016,7 @@ body {
   font-size: 1rem;
 }
 
-/* Noise overlay effect */
-.noise-overlay-layer {
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  right: -50%;
-  bottom: -50%;
-  width: 200%;
-  height: 200%;
-  background: transparent;
-  pointer-events: none;
-  z-index: 10;
-  opacity: 0.12; /* subtle noise opacity */
-}
+/* Noise overlay — canvas is injected inline via JS */
 
 /* 32. Interactive Ripple Grid Canvas Full Page */
 .ripple-grid-full-page {
