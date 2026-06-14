@@ -1037,6 +1037,335 @@ const motions = [
         });
       });
     }
+  },
+  {
+    id: "noise-texture",
+    zhName: "动态噪点材质",
+    enName: "Dynamic Noise Texture",
+    category: "反馈",
+    description: "利用 SVG Turbulence 滤镜渲染出动态的颗粒噪点纹理，Hover 时改变噪点振动，带来越野工业粗野材质感。",
+    prompt: "请帮我实现一个网页动效：动态噪点材质（Dynamic Noise Texture）。利用 SVG feTurbulence 噪点滤镜，在卡片或背景图层上渲染动态纤维纹路，Hover 时微调噪点频率模拟动态杂讯颗粒效果。",
+    render: (container) => {
+      container.innerHTML = `
+        <div class="noise-texture-full-page">
+          <svg style="position: absolute; width: 0; height: 0;" width="0" height="0">
+            <filter id="noiseFilter">
+              <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise" />
+              <feColorMatrix type="matrix" values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.12 0" />
+              <feComposite operator="in" in2="SourceGraphic" />
+            </filter>
+          </svg>
+          <div class="noise-overlay-layer" style="filter: url(#noiseFilter);"></div>
+          <div class="noise-card-wrapper">
+            <h1>NOISE GRAIN</h1>
+            <p>Hover anywhere to excite the noise particles</p>
+          </div>
+        </div>
+      `;
+      
+      const page = container.querySelector(".noise-texture-full-page");
+      const turbulence = container.querySelector("#noiseFilter feTurbulence");
+      let animationFrameId = null;
+      let targetFrequency = 0.65;
+      let currentFrequency = 0.65;
+      let time = 0;
+      let isHovered = false;
+
+      page.addEventListener("mouseenter", () => {
+        isHovered = true;
+      });
+
+      page.addEventListener("mouseleave", () => {
+        isHovered = false;
+        targetFrequency = 0.65;
+      });
+
+      function animate() {
+        if (isHovered) {
+          time += 0.15;
+          currentFrequency = 0.65 + Math.sin(time) * 0.05;
+        } else {
+          currentFrequency += (targetFrequency - currentFrequency) * 0.1;
+        }
+        
+        if (turbulence) {
+          turbulence.setAttribute("baseFrequency", currentFrequency.toFixed(4));
+        }
+        
+        animationFrameId = requestAnimationFrame(animate);
+      }
+      
+      animate();
+      
+      container.addEventListener("cleanup", () => {
+        if (animationFrameId) {
+          cancelAnimationFrame(animationFrameId);
+        }
+      });
+    }
+  },
+  {
+    id: "canvas-ripple-grid",
+    zhName: "交互式粒子网格",
+    enName: "Interactive Ripple Grid",
+    category: "悬停",
+    description: "使用 HTML5 Canvas 绘制低密度的点阵。当光标划过时，粒子受重力磁吸排开，并使用胡克定律弹力回弹复位。",
+    prompt: "请帮我实现一个网页动效：Canvas 交互式粒子网格（Interactive Ripple Grid）。在 Canvas 画布上绘制低密度的粒子点阵，计算鼠标位置向量，使其随鼠标滑过而排开，鼠标移开后像橡皮筋一样平滑弹性回弹复位。",
+    render: (container) => {
+      container.innerHTML = `
+        <div class="ripple-grid-full-page">
+          <canvas class="ripple-grid-canvas-element"></canvas>
+          <div class="ripple-grid-overlay-content">
+            <h1>PARTICLE MATRIX</h1>
+            <p>Move your cursor over the grid to disrupt the fields</p>
+          </div>
+        </div>
+      `;
+      
+      const canvas = container.querySelector(".ripple-grid-canvas-element");
+      const ctx = canvas.getContext("2d");
+      
+      let animationFrameId = null;
+      let particles = [];
+      const spacing = 32;
+      const mouse = { x: -1000, y: -1000, active: false };
+      
+      const springK = 0.08;
+      const damping = 0.86;
+      const influenceRadius = 140;
+      const pushStrength = 40;
+      
+      function resizeCanvas() {
+        const rect = canvas.getBoundingClientRect();
+        canvas.width = rect.width * window.devicePixelRatio;
+        canvas.height = rect.height * window.devicePixelRatio;
+        ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+        initGrid(rect.width, rect.height);
+      }
+      
+      function initGrid(width, height) {
+        particles = [];
+        const cols = Math.floor(width / spacing) + 2;
+        const rows = Math.floor(height / spacing) + 2;
+        const offsetX = (width % spacing) / 2 - spacing/2;
+        const offsetY = (height % spacing) / 2 - spacing/2;
+        
+        for (let i = 0; i < cols; i++) {
+          for (let j = 0; j < rows; j++) {
+            const x = offsetX + i * spacing;
+            const y = offsetY + j * spacing;
+            particles.push({
+              x: x,
+              y: y,
+              ox: x,
+              oy: y,
+              vx: 0,
+              vy: 0
+            });
+          }
+        }
+      }
+      
+      function onMouseMove(e) {
+        const rect = canvas.getBoundingClientRect();
+        mouse.x = e.clientX - rect.left;
+        mouse.y = e.clientY - rect.top;
+        mouse.active = true;
+      }
+      
+      function onMouseLeave() {
+        mouse.x = -1000;
+        mouse.y = -1000;
+        mouse.active = false;
+      }
+      
+      function tick() {
+        const rect = canvas.getBoundingClientRect();
+        ctx.clearRect(0, 0, rect.width, rect.height);
+        
+        const isDark = document.documentElement.getAttribute("data-mode") === "dark";
+        const theme = document.documentElement.getAttribute("data-theme") || "slate";
+        
+        let particleColor = isDark ? "rgba(255, 255, 255, 0.25)" : "rgba(0, 0, 0, 0.2)";
+        let activeColor = isDark ? "rgba(99, 102, 241, 0.9)" : "rgba(79, 70, 229, 0.9)";
+        
+        if (theme === "emerald") {
+          activeColor = isDark ? "rgba(52, 211, 153, 0.9)" : "rgba(5, 150, 105, 0.9)";
+        } else if (theme === "sand") {
+          activeColor = isDark ? "rgba(251, 191, 36, 0.9)" : "rgba(217, 119, 6, 0.9)";
+        }
+        
+        particles.forEach(p => {
+          const dx = p.x - mouse.x;
+          const dy = p.y - mouse.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          
+          if (mouse.active && dist < influenceRadius) {
+            const force = (influenceRadius - dist) / influenceRadius;
+            const angle = Math.atan2(dy, dx);
+            const pushX = Math.cos(angle) * force * pushStrength;
+            const pushY = Math.sin(angle) * force * pushStrength;
+            
+            p.vx += pushX;
+            p.vy += pushY;
+          }
+          
+          const springForceX = -springK * (p.x - p.ox);
+          const springForceY = -springK * (p.y - p.oy);
+          
+          p.vx += springForceX;
+          p.vy += springForceY;
+          
+          p.vx *= damping;
+          p.vy *= damping;
+          
+          p.x += p.vx;
+          p.y += p.vy;
+          
+          const dispX = p.x - p.ox;
+          const dispY = p.y - p.oy;
+          const displacement = Math.sqrt(dispX * dispX + dispY * dispY);
+          const dispRatio = Math.min(displacement / 20, 1.0);
+          
+          ctx.beginPath();
+          const radius = 2 + dispRatio * 2.5;
+          ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
+          
+          if (dispRatio > 0.05) {
+            ctx.fillStyle = activeColor;
+          } else {
+            ctx.fillStyle = particleColor;
+          }
+          ctx.fill();
+        });
+        
+        animationFrameId = requestAnimationFrame(tick);
+      }
+      
+      window.addEventListener("resize", resizeCanvas);
+      canvas.addEventListener("mousemove", onMouseMove);
+      canvas.addEventListener("mouseleave", onMouseLeave);
+      
+      resizeCanvas();
+      tick();
+      
+      container.addEventListener("cleanup", () => {
+        if (animationFrameId) {
+          cancelAnimationFrame(animationFrameId);
+        }
+        window.removeEventListener("resize", resizeCanvas);
+      });
+    }
+  },
+  {
+    id: "svg-path-morphing",
+    zhName: "路径形变果冻按钮",
+    enName: "SVG Path Jelly Morphing",
+    category: "反馈",
+    description: "点击时 SVG 的矢量 path 进行贝塞尔曲线点插值变形，从基础按钮变成扁平气泡或果冻，伴随弹性震颤。",
+    prompt: "请帮我实现一个网页动效：SVG 路径形变果冻按钮（SVG Path Morphing Button）。当点击或 Hover 按钮时，SVG 背景路径的矢量坐标进行贝塞尔点平滑插值过渡，使其形状产生果冻拉伸并伴随回弹震颤反馈。",
+    render: (container) => {
+      container.innerHTML = `
+        <div class="path-morphing-full-page">
+          <button class="morphing-jelly-button">
+            <svg class="morphing-jelly-svg" viewBox="0 0 240 80" preserveAspectRatio="none">
+              <path class="jelly-path" d="M 40,15 Q 120,15 200,15 Q 225,15 225,40 Q 225,65 200,65 Q 120,65 40,65 Q 15,65 15,40 Q 15,15 40,15 Z" />
+            </svg>
+            <span class="morphing-btn-text">ELASTIC JELLY</span>
+          </button>
+          <div style="font-size: 0.9rem; color: var(--text-secondary); pointer-events: none;">Click or Hover to feel the spring tension</div>
+        </div>
+      `;
+
+      const btn = container.querySelector(".morphing-jelly-button");
+      const path = btn.querySelector(".jelly-path");
+
+      const states = {
+        topY: { current: 15, target: 15, vel: 0 },
+        bottomY: { current: 65, target: 65, vel: 0 },
+        leftX: { current: 15, target: 15, vel: 0 },
+        rightX: { current: 225, target: 225, vel: 0 }
+      };
+
+      const springK = 0.18;
+      const damping = 0.72;
+      let animationFrameId = null;
+
+      function updateSprings() {
+        for (const key in states) {
+          const s = states[key];
+          const force = -springK * (s.current - s.target);
+          s.vel += force;
+          s.vel *= damping;
+          s.current += s.vel;
+        }
+
+        const d = `M 40,15 Q 120,${states.topY.current.toFixed(2)} 200,15 Q ${states.rightX.current.toFixed(2)},15 ${states.rightX.current.toFixed(2)},40 Q ${states.rightX.current.toFixed(2)},65 200,65 Q 120,${states.bottomY.current.toFixed(2)} 40,65 Q ${states.leftX.current.toFixed(2)},65 ${states.leftX.current.toFixed(2)},40 Q ${states.leftX.current.toFixed(2)},15 40,15 Z`;
+        path.setAttribute("d", d);
+
+        animationFrameId = requestAnimationFrame(updateSprings);
+      }
+
+      btn.addEventListener("mouseenter", () => {
+        states.topY.target = 5;
+        states.bottomY.target = 75;
+        states.leftX.target = 5;
+        states.rightX.target = 235;
+      });
+
+      btn.addEventListener("mouseleave", () => {
+        states.topY.target = 15;
+        states.bottomY.target = 65;
+        states.leftX.target = 15;
+        states.rightX.target = 225;
+      });
+
+      btn.addEventListener("mousedown", () => {
+        states.topY.target = 32;
+        states.bottomY.target = 48;
+        states.leftX.target = 35;
+        states.rightX.target = 205;
+      });
+
+      btn.addEventListener("mouseup", () => {
+        states.topY.target = 5;
+        states.bottomY.target = 75;
+        states.leftX.target = 5;
+        states.rightX.target = 235;
+      });
+
+      updateSprings();
+
+      container.addEventListener("cleanup", () => {
+        if (animationFrameId) {
+          cancelAnimationFrame(animationFrameId);
+        }
+      });
+    }
+  },
+  {
+    id: "text-wave-hover",
+    zhName: "文字波浪反弹悬停",
+    enName: "Text Wave Ripple Hover",
+    category: "悬停",
+    description: "标题文字以单个字符拆分，鼠标滑过时应用立方贝塞尔曲线和延迟差，字母呈波浪状平滑向上反弹。",
+    prompt: "请帮我实现一个网页动效：文字波浪反弹悬停（Text Wave Ripple Hover）。将展示标题拆分为单个字符，在鼠标 Hover 时通过 transition-delay 差值 and cubic-bezier 弹性曲线，让字母呈波浪状顺序向上反弹。",
+    render: (container) => {
+      const text = "MOTION HUB";
+      const lettersHtml = text.split("").map((char, idx) => {
+        if (char === " ") {
+          return `<span style="width: 0.3em; display: inline-block;">&nbsp;</span>`;
+        }
+        return `<span class="text-wave-char" style="--char-idx: ${idx}">${char}</span>`;
+      }).join("");
+
+      container.innerHTML = `
+        <div class="text-wave-full-page">
+          <h1 class="text-wave-headline">${lettersHtml}</h1>
+          <div style="font-size: 0.9rem; color: var(--text-secondary); pointer-events: none;">Hover over the text to trigger the wave transition</div>
+        </div>
+      `;
+    }
   }
 ];
 

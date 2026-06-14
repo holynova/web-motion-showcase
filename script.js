@@ -380,6 +380,42 @@ const motions = [
       </div>
     `,
     prompt: "请帮我实现一个网页动效：手风琴平滑折叠（Accordion Smooth Expand）。点击菜单或 Q&A 面板展开时，内容高度平滑展开，下方内容跟着平移位退。"
+  },
+  {
+    id: "noise-texture",
+    zhName: "动态噪点材质",
+    enName: "Dynamic Noise Texture",
+    category: "反馈",
+    description: "利用 SVG Turbulence 滤镜渲染出动态的颗粒噪点纹理，Hover 时改变噪点振动，带来越野工业粗野材质感。",
+    demoHtml: '<div class="preview-noise-texture"><span>NOISE</span></div>',
+    prompt: "请帮我实现一个网页动效：动态噪点材质（Dynamic Noise Texture）。利用 SVG feTurbulence 噪点滤镜，在卡片或背景图层上渲染动态纤维纹路，Hover 时微调噪点频率模拟动态杂讯颗粒效果。"
+  },
+  {
+    id: "canvas-ripple-grid",
+    zhName: "交互式粒子网格",
+    enName: "Interactive Ripple Grid",
+    category: "悬停",
+    description: "使用 HTML5 Canvas 绘制低密度的点阵。当光标划过时，粒子受重力磁吸排开，并使用胡克定律弹力回弹复位。",
+    demoHtml: '<div class="preview-ripple-grid"><canvas></canvas></div>',
+    prompt: "请帮我实现一个网页动效：Canvas 交互式粒子网格（Interactive Ripple Grid）。在 Canvas 画布上绘制低密度的粒子点阵，计算鼠标位置向量，使其随鼠标滑过而排开，鼠标移开后像橡皮筋一样平滑弹性回弹复位。"
+  },
+  {
+    id: "svg-path-morphing",
+    zhName: "路径形变果冻按钮",
+    enName: "SVG Path Jelly Morphing",
+    category: "反馈",
+    description: "点击时 SVG 的矢量 path 进行贝塞尔曲线点插值变形，从基础按钮变成扁平气泡或果冻，伴随弹性震颤。",
+    demoHtml: '<div class="preview-path-morphing"><button class="btn-morphing-effect">Morph Me</button></div>',
+    prompt: "请帮我实现一个网页动效：SVG 路径形变果冻按钮（SVG Path Morphing Button）。当点击或 Hover 按钮时，SVG 背景路径的矢量坐标进行贝塞尔点平滑插值过渡，使其形状产生果冻拉伸并伴随回弹震颤反馈。"
+  },
+  {
+    id: "text-wave-hover",
+    zhName: "文字波浪反弹悬停",
+    enName: "Text Wave Ripple Hover",
+    category: "悬停",
+    description: "标题文字以单个字符拆分，鼠标滑过时应用立方贝塞尔曲线和延迟差，字母呈波浪状平滑向上反弹。",
+    demoHtml: '<div class="preview-text-wave"><span data-text="WAVE">WAVE</span></div>',
+    prompt: "请帮我实现一个网页动效：文字波浪反弹悬停（Text Wave Ripple Hover）。将展示标题拆分为单个字符，在鼠标 Hover 时通过 transition-delay 差值和 cubic-bezier 弹性曲线，让字母呈波浪状顺序向上反弹。"
   }
 ];
 
@@ -690,6 +726,18 @@ function init() {
   setupThemeEvents();
   renderFilters();
   renderCards();
+  
+  // Update dynamic stats counts
+  const totalMotionsCount = document.getElementById("totalMotionsCount");
+  const totalCategoriesCount = document.getElementById("totalCategoriesCount");
+  if (totalMotionsCount) {
+    totalMotionsCount.textContent = motions.length;
+  }
+  if (totalCategoriesCount) {
+    // Unique categories count excluding "全部"
+    const uniqueCats = new Set(motions.map(m => m.category).filter(c => c !== "全部"));
+    totalCategoriesCount.textContent = uniqueCats.size;
+  }
   
   // Restore scroll position if back-navigated
   const savedScroll = sessionStorage.getItem("home_scroll_y");
