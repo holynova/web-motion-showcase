@@ -1427,22 +1427,7 @@ function initControlPanel() {
   promptText.textContent = currentMotion.prompt;
 }
 
-// 4. Panel Toggle Minimize/Maximize Handler
-panelToggleBtn.addEventListener("click", () => {
-  controlPanel.classList.toggle("minimized");
-  if (controlPanel.classList.contains("minimized")) {
-    toggleIcon.textContent = "➔";
-    panelToggleBtn.setAttribute("aria-label", "展开面板");
-  } else {
-    toggleIcon.textContent = "➔"; // CSS handles rotation
-    panelToggleBtn.setAttribute("aria-label", "收起面板");
-  }
-});
-
-// Rotate toggle icon based on minimized class using CSS (or simple transform override)
-if (controlPanel.classList.contains("minimized")) {
-  toggleIcon.style.transform = "rotate(180deg)";
-}
+// 4. Panel Toggle — button removed from HTML, no-op kept for safety
 
 // 5. Copy Prompt Callback
 copyPromptBtn.addEventListener("click", () => {
