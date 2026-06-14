@@ -489,37 +489,89 @@ const motions = [
         <div class="tilt-card-full-page">
           <div class="tilt-card-wrapper" id="tWrapper">
             <div class="tilt-card-inner-box" id="tCard">
-              <h2>CYBERPUNK</h2>
-              <p>探索极速倾斜的三维世界。文字与卡片层高不一，具有视差深度。</p>
+              <!-- Background image layer — moves slightly less than text (parallax depth) -->
+              <div class="tilt-card-img-layer" id="tImgLayer"
+                style="
+                  position: absolute; inset: 0;
+                  border-radius: inherit;
+                  overflow: hidden;
+                  z-index: 0;
+                ">
+                <img src="./tilt_card_bg.png" alt="cyberpunk cityscape"
+                  style="
+                    width: 110%; height: 110%;
+                    object-fit: cover;
+                    display: block;
+                    margin: -5%;
+                    border-radius: inherit;
+                    transition: transform 0.08s linear;
+                  " id="tImg" />
+                <!-- Dark gradient overlay so text stays readable -->
+                <div style="
+                  position: absolute; inset: 0;
+                  background: linear-gradient(160deg, rgba(5,5,20,0.55) 0%, rgba(10,5,40,0.72) 100%);
+                  border-radius: inherit;
+                "></div>
+              </div>
+              <!-- Text layer — floats on top with translateZ -->
+              <div style="position: relative; z-index: 2; transform: translateZ(30px); transition: transform 0.08s linear;" id="tText">
+                <h2 style="color:#fff; text-shadow: 0 0 24px rgba(180,120,255,0.7);">CYBERPUNK</h2>
+                <p style="color: rgba(200,200,255,0.85);">探索极速倾斜的三维世界。<br>文字与卡片层高不一，具有视差深度。</p>
+              </div>
+              <!-- Shimmer highlight — reacts to tilt angle -->
+              <div id="tShimmer" style="
+                position: absolute; inset: 0;
+                border-radius: inherit;
+                background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.12), transparent 65%);
+                pointer-events: none;
+                z-index: 3;
+                transition: background 0.12s ease;
+              "></div>
             </div>
           </div>
+          <p style="margin-top:24px; color: var(--text-secondary); font-size: 0.85rem; pointer-events:none;">Hover over the card to feel the 3D depth</p>
         </div>
       `;
-      
+
       const wrapper = container.querySelector("#tWrapper");
-      const card = container.querySelector("#tCard");
-      
+      const card    = container.querySelector("#tCard");
+      const img     = container.querySelector("#tImg");
+      const text    = container.querySelector("#tText");
+      const shimmer = container.querySelector("#tShimmer");
+
       const onMouseMove = (e) => {
         const rect = wrapper.getBoundingClientRect();
-        const x = e.clientX - rect.left - rect.width / 2;
-        const y = e.clientY - rect.top - rect.height / 2;
-        
-        // Max tilt range +/- 15deg
+        const x = e.clientX - rect.left - rect.width  / 2;
+        const y = e.clientY - rect.top  - rect.height / 2;
+
         const rotX = -(y / (rect.height / 2)) * 15;
-        const rotY = (x / (rect.width / 2)) * 15;
-        
+        const rotY =  (x / (rect.width  / 2)) * 15;
+
+        // Card tilts
         card.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+
+        // Image moves opposite direction at half speed → parallax
+        const imgX = -rotY * 0.6;
+        const imgY =  rotX * 0.6;
+        img.style.transform = `translate(${imgX}px, ${imgY}px) scale(1.05)`;
+
+        // Shimmer highlight follows cursor
+        const px = ((e.clientX - rect.left) / rect.width  * 100).toFixed(1);
+        const py = ((e.clientY - rect.top ) / rect.height * 100).toFixed(1);
+        shimmer.style.background = `radial-gradient(circle at ${px}% ${py}%, rgba(255,255,255,0.18), transparent 65%)`;
       };
-      
+
       const onMouseLeave = () => {
-        card.style.transform = "rotateX(0) rotateY(0)";
+        card.style.transform  = "rotateX(0) rotateY(0)";
+        img.style.transform   = "translate(0,0) scale(1)";
+        shimmer.style.background = "radial-gradient(circle at 50% 50%, rgba(255,255,255,0.08), transparent 65%)";
       };
-      
-      wrapper.addEventListener("mousemove", onMouseMove);
+
+      wrapper.addEventListener("mousemove",  onMouseMove);
       wrapper.addEventListener("mouseleave", onMouseLeave);
-      
+
       container.addEventListener("cleanup", () => {
-        wrapper.removeEventListener("mousemove", onMouseMove);
+        wrapper.removeEventListener("mousemove",  onMouseMove);
         wrapper.removeEventListener("mouseleave", onMouseLeave);
       }, { once: true });
     }
