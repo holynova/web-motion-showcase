@@ -466,10 +466,10 @@ a:hover {
    Hero Section
    ========================================================================== */
 .hero-section {
-  padding-top: 3rem; /* Reduced top padding to show gallery faster */
-  padding-bottom: 2.5rem; /* Reduced bottom padding */
+  padding-top: 1.5rem;
+  padding-bottom: 1rem;
   text-align: center;
-  background: radial-gradient(circle at top, var(--accent-soft), transparent 60%);
+  background: radial-gradient(circle at top, var(--accent-soft), transparent 65%);
 }
 
 .hero-content {
@@ -533,19 +533,19 @@ a:hover {
 }
 
 .hero-title {
-  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-size: clamp(1.8rem, 4vw, 2.4rem);
   font-weight: 800;
-  line-height: 1.15;
-  letter-spacing: -0.03em;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
   color: var(--text-primary);
-  margin-bottom: 1.2rem;
+  margin-bottom: 0.5rem;
 }
 
 .hero-subtitle {
-  font-size: 1.15rem;
+  font-size: 0.95rem;
   color: var(--text-secondary);
-  max-width: 460px; /* Limit subtitle length: max 20 words constraint */
-  margin: 0 auto 2.5rem;
+  max-width: 480px;
+  margin: 0 auto;
   line-height: 1.5;
 }
 
@@ -601,7 +601,7 @@ a:hover {
    Gallery Section
    ========================================================================== */
 .gallery-section {
-  padding: 6rem 0;
+  padding: 2rem 0 6rem;
   border-top: 1px solid var(--border-color);
   background-color: var(--bg-secondary);
   transition: background-color var(--transition-normal), border-color var(--transition-normal);
@@ -610,7 +610,7 @@ a:hover {
 /* Section Header - clean vertical stacking */
 .section-header {
   max-width: 600px;
-  margin-bottom: 3.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .section-title {

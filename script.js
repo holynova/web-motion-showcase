@@ -712,11 +712,14 @@ searchInput.addEventListener("input", (e) => {
 });
 
 // Smooth scroll logic for secondary hero action button
-document.getElementById("learnMoreBtn").addEventListener("click", (e) => {
-  e.preventDefault();
-  const target = document.querySelector("#gallery");
-  target.scrollIntoView({ behavior: "smooth" });
-});
+const learnMoreBtn = document.getElementById("learnMoreBtn");
+if (learnMoreBtn) {
+  learnMoreBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    const target = document.querySelector("#gallery");
+    target.scrollIntoView({ behavior: "smooth" });
+  });
+}
 
 /* ==========================================================================
    Initialization
