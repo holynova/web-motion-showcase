@@ -236,6 +236,17 @@
   padding: 0;
 }
 
+button {
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+}
+
 html {
   scroll-behavior: smooth;
   font-size: 16px;
@@ -368,6 +379,12 @@ a:hover {
   transform-origin: left;
 }
 
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 /* Theme Selector Widget Styling */
 .theme-selector-container {
   display: flex;
@@ -383,6 +400,43 @@ a:hover {
 
 .theme-selector-container:hover {
   border-color: var(--border-hover);
+}
+
+/* Language Selector Widget Styling */
+.lang-selector-container {
+  display: flex;
+  align-items: center;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  padding: 4px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.lang-selector-container:hover {
+  border-color: var(--border-hover);
+}
+
+.lang-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: calc(var(--radius-md) - 2px);
+  cursor: pointer;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.lang-btn:hover {
+  color: var(--text-primary);
+}
+
+.lang-btn.active {
+  background-color: var(--accent-color);
+  color: #ffffff !important;
 }
 
 .theme-options {

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="网页 UI 动效全屏沉浸式体验。体验并测试常用的基础和流行网页动效，获取对应的 AI 开发提示词。">
   <title>动效体验中心 | Web Motion Showcase</title>
-  <link rel="stylesheet" href="./detail.css?v=1.0.2">
+  <link rel="stylesheet" href="./detail.css?v=1.0.3">
 </head>
 <body data-theme="light">
   <!-- Reading this as: educational showcase landing page for beginner web designers and developers, with a clean, low-density, Apple-y minimalist language, leaning toward native CSS/JS + scroll-driven animations + clean cards. -->
@@ -19,8 +19,8 @@
   <aside class="control-panel" id="controlPanel" aria-label="动效控制面板">
     <div class="panel-header">
       <div class="panel-header-title">
-        <span class="panel-icon" aria-hidden="true">✸</span>
-        <span>动效详情</span>
+        <span class="panel-icon" aria-hidden="true"><svg class="icon icon-brand" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L15 9L22 12L15 15L12 22L9 15L2 12L9 9Z"></path></svg></span>
+        <span id="panelHeaderTitleText">动效详情</span>
       </div>
     </div>
     
@@ -32,23 +32,23 @@
       </div>
       
       <div class="content-section">
-        <h2>动效描述</h2>
+        <h2 id="descLabel">动效描述</h2>
         <p class="description-text" id="detailDesc">正在加载动效说明...</p>
       </div>
 
       <div class="prompt-section">
-        <h2>AI 提示词 (一键复制)</h2>
+        <h2 id="promptLabel">AI 提示词 (一键复制)</h2>
         <div class="prompt-box">
           <p class="prompt-text" id="promptText">正在生成提示词...</p>
         </div>
         <button class="btn btn-copy" id="copyPromptBtn" type="button">
-          <span class="btn-icon" aria-hidden="true">📋</span>
-          <span>复制此提示词</span>
+          <span class="btn-icon" aria-hidden="true"><svg class="icon icon-copy" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></span>
+          <span id="copyPromptBtnText">复制此提示词</span>
         </button>
       </div>
 
       <div class="theme-settings-section">
-        <h2>主题配色</h2>
+        <h2 id="themeLabel">主题配色</h2>
         <div class="theme-selector-container panel-selector">
           <div class="theme-options" role="radiogroup" aria-label="选择色彩主题">
             <button class="theme-dot" data-theme-opt="slate" type="button" aria-label="石板灰主题" title="石板灰主题" style="--dot-color: #3b82f6;"></button>
@@ -56,19 +56,27 @@
             <button class="theme-dot" data-theme-opt="sand" type="button" aria-label="秋叶暖沙主题" title="秋叶暖沙主题" style="--dot-color: #b86d3b;"></button>
           </div>
           <button class="theme-mode-btn" id="modeToggle" type="button" aria-label="切换深浅模式" title="切换深/浅色模式">
-            <span class="mode-icon" aria-hidden="true">☼</span>
+            <span class="mode-icon" aria-hidden="true"><svg class="icon icon-sun" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
           </button>
+        </div>
+      </div>
+
+      <div class="lang-settings-section">
+        <h2 id="langLabel">界面语言</h2>
+        <div class="lang-selector-container panel-selector">
+          <button class="lang-btn active" data-lang-opt="zh" type="button">中文</button>
+          <button class="lang-btn" data-lang-opt="en" type="button">English</button>
         </div>
       </div>
 
       <div class="actions-section">
         <button class="btn btn-replay" id="replayBtn" type="button" style="margin-bottom: 10px;">
-          <span class="btn-icon" aria-hidden="true">🔄</span>
-          <span>重新播放效果</span>
+          <span class="btn-icon" aria-hidden="true"><svg class="icon icon-replay" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg></span>
+          <span id="replayBtnText">重新播放效果</span>
         </button>
         <a href="index.html" class="btn btn-back">
-          <span class="btn-icon" aria-hidden="true">←</span>
-          <span>返回动效列表</span>
+          <span class="btn-icon" aria-hidden="true"><svg class="icon icon-back" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg></span>
+          <span id="backBtnText">返回动效列表</span>
         </a>
       </div>
     </div>
@@ -76,10 +84,10 @@
 
   <!-- Notification Toast -->
   <div class="toast-notification" id="toastNotification" role="status" aria-live="polite">
-    <span class="toast-icon" aria-hidden="true">✓</span>
+    <span class="toast-icon" aria-hidden="true"><svg class="icon icon-check" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
     <span class="toast-message">提示词已复制到剪贴板！</span>
   </div>
 
-  <script src="./detail.js?v=1.0.2"></script>
+  <script src="./detail.js?v=1.0.3"></script>
 </body>
 </html>
