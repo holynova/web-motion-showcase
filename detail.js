@@ -392,80 +392,93 @@ const motions = [
     description: "隐藏了系统自带箭头。页面上有两个 DOM 圆形：一个点在鼠标上，一个大圆在后面，通过摩擦力平滑追赶鼠标。",
     prompt: "请帮我实现一个网页动效：鼠标跟随光标（Custom Cursor）。隐藏原生光标，用双圆点惯性拖随动画模拟现代极简指针。",
     render: (container) => {
+      // Render the scene into container
       container.innerHTML = `
         <div class="fullscreen-cursor-canvas">
           <h1>滑动鼠标体验跟随指针</h1>
           <div class="cursor-hover-box" id="cTarget">鼠标移入此区域，指针发生缩放与磁吸</div>
         </div>
-        <div class="preview-cursor-dot" id="cDot" style="position: fixed; pointer-events: none; z-index: 9999;"></div>
-        <div class="preview-cursor-circle" id="cRing" style="position: fixed; pointer-events: none; z-index: 9998;"></div>
       `;
-      
-      document.body.classList.add("custom-cursor-body");
-      
-      const dot = container.querySelector("#cDot");
-      const ring = container.querySelector("#cRing");
-      const target = container.querySelector("#cTarget");
-      
-      let mouseX = window.innerWidth / 2;
+
+      let mouseX = window.innerWidth  / 2;
       let mouseY = window.innerHeight / 2;
-      let ringX = mouseX;
-      let ringY = mouseY;
-      
+      let ringX  = mouseX;
+      let ringY  = mouseY;
+
+      // KEY FIX: append dot & ring to document.body, NOT container.
+      // Any ancestor with CSS transform breaks position:fixed, making it
+      // relative to that ancestor instead of the viewport.
+      const dot = document.createElement("div");
+      dot.className = "preview-cursor-dot";
+      Object.assign(dot.style, {
+        position: "fixed", pointerEvents: "none", zIndex: "9999",
+        left: `${mouseX}px`, top: `${mouseY}px`,
+        width: "8px", height: "8px",
+        backgroundColor: "var(--accent-color, #3b82f6)",
+        borderRadius: "50%",
+        transform: "translate(-50%, -50%)",
+        transition: "transform 0.2s ease, opacity 0.2s ease"
+      });
+
+      const ring = document.createElement("div");
+      ring.className = "preview-cursor-circle";
+      Object.assign(ring.style, {
+        position: "fixed", pointerEvents: "none", zIndex: "9998",
+        left: `${ringX}px`, top: `${ringY}px`,
+        width: "32px", height: "32px",
+        border: "1.5px solid var(--accent-color, #3b82f6)",
+        borderRadius: "50%",
+        transform: "translate(-50%, -50%)",
+        transition: "transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.2s ease, border-color 0.2s ease"
+      });
+
+      document.body.appendChild(dot);
+      document.body.appendChild(ring);
+      document.body.classList.add("custom-cursor-body");
+
+      const target = container.querySelector("#cTarget");
+
       const onMouseMove = (e) => {
         mouseX = e.clientX;
         mouseY = e.clientY;
-        if (dot) {
-          dot.style.left = `${mouseX}px`;
-          dot.style.top = `${mouseY}px`;
-        }
+        dot.style.left = `${mouseX}px`;
+        dot.style.top  = `${mouseY}px`;
       };
-      
-      // Interpolation physics loop
+
       let animId;
       const updatePhysics = () => {
-        ringX += (mouseX - ringX) * 0.15; // lerp drag friction
+        ringX += (mouseX - ringX) * 0.15;
         ringY += (mouseY - ringY) * 0.15;
-        
-        if (ring) {
-          ring.style.left = `${ringX}px`;
-          ring.style.top = `${ringY}px`;
-        }
+        ring.style.left = `${ringX}px`;
+        ring.style.top  = `${ringY}px`;
         animId = requestAnimationFrame(updatePhysics);
       };
-      
+
       const onEnter = () => {
         target.classList.add("hovered");
-        if (ring) ring.style.transform = "translate(-50%, -50%) scale(2.2)";
-        if (dot) dot.style.transform = "translate(-50%, -50%) scale(0)";
+        ring.style.transform = "translate(-50%, -50%) scale(2.2)";
+        dot.style.transform  = "translate(-50%, -50%) scale(0)";
       };
-      
       const onLeave = () => {
         target.classList.remove("hovered");
-        if (ring) ring.style.transform = "translate(-50%, -50%) scale(1)";
-        if (dot) dot.style.transform = "translate(-50%, -50%) scale(1)";
+        ring.style.transform = "translate(-50%, -50%) scale(1)";
+        dot.style.transform  = "translate(-50%, -50%) scale(1)";
       };
-      
+
+      // Hide custom cursor when hovering the control panel
       const cPanel = document.getElementById("controlPanel");
-      const onPanelEnter = () => {
-        if (ring) ring.style.opacity = "0";
-        if (dot) dot.style.opacity = "0";
-      };
-      const onPanelLeave = () => {
-        if (ring) ring.style.opacity = "1";
-        if (dot) dot.style.opacity = "1";
-      };
-      
+      const onPanelEnter = () => { ring.style.opacity = "0"; dot.style.opacity = "0"; };
+      const onPanelLeave = () => { ring.style.opacity = "1"; dot.style.opacity = "1"; };
       if (cPanel) {
         cPanel.addEventListener("mouseenter", onPanelEnter);
         cPanel.addEventListener("mouseleave", onPanelLeave);
       }
-      
+
       window.addEventListener("mousemove", onMouseMove);
       target.addEventListener("mouseenter", onEnter);
       target.addEventListener("mouseleave", onLeave);
       animId = requestAnimationFrame(updatePhysics);
-      
+
       container.addEventListener("cleanup", () => {
         document.body.classList.remove("custom-cursor-body");
         window.removeEventListener("mousemove", onMouseMove);
@@ -474,6 +487,9 @@ const motions = [
           cPanel.removeEventListener("mouseleave", onPanelLeave);
         }
         cancelAnimationFrame(animId);
+        // Remove elements we injected directly into body
+        dot.remove();
+        ring.remove();
       }, { once: true });
     }
   },
@@ -1100,16 +1116,15 @@ const motions = [
     render: (container) => {
       container.innerHTML = `
         <div class="noise-texture-full-page">
-          <div class="noise-card-wrapper" id="noiseCard">
+          <div class="noise-card-wrapper" id="noiseCard" style="cursor:pointer; position:relative; overflow:hidden; transition: box-shadow 0.3s ease;">
             <canvas id="noiseCanvas" style="
               position: absolute;
               top: 0; left: 0;
               width: 100%; height: 100%;
               border-radius: inherit;
               pointer-events: none;
-              opacity: 0.07;
+              opacity: 0.15;
               transition: opacity 0.4s ease;
-              mix-blend-mode: overlay;
             "></canvas>
             <div style="position:relative; z-index: 2;">
               <h1>NOISE GRAIN</h1>
@@ -1119,25 +1134,28 @@ const motions = [
         </div>
       `;
 
-      const card = container.querySelector("#noiseCard");
+      const card   = container.querySelector("#noiseCard");
       const canvas = container.querySelector("#noiseCanvas");
-      const ctx = canvas.getContext("2d");
+      const ctx    = canvas.getContext("2d");
       let animationFrameId = null;
-      let isHovered = false;
+      let isHovered  = false;
       let frameCount = 0;
+      let started    = false;
 
-      // Size canvas to the physical card pixel size
       function resizeCanvas() {
         const rect = card.getBoundingClientRect();
-        canvas.width = Math.floor(rect.width);
-        canvas.height = Math.floor(rect.height);
+        // Use devicePixelRatio for crisp rendering
+        const dpr = window.devicePixelRatio || 1;
+        canvas.width  = Math.floor(rect.width  * dpr);
+        canvas.height = Math.floor(rect.height * dpr);
+        return canvas.width > 0 && canvas.height > 0;
       }
 
-      // Draw a full frame of random gray pixels
       function drawGrain() {
         const w = canvas.width;
         const h = canvas.height;
         if (w === 0 || h === 0) return;
+
         const imageData = ctx.createImageData(w, h);
         const data = imageData.data;
         for (let i = 0; i < data.length; i += 4) {
@@ -1150,30 +1168,37 @@ const motions = [
 
       function tick() {
         frameCount++;
-        // Idle: refresh every 8 frames (subtle slow film grain)
-        // Hovered: refresh every frame (fast excited grain)
-        const interval = isHovered ? 1 : 8;
-        if (frameCount % interval === 0) {
+        // Idle: every 6 frames — slow subtle grain
+        // Hover: every frame — excited, rapid grain
+        if (frameCount % (isHovered ? 1 : 6) === 0) {
           drawGrain();
         }
         animationFrameId = requestAnimationFrame(tick);
       }
 
+      // Defer startup to next rAF so the card has layout dimensions
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          const ok = resizeCanvas();
+          if (ok) {
+            drawGrain();  // show first frame immediately
+            tick();
+            started = true;
+          }
+        });
+      });
+
       card.addEventListener("mouseenter", () => {
         isHovered = true;
-        canvas.style.opacity = "0.22";
-        card.style.boxShadow = "0 0 0 2px var(--accent-color), var(--shadow-lg)";
+        canvas.style.opacity = "0.45";
+        card.style.boxShadow = "0 0 0 2px var(--accent-color), 0 20px 60px rgba(0,0,0,0.2)";
       });
 
       card.addEventListener("mouseleave", () => {
         isHovered = false;
-        canvas.style.opacity = "0.07";
+        canvas.style.opacity = "0.15";
         card.style.boxShadow = "";
       });
-
-      resizeCanvas();
-      drawGrain(); // draw initial static frame immediately
-      tick();
 
       container.addEventListener("cleanup", () => {
         if (animationFrameId) cancelAnimationFrame(animationFrameId);
