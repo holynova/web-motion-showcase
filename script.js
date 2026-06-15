@@ -501,9 +501,8 @@ function renderCards() {
             </div>
             <p class="card-desc">${motion.description}</p>
             <div class="card-actions">
-              <button class="btn-copy-prompt" type="button" data-prompt="${motion.prompt}">
+              <button class="btn-copy-prompt" type="button" data-prompt="${motion.prompt}" title="复制提示词" aria-label="复制提示词">
                 <span class="copy-icon" aria-hidden="true">📋</span>
-                <span>复制提示词</span>
               </button>
             </div>
           </div>
@@ -725,6 +724,28 @@ if (learnMoreBtn) {
    Initialization
    ========================================================================== */
 function init() {
+  // Sort motions to put cool/fancy ones first
+  const coolOrder = [
+    "tilt-card",
+    "parallax-scrolling",
+    "custom-cursor",
+    "noise-texture",
+    "canvas-ripple-grid",
+    "magnetic-effect",
+    "spring-motion",
+    "layout-transition",
+    "horizontal-gallery",
+    "theme-switch"
+  ];
+  motions.sort((a, b) => {
+    const idxA = coolOrder.indexOf(a.id);
+    const idxB = coolOrder.indexOf(b.id);
+    if (idxA !== -1 && idxB !== -1) return idxA - idxB;
+    if (idxA !== -1) return -1;
+    if (idxB !== -1) return 1;
+    return 0;
+  });
+
   initTheme();
   setupThemeEvents();
   renderFilters();

@@ -811,29 +811,24 @@ a:hover {
 /* Card Actions */
 .card-actions {
   display: flex;
-  gap: 12px;
+  justify-content: flex-end;
   align-items: center;
   margin-top: auto;
 }
 
 .btn-copy-prompt {
-  flex: 1;
-  height: 42px;
+  width: 36px;
+  height: 36px;
   background-color: var(--bg-secondary);
   border: 1px solid var(--border-color);
   color: var(--text-primary);
-  font-size: 0.85rem;
-  font-weight: 600;
-  border-radius: var(--radius-md);
+  border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
   transition: all var(--transition-fast);
 }
-
-
 
 .btn-copy-prompt:hover {
   border-color: var(--accent-color);
@@ -842,7 +837,7 @@ a:hover {
 }
 
 .btn-copy-prompt:active {
-  transform: scale(0.97);
+  transform: scale(0.92);
 }
 
 .copy-icon {
