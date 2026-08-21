@@ -1,5 +1,9 @@
 # 网页 UI 动效灵感库 | Web Motion Showcase
 
+
+![Screenshot](./screenshot.png)
+
+
 <div align="center">
 
 [![GitHub stars](https://img.shields.io/github/stars/holynova/web-motion-showcase?style=flat-square&color=3b82f6)](https://github.com/holynova/web-motion-showcase/stargazers)
