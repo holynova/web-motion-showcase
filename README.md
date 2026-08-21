@@ -32,25 +32,33 @@ An interactive catalog, fullscreen sandbox, and AI prompt hub of restrained Web 
 
 ## 📸 页面视觉矩阵 | Screenshots
 
-### 1. 首页全景与多主题切换 (Homepage & Multi-Themes)
+### 1. 首页全景与三主题双模式 (Homepage & Multi-Themes)
 
-| 经典石板灰主题 (Slate Light) | 暗黑沉浸模式 (Slate Dark) |
+| 经典石板灰浅色 (Slate Light) | 沉浸暗黑模式 (Slate Dark) |
 | :---: | :---: |
-| ![首页浅色展示](./docs/screenshots/01_homepage_light.png) | ![首页暗黑展示](./docs/screenshots/02_homepage_dark.png) |
+| ![首页石板灰浅色](./docs/screenshots/01_homepage_light.png) | ![首页暗黑模式](./docs/screenshots/02_homepage_dark.png) |
 
-| 莫兰迪绿主题 (Sage Green) | 动效交互分类与实时搜索 |
+| 莫兰迪绿护眼主题 (Sage Green) | 秋叶暖沙温润主题 (Warm Sand) |
 | :---: | :---: |
-| ![莫兰迪绿主题](./docs/screenshots/03_homepage_green.png) | ![全景概览图](screenshot.png) |
+| ![莫兰迪绿主题](./docs/screenshots/03_homepage_green.png) | ![秋叶暖沙主题](./docs/screenshots/03_homepage_sand.png) |
 
-### 2. 动效全屏沉浸式详情页 (Fullscreen Motion Sandbox)
+| 实时分类过滤与搜索 (Category Filter) | 移动端响应式体验 (Mobile Responsive) |
+| :---: | :---: |
+| ![动效分类过滤](./docs/screenshots/08_homepage_filter_hover.png) | <img src="./docs/screenshots/12_mobile_responsive.png" width="360" alt="移动端响应式"/> |
 
-| 3D 透视倾斜卡片 (3D Perspective Tilt) | 粘性滚动叙事 (Sticky Scroll Storytelling) |
+### 2. 动效全屏沉浸式详情沙盒 (Fullscreen Motion Sandbox)
+
+| 3D 透视倾斜卡片 (3D Perspective Tilt Card) | 粘性滚动叙事 (Sticky Scroll Storytelling) |
 | :---: | :---: |
 | ![3D卡片倾斜详情](./docs/screenshots/04_detail_tilt_card.png) | ![粘性滚动详情](./docs/screenshots/05_detail_sticky_scroll.png) |
 
-| FLIP 网格重排与折叠 (Layout Transition) | 无限平滑跑马灯 (Infinite Smooth Marquee) |
+| FLIP 网格重排与折叠 (Layout Transition) | 粒子矩阵交互光波 (Canvas Interactive Ripple) |
 | :---: | :---: |
-| ![网格重排动效](./docs/screenshots/06_detail_layout_transition.png) | ![无缝跑马灯详情](./docs/screenshots/07_detail_infinite_marquee.png) |
+| ![网格重排动效](./docs/screenshots/06_detail_layout_transition.png) | ![Canvas粒子点阵动效](./docs/screenshots/09_detail_canvas_ripple.png) |
+
+| 无限平滑跑马灯 (Infinite Smooth Marquee) | 鼠标跟随光标 (Custom Trailing Cursor) |
+| :---: | :---: |
+| ![无缝跑马灯详情](./docs/screenshots/07_detail_infinite_marquee.png) | ![自定义鼠标光标](./docs/screenshots/10_detail_custom_cursor.png) |
 
 ---
 
