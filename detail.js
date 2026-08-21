@@ -1553,7 +1553,7 @@ const selectedId = urlParams.get("id") || "fade-in-up";
 const currentMotion = motions.find(m => m.id === selectedId) || motions[0];
 
 // 2. State & Translation Config
-let currentLang = localStorage.getItem("lang") || "zh";
+let currentLang = urlParams.get("lang") || localStorage.getItem("lang") || "zh";
 
 const uiTranslations = {
   zh: {
@@ -1687,10 +1687,10 @@ function showToast() {
   }, 2500);
 }
 
-// 5. Initialize Dark/Light Theme based on localStorage
+// 5. Initialize Dark/Light Theme based on localStorage / URL params
 function initTheme() {
-  let theme = localStorage.getItem("theme") || "slate";
-  let mode = localStorage.getItem("mode");
+  let theme = urlParams.get("theme") || localStorage.getItem("theme") || "slate";
+  let mode = urlParams.get("mode") || localStorage.getItem("mode");
   
   if (!mode) {
     const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;

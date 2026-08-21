@@ -492,7 +492,8 @@ const categories = ["全部", "进入", "滚动", "悬停", "反馈", "图片", 
 /* ==========================================================================
    Translation Config
    ========================================================================== */
-let currentLang = localStorage.getItem("lang") || "zh";
+const urlParams = new URLSearchParams(window.location.search);
+let currentLang = urlParams.get("lang") || localStorage.getItem("lang") || "zh";
 
 const uiTranslations = {
   zh: {
@@ -502,7 +503,10 @@ const uiTranslations = {
     emptyDesc: "请尝试搜索其他关键词，或者切换分类标签。",
     toastCopySuccess: "提示词已复制到剪贴板！",
     exploreNav: "探索动效",
+    faqNav: "常见问答",
     githubNav: "开源仓库",
+    faqTitle: "💡 动效设计与 AI 提示词常见问题",
+    faqSubtitle: "探索如何将克制动效哲学融入现代 Web 与前端工程实践",
     footerNote: "动效应当服务于信息传递，克制才是最高级的设计。",
     copyPromptTitle: "复制提示词"
   },
@@ -513,7 +517,10 @@ const uiTranslations = {
     emptyDesc: "Please try searching for other keywords or switching category tags.",
     toastCopySuccess: "Prompt copied to clipboard!",
     exploreNav: "Explore",
+    faqNav: "FAQ",
     githubNav: "GitHub",
+    faqTitle: "💡 Motion Design & AI Prompt FAQ",
+    faqSubtitle: "Discover how to integrate restrained motion philosophy into modern frontend engineering",
     footerNote: "Motion should serve information delivery; restraint is the ultimate design.",
     copyPromptTitle: "Copy Prompt"
   }
@@ -789,8 +796,9 @@ function handleScroll() {
 
 // 6. Theme & Mode Switching Handler
 function initTheme() {
-  let theme = localStorage.getItem("theme") || "slate";
-  let mode = localStorage.getItem("mode");
+  const urlParams = new URLSearchParams(window.location.search);
+  let theme = urlParams.get("theme") || localStorage.getItem("theme") || "slate";
+  let mode = urlParams.get("mode") || localStorage.getItem("mode");
   
   if (!mode) {
     const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -880,6 +888,9 @@ function translatePage() {
   // Navbar links
   const exploreLink = document.querySelector(".nav-links a[href='#gallery']");
   if (exploreLink) exploreLink.textContent = t.exploreNav;
+
+  const faqLink = document.querySelector(".nav-links a[href='#faq-section']");
+  if (faqLink) faqLink.textContent = t.faqNav;
   
   const githubLink = document.querySelector(".nav-links a[href*='github.com']");
   if (githubLink) githubLink.textContent = t.githubNav;
@@ -897,6 +908,12 @@ function translatePage() {
       heroSubtitle.innerHTML = `已收录 <span id="totalMotionsCount" style="font-weight: 700; color: var(--accent-color);">${totalCount}</span> 种经典与现代网页动效，提供一键复制的 AI 开发提示词。`;
     }
   }
+
+  // FAQ section headers
+  const faqTitle = document.getElementById("faqSectionTitle");
+  if (faqTitle) faqTitle.textContent = t.faqTitle;
+  const faqSubtitle = document.getElementById("faqSectionSubtitle");
+  if (faqSubtitle) faqSubtitle.textContent = t.faqSubtitle;
   
   // Search placeholder
   if (searchInput) {
@@ -1007,6 +1024,17 @@ function init() {
     });
   });
   
+  // Handle initial URL parameters for filter/search
+  const filterParam = urlParams.get("filter") || urlParams.get("category");
+  if (filterParam && categories.includes(filterParam)) {
+    activeCategory = filterParam;
+  }
+  const searchParam = urlParams.get("q") || urlParams.get("search");
+  if (searchParam) {
+    searchQuery = searchParam;
+    if (searchInput) searchInput.value = searchParam;
+  }
+
   // Initialize current language state
   setLanguage(currentLang);
   
