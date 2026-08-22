@@ -71,89 +71,61 @@
     <!-- Dynamic full-page motion demo markup injected here -->
   </div>
 
-  <!-- Floating Control Panel -->
-  <aside class="control-panel" id="controlPanel" aria-label="动效控制面板">
-    <!-- Panel Header Toolbar -->
-    <div class="panel-header">
-      <a href="index.html" class="panel-back-btn" id="panelBackBtn" title="返回动效列表 (快捷键 Esc)" aria-label="返回动效列表">
-        <svg class="icon icon-back" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-        <span id="backBtnText">返回</span>
-      </a>
+  <!-- Top Navigation: Minimal Floating Back Pill -->
+  <a href="index.html" class="nav-back-pill" id="panelBackBtn" title="返回动效列表 (快捷键 Esc)" aria-label="返回动效列表">
+    <svg class="icon icon-back" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+    <span id="backBtnText">返回动效列表</span>
+  </a>
 
-      <div class="panel-header-toolbar">
-        <div class="theme-options-compact" role="radiogroup" aria-label="选择色彩主题">
-          <button class="theme-dot" data-theme-opt="slate" type="button" aria-label="石板灰主题" title="石板灰主题" style="--dot-color: #3b82f6;"></button>
-          <button class="theme-dot" data-theme-opt="green" type="button" aria-label="莫兰迪绿主题" title="莫兰迪绿主题" style="--dot-color: #387a4b;"></button>
-          <button class="theme-dot" data-theme-opt="sand" type="button" aria-label="秋叶暖沙主题" title="秋叶暖沙主题" style="--dot-color: #b86d3b;"></button>
+  <!-- Floating Motion Inspector Card -->
+  <aside class="control-panel" id="controlPanel" aria-label="动效详情卡片">
+    <!-- Header: Category Pill + Close/Collapse Button -->
+    <div class="panel-header-minimal">
+      <span class="category-badge" id="detailCategory">分类</span>
+      <button class="btn-close-panel" id="panelCollapseBtn" type="button" aria-label="收起面板" title="收起面板 (快捷键 H)">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+
+    <!-- Title Section -->
+    <div class="panel-title-section">
+      <h1 class="panel-title-zh" id="detailTitleZh">加载中...</h1>
+      <div class="panel-title-en" id="detailTitleEn">Loading...</div>
+    </div>
+
+    <!-- Motion Description -->
+    <p class="panel-desc" id="detailDesc">正在加载动效说明...</p>
+
+    <!-- AI Prompt Snippet Box -->
+    <div class="prompt-box-card">
+      <div class="prompt-box-header">
+        <div class="prompt-box-badge">
+          <svg class="icon-sparkle" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L15 9L22 12L15 15L12 22L9 15L2 12L9 9Z"></path></svg>
+          <span id="promptCardLabel">AI 提示词</span>
         </div>
-
-        <button class="theme-mode-btn-compact" id="modeToggle" type="button" aria-label="切换深浅模式" title="切换深/浅色模式">
-          <span class="mode-icon" aria-hidden="true"><svg class="icon icon-sun" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+        <button class="btn-copy-chip" id="copyPromptBtn" type="button" title="复制提示词到剪贴板">
+          <svg class="icon-copy" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          <span id="copyPromptBtnText">复制</span>
         </button>
-
-        <div class="lang-selector-compact">
-          <button class="lang-btn-compact active" data-lang-opt="zh" type="button" title="切换为中文">中</button>
-          <button class="lang-btn-compact" data-lang-opt="en" type="button" title="Switch to English">EN</button>
-        </div>
-
-        <button class="panel-collapse-btn" id="panelCollapseBtn" type="button" aria-label="折叠面板" title="收起面板 (快捷键 H)">
-          <svg class="icon icon-collapse" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-        </button>
+      </div>
+      <div class="prompt-code-wrap">
+        <p class="prompt-code-text" id="promptText">正在生成提示词...</p>
       </div>
     </div>
-    
-    <!-- Panel Body: Clean & Focused -->
-    <div class="panel-body" id="panelBody">
-      <!-- Title & Category Meta -->
-      <div class="motion-meta-header">
-        <div class="meta-badge-row">
-          <span class="category-badge" id="detailCategory">分类</span>
-          <span class="tech-tag" id="detailTechTag">Zero-Dependency</span>
-        </div>
-        <h1 class="title-primary" id="detailTitleZh">加载中...</h1>
-        <div class="title-secondary" id="detailTitleEn">Loading...</div>
-      </div>
-      
-      <!-- Description Card -->
-      <div class="detail-card desc-card">
-        <p class="description-text" id="detailDesc">正在加载动效说明...</p>
-      </div>
 
-      <!-- AI Prompt Box (Developer-First Card) -->
-      <div class="detail-card prompt-card">
-        <div class="prompt-card-header">
-          <div class="prompt-badge">
-            <svg class="icon icon-sparkle" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L15 9L22 12L15 15L12 22L9 15L2 12L9 9Z"></path></svg>
-            <span id="promptCardLabel">AI 提示词</span>
-          </div>
-          <button class="btn-copy-chip" id="copyPromptBtn" type="button" title="复制提示词到剪贴板">
-            <svg class="icon icon-copy" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-            <span id="copyPromptBtnText">复制</span>
-          </button>
-        </div>
-        <div class="prompt-code-wrap">
-          <p class="prompt-code-text" id="promptText">正在生成提示词...</p>
-        </div>
-      </div>
-
-      <!-- Actions & Shortcuts -->
-      <div class="panel-footer-actions">
-        <button class="btn btn-replay-hero" id="replayBtn" type="button">
-          <span class="btn-icon" aria-hidden="true"><svg class="icon icon-replay" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg></span>
-          <span id="replayBtnText">重新播放效果</span>
-        </button>
-        <div class="hotkey-hints" id="hotkeyHints">
-          <span>快捷键：<kbd>R</kbd> 重播 · <kbd>H</kbd> 显隐面板 · <kbd>Esc</kbd> 返回</span>
-        </div>
-      </div>
+    <!-- Action Button -->
+    <div class="panel-actions">
+      <button class="btn-replay-action" id="replayBtn" type="button">
+        <svg class="icon-replay" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+        <span id="replayBtnText">重新播放效果</span>
+      </button>
     </div>
   </aside>
 
-  <!-- Floating Expand Button when Collapsed -->
-  <button class="floating-expand-btn" id="floatingExpandBtn" type="button" aria-label="展开控制面板" title="展开动效控制面板 (快捷键 H)">
+  <!-- Floating Expand Pill when Collapsed -->
+  <button class="floating-expand-btn" id="floatingExpandBtn" type="button" aria-label="展开动效详情" title="展开动效详情 (快捷键 H)">
     <svg class="icon icon-sparkle" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L15 9L22 12L15 15L12 22L9 15L2 12L9 9Z"></path></svg>
-    <span id="floatingExpandText">动效面板</span>
-    <span class="floating-expand-arrow">⤢</span>
+    <span id="floatingExpandText">动效详情</span>
   </button>
 
   <!-- Notification Toast -->
@@ -162,6 +134,6 @@
     <span class="toast-message">提示词已复制到剪贴板！</span>
   </div>
 
-  <script src="./detail.js?v=1.2.0"></script>
+  <script src="./detail.js?v=1.3.0"></script>
 </body>
 </html>

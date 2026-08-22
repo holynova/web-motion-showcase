@@ -1557,40 +1557,30 @@ let currentLang = urlParams.get("lang") || localStorage.getItem("lang") || "zh";
 
 const uiTranslations = {
   zh: {
-    backBtnText: "返回",
-    backBtnTitle: "返回动效灵感库 (快捷键 Esc)",
+    backBtnText: "返回动效列表",
+    backBtnTitle: "返回动效列表 (快捷键 Esc)",
     promptCardLabel: "AI 提示词",
     copyPromptBtnText: "复制",
     copyPromptSuccessText: "已复制",
     replayBtnText: "重新播放效果",
-    hotkeyHints: "快捷键：<kbd>R</kbd> 重播 · <kbd>H</kbd> 显隐面板 · <kbd>Esc</kbd> 返回",
-    floatingExpandText: "动效面板",
-    collapseBtnTitle: "收起控制面板 (快捷键 H)",
-    expandBtnTitle: "展开控制面板 (快捷键 H)",
-    themeSlateTitle: "石板灰主题",
-    themeGreenTitle: "莫兰迪绿主题",
-    themeSandTitle: "秋叶暖沙主题",
-    modeToggleTitle: "切换深/浅色模式",
+    floatingExpandText: "动效详情",
+    collapseBtnTitle: "收起详情面板 (快捷键 H)",
+    expandBtnTitle: "展开详情面板 (快捷键 H)",
     toastCopySuccess: "提示词已复制到剪贴板！",
     loadingDesc: "正在加载动效说明...",
     loadingPrompt: "正在生成提示词...",
     loadingTitle: "加载中..."
   },
   en: {
-    backBtnText: "Back",
+    backBtnText: "Back to Gallery",
     backBtnTitle: "Back to Gallery (Esc)",
     promptCardLabel: "AI Prompt",
     copyPromptBtnText: "Copy",
     copyPromptSuccessText: "Copied!",
     replayBtnText: "Replay Animation",
-    hotkeyHints: "Hotkeys: <kbd>R</kbd> Replay · <kbd>H</kbd> Panel · <kbd>Esc</kbd> Back",
     floatingExpandText: "Motion Details",
     collapseBtnTitle: "Collapse Panel (Hotkey H)",
     expandBtnTitle: "Expand Panel (Hotkey H)",
-    themeSlateTitle: "Slate Theme",
-    themeGreenTitle: "Sage Green Theme",
-    themeSandTitle: "Warm Sand Theme",
-    modeToggleTitle: "Toggle Dark/Light Mode",
     toastCopySuccess: "Prompt copied to clipboard!",
     loadingDesc: "Loading description...",
     loadingPrompt: "Generating prompt...",
@@ -1618,14 +1608,6 @@ const categoryTranslations = {
     "布局": "Layout"
   }
 };
-
-function getThemeModeIcon(mode) {
-  if (mode === "dark") {
-    return `<svg class="icon icon-moon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`;
-  } else {
-    return `<svg class="icon icon-sun" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`;
-  }
-}
 
 // DOM Elements
 const demoCanvas = document.getElementById("demoCanvas");
@@ -1732,7 +1714,7 @@ function showToast() {
   }, 2500);
 }
 
-// 6. Initialize Dark/Light Theme based on localStorage / URL params
+// 6. Initialize Theme from localStorage / URL params
 function initTheme() {
   let theme = urlParams.get("theme") || localStorage.getItem("theme") || "slate";
   let mode = urlParams.get("mode") || localStorage.getItem("mode");
@@ -1744,58 +1726,6 @@ function initTheme() {
   
   document.documentElement.setAttribute("data-theme", theme);
   document.documentElement.setAttribute("data-mode", mode);
-  
-  const themeDots = document.querySelectorAll(".theme-dot");
-  themeDots.forEach(dot => {
-    if (dot.dataset.themeOpt === theme) {
-      dot.classList.add("active");
-    } else {
-      dot.classList.remove("active");
-    }
-  });
-  
-  const modeToggle = document.getElementById("modeToggle");
-  if (modeToggle) {
-    const icon = modeToggle.querySelector(".mode-icon");
-    if (icon) {
-      icon.innerHTML = getThemeModeIcon(mode);
-    }
-  }
-}
-
-function setupThemeEvents() {
-  const themeDots = document.querySelectorAll(".theme-dot");
-  themeDots.forEach(dot => {
-    dot.addEventListener("click", () => {
-      const selectedTheme = dot.dataset.themeOpt;
-      localStorage.setItem("theme", selectedTheme);
-      document.documentElement.setAttribute("data-theme", selectedTheme);
-      
-      themeDots.forEach(d => {
-        if (d.dataset.themeOpt === selectedTheme) {
-          d.classList.add("active");
-        } else {
-          d.classList.remove("active");
-        }
-      });
-    });
-  });
-  
-  const modeToggle = document.getElementById("modeToggle");
-  if (modeToggle) {
-    modeToggle.addEventListener("click", () => {
-      const currentMode = document.documentElement.getAttribute("data-mode") || "light";
-      const nextMode = currentMode === "dark" ? "light" : "dark";
-      
-      localStorage.setItem("mode", nextMode);
-      document.documentElement.setAttribute("data-mode", nextMode);
-      
-      const icon = modeToggle.querySelector(".mode-icon");
-      if (icon) {
-        icon.innerHTML = getThemeModeIcon(nextMode);
-      }
-    });
-  }
 }
 
 // 7. Language Translation Handler
@@ -1812,16 +1742,6 @@ function translatePage() {
   const t = uiTranslations[currentLang];
   document.documentElement.lang = currentLang === "zh" ? "zh-CN" : "en";
   
-  // Update toggle button active states
-  const langBtns = document.querySelectorAll(".lang-btn-compact");
-  langBtns.forEach(btn => {
-    if (btn.dataset.langOpt === currentLang) {
-      btn.classList.add("active");
-    } else {
-      btn.classList.remove("active");
-    }
-  });
-
   // Update headers, labels & buttons
   const backText = document.getElementById("backBtnText");
   if (backText) backText.textContent = t.backBtnText;
@@ -1837,37 +1757,12 @@ function translatePage() {
   const replayText = document.getElementById("replayBtnText");
   if (replayText) replayText.textContent = t.replayBtnText;
   
-  const hotkeySpan = document.getElementById("hotkeyHints");
-  if (hotkeySpan) hotkeySpan.innerHTML = `<span>${t.hotkeyHints}</span>`;
-  
   const floatText = document.getElementById("floatingExpandText");
   if (floatText) floatText.textContent = t.floatingExpandText;
   
   if (panelCollapseBtn) panelCollapseBtn.title = t.collapseBtnTitle;
   if (floatingExpandBtn) floatingExpandBtn.title = t.expandBtnTitle;
 
-  // Tooltips for theme palette & mode
-  const slateDot = document.querySelector(".theme-dot[data-theme-opt='slate']");
-  if (slateDot) {
-    slateDot.title = t.themeSlateTitle;
-    slateDot.setAttribute("aria-label", t.themeSlateTitle);
-  }
-  const greenDot = document.querySelector(".theme-dot[data-theme-opt='green']");
-  if (greenDot) {
-    greenDot.title = t.themeGreenTitle;
-    greenDot.setAttribute("aria-label", t.themeGreenTitle);
-  }
-  const sandDot = document.querySelector(".theme-dot[data-theme-opt='sand']");
-  if (sandDot) {
-    sandDot.title = t.themeSandTitle;
-    sandDot.setAttribute("aria-label", t.themeSandTitle);
-  }
-  const modeBtn = document.getElementById("modeToggle");
-  if (modeBtn) {
-    modeBtn.title = t.modeToggleTitle;
-    modeBtn.setAttribute("aria-label", t.modeToggleTitle);
-  }
-  
   const toastMsg = document.querySelector("#toastNotification .toast-message");
   if (toastMsg) toastMsg.textContent = t.toastCopySuccess;
   
@@ -1892,15 +1787,6 @@ function replayMotion() {
 // 8. Core initialization call
 function init() {
   initTheme();
-  setupThemeEvents();
-  
-  // Set up language switcher events
-  const langBtns = document.querySelectorAll(".lang-btn-compact");
-  langBtns.forEach(btn => {
-    btn.addEventListener("click", () => {
-      setLanguage(btn.dataset.langOpt);
-    });
-  });
   
   // Panel collapse/expand buttons
   if (panelCollapseBtn) {
