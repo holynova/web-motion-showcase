@@ -1557,28 +1557,40 @@ let currentLang = urlParams.get("lang") || localStorage.getItem("lang") || "zh";
 
 const uiTranslations = {
   zh: {
-    panelHeaderTitle: "动效详情",
-    descLabel: "动效描述",
-    promptLabel: "AI 提示词 (一键复制)",
-    copyPromptBtn: "复制此提示词",
-    themeLabel: "主题配色",
-    langLabel: "界面语言",
-    replayBtn: "重新播放效果",
-    backBtn: "返回动效列表",
+    backBtnText: "返回",
+    backBtnTitle: "返回动效灵感库 (快捷键 Esc)",
+    promptCardLabel: "AI 提示词",
+    copyPromptBtnText: "复制",
+    copyPromptSuccessText: "已复制",
+    replayBtnText: "重新播放效果",
+    hotkeyHints: "快捷键：<kbd>R</kbd> 重播 · <kbd>H</kbd> 显隐面板 · <kbd>Esc</kbd> 返回",
+    floatingExpandText: "动效面板",
+    collapseBtnTitle: "收起控制面板 (快捷键 H)",
+    expandBtnTitle: "展开控制面板 (快捷键 H)",
+    themeSlateTitle: "石板灰主题",
+    themeGreenTitle: "莫兰迪绿主题",
+    themeSandTitle: "秋叶暖沙主题",
+    modeToggleTitle: "切换深/浅色模式",
     toastCopySuccess: "提示词已复制到剪贴板！",
     loadingDesc: "正在加载动效说明...",
     loadingPrompt: "正在生成提示词...",
     loadingTitle: "加载中..."
   },
   en: {
-    panelHeaderTitle: "Motion Details",
-    descLabel: "Description",
-    promptLabel: "AI Prompt (Click to Copy)",
-    copyPromptBtn: "Copy Prompt",
-    themeLabel: "Theme Palette",
-    langLabel: "Interface Language",
-    replayBtn: "Replay Animation",
-    backBtn: "Back to Gallery",
+    backBtnText: "Back",
+    backBtnTitle: "Back to Gallery (Esc)",
+    promptCardLabel: "AI Prompt",
+    copyPromptBtnText: "Copy",
+    copyPromptSuccessText: "Copied!",
+    replayBtnText: "Replay Animation",
+    hotkeyHints: "Hotkeys: <kbd>R</kbd> Replay · <kbd>H</kbd> Panel · <kbd>Esc</kbd> Back",
+    floatingExpandText: "Motion Details",
+    collapseBtnTitle: "Collapse Panel (Hotkey H)",
+    expandBtnTitle: "Expand Panel (Hotkey H)",
+    themeSlateTitle: "Slate Theme",
+    themeGreenTitle: "Sage Green Theme",
+    themeSandTitle: "Warm Sand Theme",
+    modeToggleTitle: "Toggle Dark/Light Mode",
     toastCopySuccess: "Prompt copied to clipboard!",
     loadingDesc: "Loading description...",
     loadingPrompt: "Generating prompt...",
@@ -1609,18 +1621,19 @@ const categoryTranslations = {
 
 function getThemeModeIcon(mode) {
   if (mode === "dark") {
-    return `<svg class="icon icon-moon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`;
+    return `<svg class="icon icon-moon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`;
   } else {
-    return `<svg class="icon icon-sun" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`;
+    return `<svg class="icon icon-sun" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`;
   }
 }
 
 // DOM Elements
 const demoCanvas = document.getElementById("demoCanvas");
 const controlPanel = document.getElementById("controlPanel");
-const panelToggleBtn = document.getElementById("panelToggleBtn");
-const toggleIcon = document.getElementById("toggleIcon");
+const panelCollapseBtn = document.getElementById("panelCollapseBtn");
+const floatingExpandBtn = document.getElementById("floatingExpandBtn");
 const copyPromptBtn = document.getElementById("copyPromptBtn");
+const copyPromptBtnText = document.getElementById("copyPromptBtnText");
 const toastNotification = document.getElementById("toastNotification");
 
 const detailTitleZh = document.getElementById("detailTitleZh");
@@ -1628,28 +1641,43 @@ const detailTitleEn = document.getElementById("detailTitleEn");
 const detailCategory = document.getElementById("detailCategory");
 const detailDesc = document.getElementById("detailDesc");
 const promptText = document.getElementById("promptText");
+const replayBtn = document.getElementById("replayBtn");
+const panelBackBtn = document.getElementById("panelBackBtn");
 
 // 3. Render Control Panel content
 function initControlPanel() {
-  detailTitleZh.textContent = currentLang === "en" ? currentMotion.enName : currentMotion.zhName;
-  detailTitleEn.textContent = currentLang === "en" ? currentMotion.zhName : currentMotion.enName;
-  detailCategory.textContent = categoryTranslations[currentLang][currentMotion.category] || currentMotion.category;
-  detailDesc.textContent = currentLang === "en" ? (currentMotion.enDescription || currentMotion.description) : currentMotion.description;
-  promptText.textContent = currentLang === "en" ? (currentMotion.enPrompt || currentMotion.prompt) : currentMotion.prompt;
+  if (detailTitleZh) detailTitleZh.textContent = currentLang === "en" ? currentMotion.enName : currentMotion.zhName;
+  if (detailTitleEn) detailTitleEn.textContent = currentLang === "en" ? currentMotion.zhName : currentMotion.enName;
+  if (detailCategory) detailCategory.textContent = categoryTranslations[currentLang][currentMotion.category] || currentMotion.category;
+  if (detailDesc) detailDesc.textContent = currentLang === "en" ? (currentMotion.enDescription || currentMotion.description) : currentMotion.description;
+  if (promptText) promptText.textContent = currentLang === "en" ? (currentMotion.enPrompt || currentMotion.prompt) : currentMotion.prompt;
 }
 
-// 4. Copy Prompt Callback
-copyPromptBtn.addEventListener("click", () => {
-  const p = currentLang === "en" ? (currentMotion.enPrompt || currentMotion.prompt) : currentMotion.prompt;
-  copyToClipboard(p);
-});
+// 4. Panel Collapse / Expand Handlers
+function togglePanel(collapsed) {
+  const isCollapsed = collapsed !== undefined ? collapsed : !controlPanel.classList.contains("collapsed");
+  if (isCollapsed) {
+    controlPanel.classList.add("collapsed");
+    floatingExpandBtn.classList.add("visible");
+  } else {
+    controlPanel.classList.remove("collapsed");
+    floatingExpandBtn.classList.remove("visible");
+  }
+}
 
-// Copy helper with callback toast
+// 5. Copy Prompt Callback
+if (copyPromptBtn) {
+  copyPromptBtn.addEventListener("click", () => {
+    const p = currentLang === "en" ? (currentMotion.enPrompt || currentMotion.prompt) : currentMotion.prompt;
+    copyToClipboard(p);
+  });
+}
+
 function copyToClipboard(text) {
   if (navigator.clipboard && window.isSecureContext) {
     navigator.clipboard.writeText(text)
-      .then(() => showToast())
-      .catch(err => fallbackCopy(text));
+      .then(() => handleCopySuccess())
+      .catch(() => fallbackCopy(text));
   } else {
     fallbackCopy(text);
   }
@@ -1673,21 +1701,38 @@ function fallbackCopy(text) {
   textArea.select();
   try {
     const successful = document.execCommand('copy');
-    if (successful) showToast();
+    if (successful) handleCopySuccess();
   } catch (err) {
     console.error("无法复制提示词，请手动复制: ", err);
   }
   document.body.removeChild(textArea);
 }
 
+function handleCopySuccess() {
+  if (copyPromptBtn) {
+    copyPromptBtn.classList.add("copied");
+    if (copyPromptBtnText) {
+      copyPromptBtnText.textContent = uiTranslations[currentLang].copyPromptSuccessText;
+    }
+    setTimeout(() => {
+      copyPromptBtn.classList.remove("copied");
+      if (copyPromptBtnText) {
+        copyPromptBtnText.textContent = uiTranslations[currentLang].copyPromptBtnText;
+      }
+    }, 2000);
+  }
+  showToast();
+}
+
 function showToast() {
+  if (!toastNotification) return;
   toastNotification.classList.add("show");
   setTimeout(() => {
     toastNotification.classList.remove("show");
   }, 2500);
 }
 
-// 5. Initialize Dark/Light Theme based on localStorage / URL params
+// 6. Initialize Dark/Light Theme based on localStorage / URL params
 function initTheme() {
   let theme = urlParams.get("theme") || localStorage.getItem("theme") || "slate";
   let mode = urlParams.get("mode") || localStorage.getItem("mode");
@@ -1721,10 +1766,9 @@ function initTheme() {
 function setupThemeEvents() {
   const themeDots = document.querySelectorAll(".theme-dot");
   themeDots.forEach(dot => {
-    dot.addEventListener("click", (e) => {
+    dot.addEventListener("click", () => {
       const selectedTheme = dot.dataset.themeOpt;
       localStorage.setItem("theme", selectedTheme);
-      
       document.documentElement.setAttribute("data-theme", selectedTheme);
       
       themeDots.forEach(d => {
@@ -1754,18 +1798,14 @@ function setupThemeEvents() {
   }
 }
 
-// 6. Language Translation Handler
+// 7. Language Translation Handler
 function setLanguage(lang) {
   currentLang = lang;
   localStorage.setItem("lang", lang);
   translatePage();
   
-  // Re-render the canvas demo to localize text inside the canvas!
-  demoCanvas.dispatchEvent(new CustomEvent("cleanup"));
-  demoCanvas.innerHTML = "";
-  setTimeout(() => {
-    currentMotion.render(demoCanvas);
-  }, 50);
+  // Re-render the canvas demo to localize text inside the canvas
+  replayMotion();
 }
 
 function translatePage() {
@@ -1773,7 +1813,7 @@ function translatePage() {
   document.documentElement.lang = currentLang === "zh" ? "zh-CN" : "en";
   
   // Update toggle button active states
-  const langBtns = document.querySelectorAll(".lang-btn");
+  const langBtns = document.querySelectorAll(".lang-btn-compact");
   langBtns.forEach(btn => {
     if (btn.dataset.langOpt === currentLang) {
       btn.classList.add("active");
@@ -1782,30 +1822,51 @@ function translatePage() {
     }
   });
 
-  // Update headers and labels
-  const panelTitle = document.getElementById("panelHeaderTitleText");
-  if (panelTitle) panelTitle.textContent = t.panelHeaderTitle;
+  // Update headers, labels & buttons
+  const backText = document.getElementById("backBtnText");
+  if (backText) backText.textContent = t.backBtnText;
+  if (panelBackBtn) panelBackBtn.title = t.backBtnTitle;
   
-  const descLabel = document.getElementById("descLabel");
-  if (descLabel) descLabel.textContent = t.descLabel;
+  const promptLabel = document.getElementById("promptCardLabel");
+  if (promptLabel) promptLabel.textContent = t.promptCardLabel;
   
-  const promptLabel = document.getElementById("promptLabel");
-  if (promptLabel) promptLabel.textContent = t.promptLabel;
+  if (copyPromptBtnText && !copyPromptBtn.classList.contains("copied")) {
+    copyPromptBtnText.textContent = t.copyPromptBtnText;
+  }
   
-  const copyBtnText = document.getElementById("copyPromptBtnText");
-  if (copyBtnText) copyBtnText.textContent = t.copyPromptBtn;
+  const replayText = document.getElementById("replayBtnText");
+  if (replayText) replayText.textContent = t.replayBtnText;
   
-  const themeLabel = document.getElementById("themeLabel");
-  if (themeLabel) themeLabel.textContent = t.themeLabel;
+  const hotkeySpan = document.getElementById("hotkeyHints");
+  if (hotkeySpan) hotkeySpan.innerHTML = `<span>${t.hotkeyHints}</span>`;
   
-  const langLabel = document.getElementById("langLabel");
-  if (langLabel) langLabel.textContent = t.langLabel;
+  const floatText = document.getElementById("floatingExpandText");
+  if (floatText) floatText.textContent = t.floatingExpandText;
   
-  const replayBtnText = document.getElementById("replayBtnText");
-  if (replayBtnText) replayBtnText.textContent = t.replayBtn;
-  
-  const backBtnText = document.getElementById("backBtnText");
-  if (backBtnText) backBtnText.textContent = t.backBtn;
+  if (panelCollapseBtn) panelCollapseBtn.title = t.collapseBtnTitle;
+  if (floatingExpandBtn) floatingExpandBtn.title = t.expandBtnTitle;
+
+  // Tooltips for theme palette & mode
+  const slateDot = document.querySelector(".theme-dot[data-theme-opt='slate']");
+  if (slateDot) {
+    slateDot.title = t.themeSlateTitle;
+    slateDot.setAttribute("aria-label", t.themeSlateTitle);
+  }
+  const greenDot = document.querySelector(".theme-dot[data-theme-opt='green']");
+  if (greenDot) {
+    greenDot.title = t.themeGreenTitle;
+    greenDot.setAttribute("aria-label", t.themeGreenTitle);
+  }
+  const sandDot = document.querySelector(".theme-dot[data-theme-opt='sand']");
+  if (sandDot) {
+    sandDot.title = t.themeSandTitle;
+    sandDot.setAttribute("aria-label", t.themeSandTitle);
+  }
+  const modeBtn = document.getElementById("modeToggle");
+  if (modeBtn) {
+    modeBtn.title = t.modeToggleTitle;
+    modeBtn.setAttribute("aria-label", t.modeToggleTitle);
+  }
   
   const toastMsg = document.querySelector("#toastNotification .toast-message");
   if (toastMsg) toastMsg.textContent = t.toastCopySuccess;
@@ -1819,26 +1880,39 @@ function translatePage() {
   initControlPanel();
 }
 
-// 7. Core initialization call
+function replayMotion() {
+  window.scrollTo({ top: 0, behavior: "instant" });
+  demoCanvas.dispatchEvent(new CustomEvent("cleanup"));
+  demoCanvas.innerHTML = "";
+  setTimeout(() => {
+    currentMotion.render(demoCanvas);
+  }, 50);
+}
+
+// 8. Core initialization call
 function init() {
   initTheme();
   setupThemeEvents();
   
   // Set up language switcher events
-  const langBtns = document.querySelectorAll(".lang-btn");
+  const langBtns = document.querySelectorAll(".lang-btn-compact");
   langBtns.forEach(btn => {
     btn.addEventListener("click", () => {
       setLanguage(btn.dataset.langOpt);
     });
   });
   
-  // Initialize current language state
-  setLanguage(currentLang);
-  
+  // Panel collapse/expand buttons
+  if (panelCollapseBtn) {
+    panelCollapseBtn.addEventListener("click", () => togglePanel(true));
+  }
+  if (floatingExpandBtn) {
+    floatingExpandBtn.addEventListener("click", () => togglePanel(false));
+  }
+
   // Back button close helper if opened in a new tab
-  const backBtn = document.querySelector(".btn-back");
-  if (backBtn) {
-    backBtn.addEventListener("click", (e) => {
+  if (panelBackBtn) {
+    panelBackBtn.addEventListener("click", (e) => {
       if (window.opener) {
         e.preventDefault();
         window.close();
@@ -1846,18 +1920,33 @@ function init() {
     });
   }
   
-  // Replay button handler to clear and re-render the demo canvas
-  const replayBtn = document.getElementById("replayBtn");
+  // Replay button handler
   if (replayBtn) {
-    replayBtn.addEventListener("click", () => {
-      window.scrollTo({ top: 0, behavior: "instant" });
-      demoCanvas.dispatchEvent(new CustomEvent("cleanup"));
-      demoCanvas.innerHTML = "";
-      setTimeout(() => {
-        currentMotion.render(demoCanvas);
-      }, 50);
-    });
+    replayBtn.addEventListener("click", replayMotion);
   }
+
+  // Global Keyboard Shortcuts
+  window.addEventListener("keydown", (e) => {
+    // Ignore if typing inside inputs
+    if (["INPUT", "TEXTAREA"].includes(document.activeElement.tagName)) return;
+    
+    if (e.key === "r" || e.key === "R") {
+      e.preventDefault();
+      replayMotion();
+    } else if (e.key === "h" || e.key === "H") {
+      e.preventDefault();
+      togglePanel();
+    } else if (e.key === "Escape") {
+      if (window.opener) {
+        window.close();
+      } else {
+        window.location.href = "index.html";
+      }
+    }
+  });
+  
+  // Initialize current language state & render motion
+  setLanguage(currentLang);
 }
 
 document.addEventListener("DOMContentLoaded", init);

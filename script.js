@@ -547,6 +547,30 @@ const categoryTranslations = {
   }
 };
 
+const faqData = [
+  {
+    icon: "🎯",
+    qZh: "为什么强调“克制的动效设计”？",
+    qEn: "Why emphasize 'Restrained Motion Design'?",
+    aZh: "动效的本质是降低用户的认知负荷，引导视觉焦点并传递界面的状态变化。过度的炫技往往导致性能卡顿与视觉疲劳。克制动效以 150ms-400ms 的自然过渡为主，让交互如呼吸般自然顺畅。",
+    aEn: "The essence of motion is reducing cognitive load, guiding visual focus, and communicating UI state transitions. Excessive animations cause lag and visual fatigue. Restrained motion focuses on natural 150ms-400ms transitions, making interactions feel as smooth as breathing."
+  },
+  {
+    icon: "🤖",
+    qZh: "如何搭配 Claude / Cursor / DeepSeek 等 AI 编程工具使用？",
+    qEn: "How to use with AI coding tools like Claude, Cursor & DeepSeek?",
+    aZh: "每个动效卡片均附带经过严谨调优的 AI 提示词。点击卡片右下角或详情页中的“一键复制”，直接粘贴到 Cursor Agent、Claude 或 ChatGPT 聊天框中，AI 即可根据提示词精准生成符合工程规范的原生 CSS / JS / React 动效代码。",
+    aEn: "Every motion card includes a rigorously tuned AI prompt. Click 'Copy' on any card or detail page and paste it directly into Cursor, Claude, or ChatGPT to generate production-ready native CSS, JS, or React motion code."
+  },
+  {
+    icon: "♿",
+    qZh: "如何处理无障碍（a11y）与减少动态需求？",
+    qEn: "How to handle accessibility (a11y) & reduced motion preferences?",
+    aZh: "本项目全量适配了 <code>@media (prefers-reduced-motion: reduce)</code> 媒体查询。当用户在操作系统中开启“减少动态效果”时，所有视差、缩放与旋转动效会自动平滑降级为静态展示，保护敏感人群的浏览体验。",
+    aEn: "This project fully adheres to the <code>@media (prefers-reduced-motion: reduce)</code> media query. When users enable 'Reduce Motion' in their OS, all parallax, scaling, and rotation effects gracefully degrade to static views to prevent visual fatigue."
+  }
+];
+
 function getThemeModeIcon(mode) {
   if (mode === "dark") {
     return `<svg class="icon icon-moon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`;
@@ -909,16 +933,39 @@ function translatePage() {
     }
   }
 
-  // FAQ section headers
+  // FAQ section headers & cards
   const faqTitle = document.getElementById("faqSectionTitle");
   if (faqTitle) faqTitle.textContent = t.faqTitle;
   const faqSubtitle = document.getElementById("faqSectionSubtitle");
   if (faqSubtitle) faqSubtitle.textContent = t.faqSubtitle;
+  renderFaq();
   
-  // Search placeholder
+  // Search placeholder & accessibility
   if (searchInput) {
     searchInput.placeholder = t.searchPlaceholder;
     searchInput.setAttribute("aria-label", currentLang === "zh" ? "搜索动效" : "Search motions");
+  }
+
+  // Theme dots & mode toggle tooltips & aria-labels
+  const slateDot = document.querySelector(".theme-dot[data-theme-opt='slate']");
+  if (slateDot) {
+    slateDot.title = currentLang === "en" ? "Slate Theme" : "石板灰主题";
+    slateDot.setAttribute("aria-label", currentLang === "en" ? "Slate Theme" : "石板灰主题");
+  }
+  const greenDot = document.querySelector(".theme-dot[data-theme-opt='green']");
+  if (greenDot) {
+    greenDot.title = currentLang === "en" ? "Sage Green Theme" : "莫兰迪绿主题";
+    greenDot.setAttribute("aria-label", currentLang === "en" ? "Sage Green Theme" : "莫兰迪绿主题");
+  }
+  const sandDot = document.querySelector(".theme-dot[data-theme-opt='sand']");
+  if (sandDot) {
+    sandDot.title = currentLang === "en" ? "Warm Sand Theme" : "秋叶暖沙主题";
+    sandDot.setAttribute("aria-label", currentLang === "en" ? "Warm Sand Theme" : "秋叶暖沙主题");
+  }
+  const modeBtn = document.getElementById("modeToggle");
+  if (modeBtn) {
+    modeBtn.title = currentLang === "en" ? "Toggle Dark / Light Mode" : "切换深/浅色模式";
+    modeBtn.setAttribute("aria-label", currentLang === "en" ? "Toggle Dark / Light Mode" : "切换深浅模式");
   }
   
   // Empty state
@@ -938,6 +985,17 @@ function translatePage() {
   // Re-render categories and grid to apply translated texts
   renderFilters();
   renderCards();
+}
+
+function renderFaq() {
+  const faqGrid = document.querySelector(".faq-grid");
+  if (!faqGrid) return;
+  faqGrid.innerHTML = faqData.map(item => `
+    <div class="faq-card">
+      <h3>${item.icon} ${currentLang === "en" ? item.qEn : item.qZh}</h3>
+      <p>${currentLang === "en" ? item.aEn : item.aZh}</p>
+    </div>
+  `).join("");
 }
 
 // 8. Background Image Preloader
