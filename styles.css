@@ -29,12 +29,12 @@
   --text-secondary: #475569;
   --text-muted: #64748b;
   
-  --accent-color: #3b82f6;
-  --accent-soft: rgba(59, 130, 246, 0.08);
-  --accent-hover: #2563eb;
+  --accent-color: #2563eb;
+  --accent-soft: rgba(37, 99, 235, 0.08);
+  --accent-hover: #1d4ed8;
   
   --border-color: rgba(30, 41, 59, 0.08);
-  --border-hover: rgba(59, 130, 246, 0.25);
+  --border-hover: rgba(37, 99, 235, 0.25);
   
   --navbar-bg: rgba(241, 245, 249, 0.85);
   --panel-bg: rgba(248, 250, 252, 0.85);
@@ -147,12 +147,12 @@
   --text-secondary: #5c4d3c;
   --text-muted: #7c6d5b;
   
-  --accent-color: #b86d3b;
-  --accent-soft: rgba(184, 109, 59, 0.08);
-  --accent-hover: #995528;
+  --accent-color: #995528;
+  --accent-soft: rgba(153, 85, 40, 0.08);
+  --accent-hover: #7c441f;
   
   --border-color: rgba(60, 47, 33, 0.08);
-  --border-hover: rgba(184, 109, 59, 0.3);
+  --border-hover: rgba(153, 85, 40, 0.3);
   
   --navbar-bg: rgba(243, 237, 226, 0.85);
   --panel-bg: rgba(249, 246, 240, 0.85);
@@ -244,13 +244,41 @@ button {
   color: inherit;
   padding: 0;
   cursor: pointer;
-  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+::selection {
+  background-color: var(--accent-color);
+  color: #ffffff;
 }
 
 html {
   scroll-behavior: smooth;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  scrollbar-color: var(--border-hover) var(--bg-primary);
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-hover);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-color);
 }
 
 body {
@@ -791,6 +819,8 @@ a:hover {
   flex-direction: column;
   box-shadow: var(--shadow-sm);
   cursor: pointer;
+  content-visibility: auto;
+  contain-intrinsic-size: 0 320px;
   transition: transform var(--transition-slow), box-shadow var(--transition-slow), border-color var(--transition-slow);
 }
 
@@ -798,6 +828,12 @@ a:hover {
   transform: translateY(-5px);
   border-color: var(--border-hover);
   box-shadow: var(--shadow-lg);
+}
+
+.motion-card:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 3px;
+  border-color: var(--accent-color);
 }
 
 /* Card Visual Preview Canvas */
@@ -2732,6 +2768,15 @@ a:hover {
   color: var(--text-primary);
   margin-bottom: 8px;
   letter-spacing: -0.02em;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+}
+
+.faq-icon-svg {
+  flex-shrink: 0;
+  stroke: var(--accent-color);
 }
 
 .faq-subtitle {
@@ -2772,6 +2817,9 @@ a:hover {
   color: var(--text-primary);
   margin-bottom: 12px;
   line-height: 1.4;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
 }
 
 .faq-card p {

@@ -401,7 +401,41 @@ button {
   color: inherit;
   padding: 0;
   cursor: pointer;
-  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+::selection {
+  background-color: var(--accent-color);
+  color: #ffffff;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  scrollbar-color: var(--border-hover) var(--bg-primary);
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-hover);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-color);
 }
 
 body {
@@ -578,18 +612,38 @@ body {
   margin-bottom: 8px;
 }
 
-.prompt-box-badge {
+.prompt-tab-switch {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--bg-tertiary);
+  padding: 2px 3px;
+  border-radius: 8px;
+}
+
+.tab-chip {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  font-size: 0.75rem;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.72rem;
   font-weight: 700;
   color: var(--text-muted);
-  letter-spacing: 0.03em;
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  border: none;
+  background: transparent;
 }
 
-.prompt-box-badge .icon-sparkle {
+.tab-chip:hover {
+  color: var(--text-primary);
+}
+
+.tab-chip.active {
+  background: var(--bg-secondary);
   color: var(--accent-color);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
 .btn-copy-chip {
@@ -632,6 +686,15 @@ body {
   margin: 0;
   white-space: pre-wrap;
   font-family: inherit;
+}
+
+.code-syntax-block {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-all;
+  color: var(--text-secondary);
 }
 
 /* Actions */
@@ -741,6 +804,17 @@ body {
     padding: 6px 12px;
     font-size: 0.8rem;
   }
+
+  .toast-notification {
+    bottom: auto;
+    top: 68px;
+    left: 50%;
+    transform: translate(-50%, -10px) scale(0.95);
+    max-width: 90vw;
+  }
+  .toast-notification.show {
+    transform: translate(-50%, 0) scale(1);
+  }
 }
 
 /* ==========================================================================
@@ -753,7 +827,7 @@ body {
   background-color: var(--bg-secondary);
   border: 1px solid var(--border-color);
   box-shadow: var(--panel-shadow);
-  padding: 14px 20px;
+  padding: 12px 18px;
   border-radius: var(--radius-md);
   display: flex;
   align-items: center;

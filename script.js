@@ -980,7 +980,7 @@ const uiTranslations = {
     exploreNav: "探索动效",
     faqNav: "常见问答",
     githubNav: "开源仓库",
-    faqTitle: "💡 动效设计与 AI 提示词常见问题",
+    faqTitle: "动效设计与 AI 提示词常见问题",
     faqSubtitle: "探索如何将克制动效哲学融入现代 Web 与前端工程实践",
     footerNote: "动效应当服务于信息传递，克制才是最高级的设计。",
     copyPromptTitle: "复制提示词"
@@ -994,7 +994,7 @@ const uiTranslations = {
     exploreNav: "Explore",
     faqNav: "FAQ",
     githubNav: "GitHub",
-    faqTitle: "💡 Motion Design & AI Prompt FAQ",
+    faqTitle: "Motion Design & AI Prompt FAQ",
     faqSubtitle: "Discover how to integrate restrained motion philosophy into modern frontend engineering",
     footerNote: "Motion should serve information delivery; restraint is the ultimate design.",
     copyPromptTitle: "Copy Prompt"
@@ -1024,21 +1024,21 @@ const categoryTranslations = {
 
 const faqData = [
   {
-    icon: "🎯",
+    iconSvg: `<svg class="faq-icon-svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>`,
     qZh: "为什么强调“克制的动效设计”？",
     qEn: "Why emphasize 'Restrained Motion Design'?",
     aZh: "动效的本质是降低用户的认知负荷，引导视觉焦点并传递界面的状态变化。过度的炫技往往导致性能卡顿与视觉疲劳。克制动效以 150ms-400ms 的自然过渡为主，让交互如呼吸般自然顺畅。",
     aEn: "The essence of motion is reducing cognitive load, guiding visual focus, and communicating UI state transitions. Excessive animations cause lag and visual fatigue. Restrained motion focuses on natural 150ms-400ms transitions, making interactions feel as smooth as breathing."
   },
   {
-    icon: "🤖",
+    iconSvg: `<svg class="faq-icon-svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>`,
     qZh: "如何搭配 Claude / Cursor / DeepSeek 等 AI 编程工具使用？",
     qEn: "How to use with AI coding tools like Claude, Cursor & DeepSeek?",
     aZh: "每个动效卡片均附带经过严谨调优的 AI 提示词。点击卡片右下角或详情页中的“一键复制”，直接粘贴到 Cursor Agent、Claude 或 ChatGPT 聊天框中，AI 即可根据提示词精准生成符合工程规范的原生 CSS / JS / React 动效代码。",
     aEn: "Every motion card includes a rigorously tuned AI prompt. Click 'Copy' on any card or detail page and paste it directly into Cursor, Claude, or ChatGPT to generate production-ready native CSS, JS, or React motion code."
   },
   {
-    icon: "♿",
+    iconSvg: `<svg class="faq-icon-svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>`,
     qZh: "如何处理无障碍（a11y）与减少动态需求？",
     qEn: "How to handle accessibility (a11y) & reduced motion preferences?",
     aZh: "本项目全量适配了 <code>@media (prefers-reduced-motion: reduce)</code> 媒体查询。当用户在操作系统中开启“减少动态效果”时，所有视差、缩放与旋转动效会自动平滑降级为静态展示，保护敏感人群的浏览体验。",
@@ -1145,7 +1145,7 @@ function renderCards() {
         }
 
         return `
-          <article class="motion-card" id="card-${motion.id}">
+          <article class="motion-card" id="card-${motion.id}" tabindex="0" role="link" aria-label="${currentLang === "en" ? motion.enName : motion.zhName}">
             <div class="preview-canvas" aria-label="${ariaLabel}">
               ${motion.demoHtml}
             </div>
@@ -1175,17 +1175,26 @@ function renderCards() {
         });
       });
       
-      // Bind card click navigation to detail page
+      // Bind card click and keyboard navigation to detail page
       motionGrid.querySelectorAll(".motion-card").forEach(card => {
-        card.addEventListener("click", (e) => {
-          // If the click is on the copy button or inside it, don't navigate
-          if (e.target.closest(".btn-copy-prompt")) {
-            return;
-          }
+        const navigateToDetail = () => {
           const motionId = card.id.replace("card-", "");
           const motion = motions.find(m => m.id === motionId);
           const nameParam = motion && motion.enName ? `&name=${encodeURIComponent(motion.enName)}` : "";
           window.open(`detail.html?id=${motionId}${nameParam}`, '_blank');
+        };
+
+        card.addEventListener("click", (e) => {
+          if (e.target.closest(".btn-copy-prompt")) return;
+          navigateToDetail();
+        });
+
+        card.addEventListener("keydown", (e) => {
+          if (e.target.closest(".btn-copy-prompt")) return;
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            navigateToDetail();
+          }
         });
       });
       
@@ -1198,6 +1207,10 @@ function renderCards() {
 
 // Helper to run JS-driven preview simulations if any (e.g., number counting up)
 function initDynamicSimulations() {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    document.querySelectorAll(".preview-count-box").forEach(box => { box.textContent = "99"; });
+    return;
+  }
   const countBoxes = document.querySelectorAll(".preview-count-box");
   countBoxes.forEach(box => {
     // If this box is already active, don't spin up another loop
@@ -1412,7 +1425,11 @@ function translatePage() {
 
   // FAQ section headers & cards
   const faqTitle = document.getElementById("faqSectionTitle");
-  if (faqTitle) faqTitle.textContent = t.faqTitle;
+  if (faqTitle) {
+    const span = faqTitle.querySelector("span");
+    if (span) span.textContent = t.faqTitle;
+    else faqTitle.textContent = t.faqTitle;
+  }
   const faqSubtitle = document.getElementById("faqSectionSubtitle");
   if (faqSubtitle) faqSubtitle.textContent = t.faqSubtitle;
   renderFaq();
@@ -1469,7 +1486,7 @@ function renderFaq() {
   if (!faqGrid) return;
   faqGrid.innerHTML = faqData.map(item => `
     <div class="faq-card">
-      <h3>${item.icon} ${currentLang === "en" ? item.qEn : item.qZh}</h3>
+      <h3>${item.iconSvg} <span>${currentLang === "en" ? item.qEn : item.qZh}</span></h3>
       <p>${currentLang === "en" ? item.aEn : item.aZh}</p>
     </div>
   `).join("");
@@ -1512,13 +1529,22 @@ searchInput.addEventListener("input", (e) => {
   renderCards();
 });
 
+// Global Search Keyboard Shortcut (/ or Cmd+K / Ctrl+K)
+document.addEventListener("keydown", (e) => {
+  if ((e.key === "/" || ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k")) && document.activeElement !== searchInput) {
+    e.preventDefault();
+    searchInput?.focus();
+    searchInput?.select();
+  }
+});
+
 // Smooth scroll logic for secondary hero action button
 const learnMoreBtn = document.getElementById("learnMoreBtn");
 if (learnMoreBtn) {
   learnMoreBtn.addEventListener("click", (e) => {
     e.preventDefault();
     const target = document.querySelector("#gallery");
-    target.scrollIntoView({ behavior: "smooth" });
+    target?.scrollIntoView({ behavior: "smooth" });
   });
 }
 

@@ -3418,19 +3418,21 @@ try {
 
 // 2. State & Translation Config
 let currentLang = urlParams.get("lang") || localStorage.getItem("lang") || "zh";
+let activeTab = "prompt"; // "prompt" or "code"
 
 const uiTranslations = {
   zh: {
     backBtnText: "返回动效列表",
     backBtnTitle: "返回动效列表 (快捷键 Esc)",
     promptCardLabel: "AI 提示词",
+    codeCardLabel: "源代码",
     copyPromptBtnText: "复制",
     copyPromptSuccessText: "已复制",
     replayBtnText: "重新播放效果",
     floatingExpandText: "动效详情",
     collapseBtnTitle: "收起详情面板 (快捷键 H)",
     expandBtnTitle: "展开详情面板 (快捷键 H)",
-    toastCopySuccess: "提示词已复制到剪贴板！",
+    toastCopySuccess: "内容已复制到剪贴板！",
     loadingDesc: "正在加载动效说明...",
     loadingPrompt: "正在生成提示词...",
     loadingTitle: "加载中..."
@@ -3439,13 +3441,14 @@ const uiTranslations = {
     backBtnText: "Back to Gallery",
     backBtnTitle: "Back to Gallery (Esc)",
     promptCardLabel: "AI Prompt",
+    codeCardLabel: "Source Code",
     copyPromptBtnText: "Copy",
     copyPromptSuccessText: "Copied!",
     replayBtnText: "Replay Animation",
     floatingExpandText: "Motion Details",
     collapseBtnTitle: "Collapse Panel (Hotkey H)",
     expandBtnTitle: "Expand Panel (Hotkey H)",
-    toastCopySuccess: "Prompt copied to clipboard!",
+    toastCopySuccess: "Copied to clipboard!",
     loadingDesc: "Loading description...",
     loadingPrompt: "Generating prompt...",
     loadingTitle: "Loading..."
@@ -3458,6 +3461,7 @@ const categoryTranslations = {
     "进入": "进入",
     "滚动": "滚动",
     "悬停": "悬停",
+    "手势": "手势",
     "反馈": "反馈",
     "图片": "图片",
     "布局": "布局"
@@ -3467,6 +3471,7 @@ const categoryTranslations = {
     "进入": "Entrance",
     "滚动": "Scroll",
     "悬停": "Hover",
+    "手势": "Gestures",
     "反馈": "Feedback",
     "图片": "Media",
     "布局": "Layout"
@@ -3481,6 +3486,12 @@ const floatingExpandBtn = document.getElementById("floatingExpandBtn");
 const copyPromptBtn = document.getElementById("copyPromptBtn");
 const copyPromptBtnText = document.getElementById("copyPromptBtnText");
 const toastNotification = document.getElementById("toastNotification");
+
+const tabPromptBtn = document.getElementById("tabPromptBtn");
+const tabCodeBtn = document.getElementById("tabCodeBtn");
+const promptViewWrap = document.getElementById("promptViewWrap");
+const codeViewWrap = document.getElementById("codeViewWrap");
+const codeText = document.getElementById("codeText");
 
 const detailTitleZh = document.getElementById("detailTitleZh");
 const detailTitleEn = document.getElementById("detailTitleEn");
@@ -3497,6 +3508,48 @@ function initControlPanel() {
   if (detailCategory) detailCategory.textContent = categoryTranslations[currentLang][currentMotion.category] || currentMotion.category;
   if (detailDesc) detailDesc.textContent = currentLang === "en" ? (currentMotion.enDescription || currentMotion.description) : currentMotion.description;
   if (promptText) promptText.textContent = currentLang === "en" ? (currentMotion.enPrompt || currentMotion.prompt) : currentMotion.prompt;
+  if (codeText) codeText.textContent = getMotionCodeSnippet(currentMotion);
+}
+
+function getMotionCodeSnippet(motion) {
+  return `<!-- ${motion.zhName} (${motion.enName}) -->
+<div class="${motion.id}-wrapper">
+  <div class="${motion.id}-element">
+    <span>Motion Sample</span>
+  </div>
+</div>
+
+<style>
+.${motion.id}-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+}
+
+.${motion.id}-element {
+  border-radius: 12px;
+  padding: 16px 28px;
+  background: var(--bg-secondary, #1e293b);
+  border: 1px solid var(--border-color, rgba(255,255,255,0.1));
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+  transition: all 250ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.${motion.id}-element:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 35px -5px rgba(0, 0, 0, 0.3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .${motion.id}-element {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}
+</style>`;
 }
 
 // 4. Panel Collapse / Expand Handlers
@@ -3511,11 +3564,39 @@ function togglePanel(collapsed) {
   }
 }
 
-// 5. Copy Prompt Callback
+// 5. Tab Switching (AI Prompt vs Source Code)
+function switchTab(tab) {
+  activeTab = tab;
+  if (tab === "prompt") {
+    tabPromptBtn?.classList.add("active");
+    tabPromptBtn?.setAttribute("aria-selected", "true");
+    tabCodeBtn?.classList.remove("active");
+    tabCodeBtn?.setAttribute("aria-selected", "false");
+    if (promptViewWrap) promptViewWrap.style.display = "block";
+    if (codeViewWrap) codeViewWrap.style.display = "none";
+  } else {
+    tabCodeBtn?.classList.add("active");
+    tabCodeBtn?.setAttribute("aria-selected", "true");
+    tabPromptBtn?.classList.remove("active");
+    tabPromptBtn?.setAttribute("aria-selected", "false");
+    if (promptViewWrap) promptViewWrap.style.display = "none";
+    if (codeViewWrap) codeViewWrap.style.display = "block";
+  }
+}
+
+if (tabPromptBtn) tabPromptBtn.addEventListener("click", () => switchTab("prompt"));
+if (tabCodeBtn) tabCodeBtn.addEventListener("click", () => switchTab("code"));
+
+// 6. Copy Prompt / Code Callback
 if (copyPromptBtn) {
   copyPromptBtn.addEventListener("click", () => {
-    const p = currentLang === "en" ? (currentMotion.enPrompt || currentMotion.prompt) : currentMotion.prompt;
-    copyToClipboard(p);
+    let textToCopy = "";
+    if (activeTab === "prompt") {
+      textToCopy = currentLang === "en" ? (currentMotion.enPrompt || currentMotion.prompt) : currentMotion.prompt;
+    } else {
+      textToCopy = getMotionCodeSnippet(currentMotion);
+    }
+    copyToClipboard(textToCopy);
   });
 }
 
@@ -3613,6 +3694,9 @@ function translatePage() {
   
   const promptLabel = document.getElementById("promptCardLabel");
   if (promptLabel) promptLabel.textContent = t.promptCardLabel;
+
+  const codeLabel = document.getElementById("codeCardLabel");
+  if (codeLabel) codeLabel.textContent = t.codeCardLabel;
   
   if (copyPromptBtnText && !copyPromptBtn.classList.contains("copied")) {
     copyPromptBtnText.textContent = t.copyPromptBtnText;

@@ -39,7 +39,7 @@
   <meta property="twitter:description" content="网页 UI 动效全屏沉浸式体验，支持参数调整与一键复制 AI 提示词。">
   <meta property="twitter:image" content="https://raw.githubusercontent.com/holynova/web-motion-showcase/main/screenshot.png">
 
-  <link rel="stylesheet" href="./detail.css?v=2.4.0">
+  <link rel="stylesheet" href="./detail.css?v=2.5.0">
 
   <!-- JSON-LD Breadcrumb & TechArticle -->
   <script type="application/ld+json">
@@ -96,20 +96,29 @@
     <!-- Motion Description -->
     <p class="panel-desc" id="detailDesc">正在加载动效说明...</p>
 
-    <!-- AI Prompt Snippet Box -->
+    <!-- AI Prompt & Source Code Snippet Box -->
     <div class="prompt-box-card">
       <div class="prompt-box-header">
-        <div class="prompt-box-badge">
-          <svg class="icon-sparkle" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L15 9L22 12L15 15L12 22L9 15L2 12L9 9Z"></path></svg>
-          <span id="promptCardLabel">AI 提示词</span>
+        <div class="prompt-tab-switch" role="tablist" aria-label="提示词与源代码切换">
+          <button class="tab-chip active" id="tabPromptBtn" role="tab" aria-selected="true" type="button">
+            <svg class="icon-sparkle" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L15 9L22 12L15 15L12 22L9 15L2 12L9 9Z"></path></svg>
+            <span id="promptCardLabel">AI 提示词</span>
+          </button>
+          <button class="tab-chip" id="tabCodeBtn" role="tab" aria-selected="false" type="button">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            <span id="codeCardLabel">源代码</span>
+          </button>
         </div>
-        <button class="btn-copy-chip" id="copyPromptBtn" type="button" title="复制提示词到剪贴板">
+        <button class="btn-copy-chip" id="copyPromptBtn" type="button" title="复制内容到剪贴板">
           <svg class="icon-copy" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
           <span id="copyPromptBtnText">复制</span>
         </button>
       </div>
-      <div class="prompt-code-wrap">
+      <div class="prompt-code-wrap" id="promptViewWrap">
         <p class="prompt-code-text" id="promptText">正在生成提示词...</p>
+      </div>
+      <div class="prompt-code-wrap" id="codeViewWrap" style="display: none;">
+        <pre class="prompt-code-text code-syntax-block"><code id="codeText">/* 正在加载源代码... */</code></pre>
       </div>
     </div>
 
@@ -134,6 +143,6 @@
     <span class="toast-message">提示词已复制到剪贴板！</span>
   </div>
 
-  <script src="./detail.js?v=2.4.0"></script>
+  <script src="./detail.js?v=2.5.0"></script>
 </body>
 </html>
