@@ -509,7 +509,7 @@ const motions = [
     category: "进入",
     description: "Magic UI 经典动效。一道高亮炫彩渐变光柱沿着圆角卡片的边缘无缝周游循环，极具科技高级感。",
     enDescription: "Magic UI classic. A glowing gradient beam seamlessly travels along the rounded card perimeter.",
-    demoHtml: '<div class="preview-border-beam-box"><div class="preview-border-beam-ray"></div><span>BEAM</span></div>',
+    demoHtml: '<div class="preview-border-beam-box"><div class="preview-border-beam-ray"></div><div class="preview-border-beam-inner">BEAM</div></div>',
     prompt: "请帮我实现一个网页动效：流光环形边框（Border Beam Animation）。在圆角卡片边框上绘制一段带有高斯模糊和色彩渐变的光柱，利用 CSS conic-gradient 或 offset-path 使光柱沿着矩形外边框持续匀速绕圈旋转。",
     enPrompt: "Please help me implement a web motion: Border Beam Animation. Create an animated gradient ray that travels continuously along the container's border using conic-gradient or offset-path."
   },

@@ -2452,19 +2452,27 @@ body {
   width: 100%;
   max-width: 520px;
   border-radius: 20px;
-  background-color: var(--bg-tertiary);
+  background-color: var(--border-color);
   padding: 2px;
   overflow: hidden;
   box-shadow: var(--shadow-lg);
 }
 .sandbox-beam-ray {
   position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: conic-gradient(from 0deg, transparent 0deg, transparent 270deg, var(--accent-color) 330deg, #ec4899 350deg, transparent 360deg);
+  top: 50%;
+  left: 50%;
+  width: 900px;
+  height: 900px;
+  margin-top: -450px;
+  margin-left: -450px;
+  background: conic-gradient(from 0deg, transparent 0deg, transparent 260deg, var(--accent-color) 310deg, #38bdf8 335deg, #ec4899 355deg, transparent 360deg);
   animation: keyframe-spin-beam 4s linear infinite;
+  z-index: 0;
+  pointer-events: none;
+}
+@keyframes keyframe-spin-beam {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 .sandbox-beam-content {
   position: relative;
@@ -3155,6 +3163,10 @@ body {
 .shimmer-monumental-text.theme-emerald {
   background-image: linear-gradient(115deg, #047857 20%, #a7f3d0 45%, #ffffff 50%, #a7f3d0 55%, #047857 80%);
 }
+@keyframes keyframe-shimmer-sweep {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
 .shimmer-subhead { font-size: 1.1rem; color: var(--text-secondary); max-width: 500px; }
 .shimmer-palette-bar { display: flex; gap: 10px; }
 .palette-chip {
@@ -3642,6 +3654,10 @@ body {
   background: var(--text-primary);
   margin-left: 6px;
   animation: keyframe-tw-blink 0.8s steps(2, start) infinite;
+}
+@keyframes keyframe-tw-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
 .tw-sub { color: var(--text-secondary); font-size: 1rem; }
 .tw-custom-inputs {
@@ -4243,6 +4259,11 @@ body {
   justify-content: center;
   cursor: pointer;
   transition: transform 150ms ease-out;
+}
+@keyframes keyframe-blob-fluid {
+  0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; transform: rotate(0deg); }
+  33% { border-radius: 40% 60% 70% 30% / 50% 60% 30% 60%; transform: rotate(120deg); }
+  66% { border-radius: 70% 30% 50% 50% / 30% 30% 70% 70%; transform: rotate(240deg); }
 }
 .blob-fluid-chassis.squishing { transform: scale(0.85); }
 .blob-core-label { font-size: 1.3rem; font-weight: 900; color: #ffffff; letter-spacing: 0.1em; pointer-events: none; }
