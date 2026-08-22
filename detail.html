@@ -39,7 +39,7 @@
   <meta property="twitter:description" content="网页 UI 动效全屏沉浸式体验，支持参数调整与一键复制 AI 提示词。">
   <meta property="twitter:image" content="https://raw.githubusercontent.com/holynova/web-motion-showcase/main/screenshot.png">
 
-  <link rel="stylesheet" href="./detail.css?v=3.0.0">
+  <link rel="stylesheet" href="./detail.css?v=3.2.0">
 
   <!-- JSON-LD Breadcrumb & TechArticle -->
   <script type="application/ld+json">
@@ -83,7 +83,7 @@
     <div class="panel-header-minimal">
       <div class="panel-header-left">
         <span class="category-badge" id="detailCategory">分类</span>
-        <span class="motion-index-badge" id="motionIndexBadge">01 / 64</span>
+        <span class="motion-index-badge" id="motionIndexBadge">01 / 60</span>
       </div>
       <div class="panel-header-actions">
         <button class="btn-panel-nav" id="prevMotionBtn" type="button" aria-label="上一个动效" title="上一个动效 (快捷键 ←)">
@@ -98,9 +98,18 @@
       </div>
     </div>
 
-    <!-- Title Section -->
-    <div class="panel-title-section">
-      <h1 class="panel-title-zh" id="detailTitleZh">加载中...</h1>
+    <!-- Title Section with One-Click Hover Copy -->
+    <div class="panel-title-section" id="titleCopyTrigger" role="button" tabindex="0" title="点击一键复制名称 / Click to copy name" aria-label="复制动效名称">
+      <div class="panel-title-row">
+        <h1 class="panel-title-zh" id="detailTitleZh">加载中...</h1>
+        <span class="title-copy-badge" id="titleCopyBadge" aria-hidden="true">
+          <svg class="icon-title-copy" id="titleCopyIcon" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+          <span class="title-copy-text" id="titleCopyText">复制</span>
+        </span>
+      </div>
       <div class="panel-title-en" id="detailTitleEn">Loading...</div>
     </div>
 
@@ -154,6 +163,6 @@
     <span class="toast-message">提示词已复制到剪贴板！</span>
   </div>
 
-  <script src="./detail.js?v=3.0.0"></script>
+  <script type="module" src="./detail.js?v=3.2.0"></script>
 </body>
 </html>

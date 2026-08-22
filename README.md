@@ -68,7 +68,7 @@ An interactive catalog, fullscreen sandbox, and AI prompt hub of restrained Web 
 
 ## 🌟 核心特性 | Features
 
-1. **64+ 精选前沿与经典网页动效全收录**：
+1. **60+ 精选前沿与经典网页动效全收录**：
    - 覆盖**进入 (Entrance)**、**滚动 (Scroll)**、**悬停 (Hover)**、**反馈 (Feedback)**、**图片 (Media)**、**布局 (Layout)** 6 大高频交互维度。
    - 新增：**极光渐变弥散流光 (Aurora Glow)**、**流星夜空划过特效 (Meteors Shower)**、**打字机多词轮播交替 (Typewriter Cycle)**、**闪烁微光星空点阵 (Starfield Particles)**、**光标轨迹动态拖影 (Cursor Trail)**、**方向感知卡片划入 (Direction-Aware Hover)**、**点阵网格近邻感应高亮 (Dot Matrix Proximity)**、**镜面菲涅尔反光 3D 卡片 (Glass Glare Tilt Card)**、**滑动指示器分段标签页 (Sliding Indicator Tabs)**、**折叠展开浮动操作岛 (Expanding FAB Menu)**、**波形音频动态可视化 (Waveform Visualizer)**、**环形刻度进度仪表 (Radial Progress Meter)**、**前后对比滑动擦除 (Before-After Slider)**、**流体变形有机泡泡 (Organic Morphing Blob)** 等前沿特效。
 2. **全屏沉浸式体验沙盒 (Fullscreen Sandbox)**：
@@ -82,7 +82,7 @@ An interactive catalog, fullscreen sandbox, and AI prompt hub of restrained Web 
 
 ---
 
-## 📑 64 种动效分类全景矩阵速查表 | Motion Catalog
+## 📑 60 种动效分类全景矩阵速查表 | Motion Catalog
 
 > **速查提示**：点击任意动效名称或体验按钮即可进入**全屏沉浸式交互沙盒**，支持参数实时调节与一键复制 AI 提示词。
 
