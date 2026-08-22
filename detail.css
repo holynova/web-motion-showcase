@@ -2823,13 +2823,13 @@ body {
 .dock-bar-glass {
   display: flex;
   align-items: flex-end;
-  gap: 12px;
-  padding: 10px 18px 12px;
+  gap: 10px;
+  padding: 10px 16px 12px;
   background: var(--panel-bg);
   backdrop-filter: blur(28px);
   -webkit-backdrop-filter: blur(28px);
   border: 1px solid var(--panel-border);
-  border-radius: 28px;
+  border-radius: 20px;
   box-shadow: var(--shadow-lg);
 }
 .dock-app-item {
@@ -2842,18 +2842,32 @@ body {
   justify-content: flex-end;
   cursor: pointer;
   transform-origin: bottom center;
-  transition: width 150ms ease-out, height 150ms ease-out;
+  transition: width 140ms cubic-bezier(0.16, 1, 0.3, 1), height 140ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 .dock-app-icon {
   width: 100%;
   height: 100%;
-  border-radius: 22%;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.8rem;
-  box-shadow: var(--shadow-md);
-  border: 1px solid rgba(255,255,255,0.2);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), var(--shadow-sm);
+  transition: all var(--transition-fast);
+}
+.dock-app-icon svg {
+  width: 44%;
+  height: 44%;
+  stroke: currentColor;
+  pointer-events: none;
+}
+.dock-app-item:hover .dock-app-icon {
+  background: var(--bg-tertiary);
+  border-color: var(--border-hover);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), var(--shadow-md);
 }
 .dock-tooltip {
   position: absolute;

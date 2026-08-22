@@ -1923,19 +1923,43 @@ const motions = [
     enPrompt: "Please help me implement a web motion: macOS Fisheye Dock. Scale dock icons smoothly based on cursor proximity using a gaussian distance function.",
     render: (container) => {
       const icons = [
-        { label: "Finder", emoji: "📁", bg: "linear-gradient(135deg, #38bdf8, #2563eb)" },
-        { label: "Safari", emoji: "🧭", bg: "linear-gradient(135deg, #60a5fa, #1d4ed8)" },
-        { label: "Messages", emoji: "💬", bg: "linear-gradient(135deg, #4ade80, #16a34a)" },
-        { label: "Mail", emoji: "✉️", bg: "linear-gradient(135deg, #38bdf8, #0284c7)" },
-        { label: "Photos", emoji: "🌸", bg: "linear-gradient(135deg, #f472b6, #db2777)" },
-        { label: "Terminal", emoji: "⚡", bg: "linear-gradient(135deg, #1e293b, #0f172a)" },
-        { label: "Code", emoji: "💻", bg: "linear-gradient(135deg, #818cf8, #4f46e5)" },
-        { label: "Settings", emoji: "⚙️", bg: "linear-gradient(135deg, #94a3b8, #64748b)" }
+        { 
+          label: "Finder", 
+          svg: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>' 
+        },
+        { 
+          label: "Browser", 
+          svg: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>' 
+        },
+        { 
+          label: "Editor", 
+          svg: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>' 
+        },
+        { 
+          label: "Terminal", 
+          svg: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>' 
+        },
+        { 
+          label: "Notes", 
+          svg: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>' 
+        },
+        { 
+          label: "Metrics", 
+          svg: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>' 
+        },
+        { 
+          label: "Search", 
+          svg: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>' 
+        },
+        { 
+          label: "Settings", 
+          svg: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>' 
+        }
       ];
 
       const iconsHtml = icons.map(ic => `
         <div class="dock-app-item" data-title="${ic.label}">
-          <div class="dock-app-icon" style="background: ${ic.bg};">${ic.emoji}</div>
+          <div class="dock-app-icon">${ic.svg}</div>
           <div class="dock-tooltip">${ic.label}</div>
           <div class="dock-app-dot"></div>
         </div>
@@ -1943,7 +1967,7 @@ const motions = [
 
       container.innerHTML = `
         <div class="sandbox-dock-stage">
-          <div class="dock-scene-title">MACOS SEQUOIA DOCK</div>
+          <div class="dock-scene-title">MACOS DOCK</div>
           <div class="dock-bar-glass" id="dockBar">
             ${iconsHtml}
           </div>

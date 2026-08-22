@@ -2038,26 +2038,29 @@ a:hover {
 .preview-macos-dock {
   display: flex;
   align-items: flex-end;
-  gap: 6px;
+  gap: 5px;
   padding: 6px 10px;
-  background: var(--bg-tertiary);
-  border-radius: 14px;
+  background: var(--bg-secondary);
+  border-radius: 10px;
   border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
 }
 .dock-mini-icon {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
+  aspect-ratio: 1 / 1;
   border-radius: 4px;
-  background: var(--accent-soft);
-  border: 1px solid var(--border-hover);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
   transition: all var(--transition-fast);
 }
 .dock-mini-icon.active {
-  width: 28px;
-  height: 28px;
-  background: var(--accent-color);
-  transform: translateY(-4px);
-  box-shadow: 0 4px 10px var(--accent-soft);
+  width: 26px;
+  height: 26px;
+  background: var(--bg-primary);
+  border-color: var(--border-hover);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
 }
 
 /* 37. Card Stack Preview */
