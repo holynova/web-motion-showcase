@@ -92,11 +92,11 @@ const motions = [
   {
     id: "blur-reveal",
     zhName: "模糊进入",
-    enName: "Blur Reveal",
+    enName: "Blur In / Soft Reveal",
     category: "进入",
     description: "用渐变的滤镜模糊（filter: blur）替代粗糙的硬切淡入。背景色块在 1.8 秒内平滑清晰，充满画展艺术的高级感。",
-    enDescription: "Replaces harsh fades with a smooth 1.8s Gaussian blur transition, bringing visual elements to life elegantly.",
-    prompt: "请帮我实现一个网页动效：模糊渐显（Blur Reveal）。在大图或核心标题载入时，从高斯模糊和低透明度平滑过渡到高清原态。",
+    enDescription: "Atmospheric entrance. Transitioning from hazy blur to clear focus, perfect for hero images or slogans.",
+    prompt: "请帮我实现一个网页动效：模糊进入（Blur In）。让元素在展现时，伴随透明度从 0 渐显到 1，同时滤镜从高斯模糊过渡到完全清晰。",
     enPrompt: "Please help me implement a web motion: Blur Reveal. Transition elements smoothly from a Gaussian blur and low opacity to full clarity as they load or scroll into view.",
     render: (container) => {
       container.innerHTML = `
@@ -3357,12 +3357,40 @@ const motions = [
    Page Routing & Initialization Logic
    ========================================================================== */
 
-// 1. Read 'id' from URL query params
+// 1. Read 'id' or 'name' from URL query params
 const urlParams = new URLSearchParams(window.location.search);
-const selectedId = urlParams.get("id") || "fade-in-up";
+const selectedId = urlParams.get("id");
+const selectedName = urlParams.get("name") || urlParams.get("name_en") || urlParams.get("motion");
 
-// Find motion data
-const currentMotion = motions.find(m => m.id === selectedId) || motions[0];
+// Find motion data by id or by name
+let currentMotion = null;
+if (selectedId) {
+  currentMotion = motions.find(m => m.id === selectedId);
+}
+if (!currentMotion && selectedName) {
+  const normSearch = selectedName.toLowerCase().replace(/[^a-z0-9]/g, '');
+  currentMotion = motions.find(m => 
+    m.enName.toLowerCase().replace(/[^a-z0-9]/g, '') === normSearch ||
+    m.id.toLowerCase().replace(/[^a-z0-9]/g, '') === normSearch ||
+    m.zhName === selectedName
+  );
+}
+if (!currentMotion) {
+  currentMotion = motions[0];
+}
+
+// Ensure the browser URL query bar always includes &name=<enName> for statistical & analytics tracking
+try {
+  const currentUrl = new URL(window.location.href);
+  const currentQueryName = currentUrl.searchParams.get("name");
+  if (!currentQueryName || currentQueryName !== currentMotion.enName) {
+    currentUrl.searchParams.set("id", currentMotion.id);
+    currentUrl.searchParams.set("name", currentMotion.enName);
+    window.history.replaceState(null, "", currentUrl.toString());
+  }
+} catch (e) {
+  // Ignore in non-browser or sandbox testing environments
+}
 
 // 2. State & Translation Config
 let currentLang = urlParams.get("lang") || localStorage.getItem("lang") || "zh";
@@ -3580,8 +3608,8 @@ function translatePage() {
   
   // Update browser tab document title
   document.title = currentLang === "en" 
-    ? `${currentMotion.enName} | Web Motion Showcase`
-    : `${currentMotion.zhName} | 动效体验中心`;
+    ? `${currentMotion.enName} (${currentMotion.zhName}) | Web Motion Showcase`
+    : `${currentMotion.zhName} (${currentMotion.enName}) | 动效体验沙盒`;
 
   // Update control panel text values
   initControlPanel();

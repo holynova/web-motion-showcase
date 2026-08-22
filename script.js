@@ -1183,7 +1183,9 @@ function renderCards() {
             return;
           }
           const motionId = card.id.replace("card-", "");
-          window.open(`detail.html?id=${motionId}`, '_blank');
+          const motion = motions.find(m => m.id === motionId);
+          const nameParam = motion && motion.enName ? `&name=${encodeURIComponent(motion.enName)}` : "";
+          window.open(`detail.html?id=${motionId}${nameParam}`, '_blank');
         });
       });
       
