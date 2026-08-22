@@ -68,8 +68,9 @@ An interactive catalog, fullscreen sandbox, and AI prompt hub of restrained Web 
 
 ## 🌟 核心特性 | Features
 
-1. **34+ 精选网页动效分类全收录**：
+1. **50+ 精选前沿与经典网页动效全收录**：
    - 覆盖**进入 (Entrance)**、**滚动 (Scroll)**、**悬停 (Hover)**、**反馈 (Feedback)**、**图片 (Media)**、**布局 (Layout)** 6 大高频交互维度。
+   - 新增：**光标聚光灯卡片 (Spotlight Card)**、**流光环形边框 (Border Beam)**、**流程连线脉冲光波 (Flow Beams)**、**灵动岛悬浮胶囊 (Dynamic Island)**、**macOS 鱼眼 Dock 栏 (Fisheye Dock)**、**层叠卡片手势抽卡 (Stack Swipe)**、**物理重力礼花爆炸 (Confetti Burst)** 等前沿特效。
 2. **全屏沉浸式体验沙盒 (Fullscreen Sandbox)**：
    - 点击任意卡片进入专属详情页，支持全屏预览、重新播放、交互反馈测试与参数调试。
 3. **AI 编程提示词一键直达**：
@@ -81,7 +82,7 @@ An interactive catalog, fullscreen sandbox, and AI prompt hub of restrained Web 
 
 ---
 
-## 📑 34 种动效分类全景矩阵速查表 | Motion Catalog
+## 📑 50 种动效分类全景矩阵速查表 | Motion Catalog
 
 | 分类 | 动效名称 (ZH / EN) | 核心物理/视觉机制 | 核心 CSS / JS 实现 | 在线体验直达 |
 | :--- | :--- | :--- | :--- | :---: |
@@ -89,21 +90,35 @@ An interactive catalog, fullscreen sandbox, and AI prompt hub of restrained Web 
 | **进入** | **滚动显现** (Scroll Reveal) | 进入视口触发淡入与微位移，秩序感分层加载 | `IntersectionObserver`, `threshold` | [👉 体验](https://holynova.github.io/web-motion-showcase/detail.html?id=scroll-reveal) |
 | **进入** | **文字逐行显现** (Line Reveal) | 溢出截断遮罩配合文字分行错落抽拉升起 | `overflow: hidden`, `translateY(100%->0)` | [👉 体验](https://holynova.github.io/web-motion-showcase/detail.html?id=line-reveal) |
 | **进入** | **模糊进入** (Blur In / Soft Reveal) | 从高斯模糊与低透明度平滑过渡到高清清晰态 | `filter: blur()`, `transition` | [👉 体验](https://holynova.github.io/web-motion-showcase/detail.html?id=blur-reveal) |
+| **进入** | **流光环形边框** (Border Beam) | 高亮炫彩渐变光柱沿着圆角卡片边框周游绕圈 | `conic-gradient`, `@keyframes spin` | [👉 体验](https://holynova.github.io/web-motion-showcase/detail.html?id=border-beam) |
+| **进入** | **流程连线脉冲光波** (Flow Beams) | 节点间贝塞尔曲线，发光粒子波沿路径流动传输 | `SVG bezier`, `stroke-dashoffset` | [👉 体验](https://holynova.github.io/web-motion-showcase/detail.html?id=animated-flow-beams) |
+| **进入** | **金属光泽扫光文字** (Metallic Shimmer) | 奢华金属高光在深色字体表面平滑对角线扫过 | `background-clip: text`, `linear-gradient` | [👉 体验](https://holynova.github.io/web-motion-showcase/detail.html?id=metallic-shimmer-text) |
+| **进入** | **文字 3D 逐字波浪飞入** (Split-Text 3D) | 大标题拆分为单字符，自 3D 空间 90 度翻折飞入 | `perspective`, `rotateX(90deg->0deg)` | [👉 体验](https://holynova.github.io/web-motion-showcase/detail.html?id=split-text-3d-wave) |
 | **进入** | **减少动态适配** (Reduced Motion) | 检测系统无障碍偏好，取消位移与旋转，静态呈现 | `@media (prefers-reduced-motion)` | [👉 体验](https://holynova.github.io/web-motion-showcase/detail.html?id=reduced-motion) |
 | **进入** | **链接下划线展开** (Underline Slide-In) | 伪元素宽度自左向右平滑展开延伸 | `scaleX(0->1)`, `transform-origin: left` | [👉 体验](https://holynova.github.io/web-motion-showcase/detail.html?id=underline-reveal) |
 | **进入** | **噪点背景呼吸律动** (Subtle Noise Grain) | 微小位移与透明度微弱律动，赋予页面胶片质感 | `background-image: noise`, `opacity` | [👉 体验](https://holynova.github.io/web-motion-showcase/detail.html?id=noise-texture) |
 | **滚动** | **视差滚动** (Parallax Scrolling) | 背景层滚动位移慢于前景文字，构造立体纵深 | `transform: translateY(scroll * factor)` | [👉 体验](https://holynova.github.io/web-motion-showcase/detail.html?id=parallax-scrolling) |
 | **滚动** | **粘性滚动叙事** (Sticky Scroll) | 左侧卡片 `position: sticky` 驻留，右侧长文滚动切状态 | `position: sticky`, `scroll-timeline` | [👉 体验](https://holynova.github.io/web-motion-showcase/detail.html?id=sticky-scroll) |
+| **滚动** | **滚动手绘线条勾勒** (Scroll-Drawn SVG) | 滚动百分比实时驱动复杂矢量线条手绘生长 | `SVG getTotalLength()`, `stroke-dashoffset` | [👉 体验](https://holynova.github.io/web-motion-showcase/detail.html?id=scroll-drawn-svg) |
+| **滚动** | **滚动卡片层叠固化** (Card Sticky Stacking) | 卡片在视口顶部依次吸附固化并叠加缩放 | `position: sticky`, `scale()`, `brightness()` | [👉 体验](https://holynova.github.io/web-motion-showcase/detail.html?id=card-sticky-stacking) |
 | **滚动** | **滚动进度指示** (Scroll Progress Bar) | 顶部细条实时反映当前页面的阅读进度比例 | `width: percentage%`, `scaleX` | [👉 体验](https://holynova.github.io/web-motion-showcase/detail.html?id=scroll-progress) |
 | **滚动** | **横向视差画廊** (Horizontal Scroll) | 将垂直滚轮位移映射为水平画廊轨道滑动 | `transform: translateX(-offset)` | [👉 体验](https://holynova.github.io/web-motion-showcase/detail.html?id=horizontal-gallery) |
 | **滚动** | **滚动表头渐变阴影** (Scroll Elevation) | 离开顶部时导航栏平滑过渡为毛玻璃与柔和投影 | `box-shadow`, `backdrop-filter: blur` | [👉 体验](https://holynova.github.io/web-motion-showcase/detail.html?id=scroll-shadow) |
 | **滚动** | **无限无缝跑马灯** (Infinite Marquee) | 双份内容磁带无缝循环位移，悬停平滑暂停 | `@keyframes marquee`, `translateX(-50%)` | [👉 体验](https://holynova.github.io/web-motion-showcase/detail.html?id=infinite-marquee) |
+| **悬停** | **光标聚光灯卡片** (Spotlight Border Card) | 径向渐变聚光灯随光标漫游，照亮边框高光与背景 | `CSS vars --mouse-x/y`, `radial-gradient` | [👉 体验](https://holynova.github.io/web-motion-showcase/detail.html?id=spotlight-card) |
+| **悬停** | **macOS 鱼眼缩放 Dock** (Fisheye Dock) | 鼠标滑过时图标呈现非线性高斯鱼眼放大与回弹 | `gaussian proximity`, `cos() distance` | [👉 体验](https://holynova.github.io/web-motion-showcase/detail.html?id=macos-dock) |
+| **悬停** | **磁吸吸附光晕按钮** (Magnetic Glow Button) | 光标靠近时产生物理位移吸附，内部光晕扩散 | `distance vector lerp`, `radial-gradient` | [👉 体验](https://holynova.github.io/web-motion-showcase/detail.html?id=magnetic-glow-button) |
 | **悬停** | **卡片 3D 倾斜** (3D Tilt Card) | 计算光标相对卡片中心坐标，动态渲染 3D 透视角度 | `perspective()`, `rotateX`, `rotateY` | [👉 体验](https://holynova.github.io/web-motion-showcase/detail.html?id=tilt-card) |
 | **悬停** | **鼠标跟随光标** (Custom Cursor) | 核心圆点贴紧鼠标，外环圆圈带惯性插值平滑追踪 | `requestAnimationFrame`, `lerp()` | [👉 体验](https://holynova.github.io/web-motion-showcase/detail.html?id=custom-cursor) |
 | **悬停** | **磁吸按钮** (Magnetic Snap Button) | 按钮在光标靠近时产生引力拉伸，离开后弹性回弹 | `getBoundingClientRect`, `translate` | [👉 体验](https://holynova.github.io/web-motion-showcase/detail.html?id=magnetic-effect) |
 | **悬停** | **微上浮悬停** (Micro Hover Lift) | 悬停时微微上浮 4px 并伴随柔和阴影加深 | `transform: translateY(-4px)`, `box-shadow` | [👉 体验](https://holynova.github.io/web-motion-showcase/detail.html?id=hover-lift) |
 | **悬停** | **扩散柔和阴影** (Dynamic Glow Shadow) | 悬停时周围投射出大范围柔和弥散的氛围光晕 | `box-shadow: 0 20px 25px -5px rgba(...)` | [👉 体验](https://holynova.github.io/web-motion-showcase/detail.html?id=hover-shadow) |
 | **悬停** | **字符波浪悬停** (Text Wave Hover) | 拆分单字符依序设置阶梯延迟，产生波浪弹跳 | `transition-delay: calc(i * 30ms)` | [👉 体验](https://holynova.github.io/web-motion-showcase/detail.html?id=text-wave-hover) |
+| **反馈** | **黑客密码解密文本** (Text Scramble) | 随机特殊符号高频滚动，随后逐字收敛解密定格 | `random glyph cipher`, `setInterval` | [👉 体验](https://holynova.github.io/web-motion-showcase/detail.html?id=text-scramble) |
+| **反馈** | **灵动岛悬浮胶囊** (Dynamic Island Morph) | 极简胶囊在状态切换时以弹性阻尼平滑形变展开 | `spring cubic-bezier`, `morphing container` | [👉 体验](https://holynova.github.io/web-motion-showcase/detail.html?id=dynamic-island) |
+| **反馈** | **物理重力礼花爆炸** (Confetti Explosion) | 点击瞬间喷射 140+ 纸屑粒子，重力与风阻物理下落 | `Canvas 2D physics`, `gravity + drag` | [👉 体验](https://holynova.github.io/web-motion-showcase/detail.html?id=confetti-explosion) |
+| **反馈** | **机械滚轮数字翻牌器** (Rolling Odometer) | 多位数字独立滚轮纵向翻滚，机械仪表盘质感 | `translateY(digit * -10%)`, `stagger delay` | [👉 体验](https://holynova.github.io/web-motion-showcase/detail.html?id=rolling-number-odometer) |
+| **反馈** | **弹性手势阻尼抽屉** (Spring Sheet Drawer) | 支持触摸拖拽阻尼感应，松手依附展开或回弹收起 | `touch/mouse drag`, `rubber-band snap` | [👉 体验](https://holynova.github.io/web-motion-showcase/detail.html?id=spring-drawer) |
 | **反馈** | **弹性缩放** (Spring Physics Bounce) | 模拟弹簧阻尼衰减震荡，点击产生物理回弹 | `cubic-bezier(0.175, 0.885, 0.32, 1.275)` | [👉 体验](https://holynova.github.io/web-motion-showcase/detail.html?id=spring-motion) |
 | **反馈** | **汉堡菜单形变** (Morphing Hamburger) | 三道线条在展开时折叠交叉变形成关闭叉号 (X) | `transform: rotate(45deg)`, `opacity` | [👉 体验](https://holynova.github.io/web-motion-showcase/detail.html?id=menu-morphing) |
 | **反馈** | **昼夜模式切换** (Day-Night Transition) | 图标自旋缩放形态转换，全站背景色色彩平滑插值 | `transform: rotate(360deg)`, `transition` | [👉 体验](https://holynova.github.io/web-motion-showcase/detail.html?id=theme-switch) |
@@ -116,6 +131,8 @@ An interactive catalog, fullscreen sandbox, and AI prompt hub of restrained Web 
 | **图片** | **灰度至彩色渐变** (Grayscale-to-Color) | 默认黑白灰度，悬停时平滑恢复鲜活色彩 | `filter: grayscale(100%->0%)` | [👉 体验](https://holynova.github.io/web-motion-showcase/detail.html?id=color-shift) |
 | **图片** | **几何遮罩裁切展开** (Geometric Mask) | 利用 CSS clip-path 多边形擦除显现图像 | `clip-path: polygon(...)` | [👉 体验](https://holynova.github.io/web-motion-showcase/detail.html?id=mask-reveal) |
 | **图片** | **悬停图片平滑浮层** (Floating Cursor Preview) | 划过列表文字时对应缩略图紧随光标浮现 | `position: fixed`, `pointer-events: none` | [👉 体验](https://holynova.github.io/web-motion-showcase/detail.html?id=image-preview) |
+| **布局** | **便当网格交错入场** (Bento Grid Stagger) | 非对称 Bento 布局卡片按空间顺序错峰弹入 | `CSS Grid`, `staggered cubic-bezier` | [👉 体验](https://holynova.github.io/web-motion-showcase/detail.html?id=bento-grid-stagger) |
+| **布局** | **层叠卡片手势抽卡** (Stack Card Swipe) | 顶层卡片飞出视口，底层卡片平滑放大升入顶层 | `z-index layering`, `rotational flick` | [👉 体验](https://holynova.github.io/web-motion-showcase/detail.html?id=card-stack-swipe) |
 | **布局** | **网格重排与过滤折叠** (FLIP Layout) | 运用 FLIP 原理计算重组坐标，卡片平滑飞行归位 | `getBoundingClientRect`, `FLIP` | [👉 体验](https://holynova.github.io/web-motion-showcase/detail.html?id=layout-transition) |
 | **布局** | **全局页面切场遮罩** (Page Curtain) | 路由跳转时平滑帷幕划过屏幕，创造剧场级切场 | `curtain overlay`, `translateY` | [👉 体验](https://holynova.github.io/web-motion-showcase/detail.html?id=page-transition) |
 | **布局** | **手风琴高度平滑展开** (Fluid Accordion) | 解决 auto 高度无法过渡，精确展开折叠内容 | `grid-template-rows: 0fr->1fr` | [👉 体验](https://holynova.github.io/web-motion-showcase/detail.html?id=accordion-expand) |

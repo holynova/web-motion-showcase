@@ -484,6 +484,241 @@ const motions = [
     demoHtml: '<div class="preview-text-wave"><span data-text="WAVE">WAVE</span></div>',
     prompt: "请帮我实现一个网页动效：文字波浪反弹悬停（Text Wave Ripple Hover）。将展示标题拆分为单个字符，在鼠标 Hover 时通过 transition-delay 差值和 cubic-bezier 弹性曲线，让字母呈波浪状顺序向上反弹。",
     enPrompt: "Please help me implement a web motion: Text Wave Ripple Hover. Split text and stagger letter translation offsets on hover."
+  },
+  // --- 16 New Trending Motions (35-50) ---
+  {
+    id: "spotlight-card",
+    zhName: "光标聚光灯卡片",
+    enName: "Spotlight Border Card",
+    category: "悬停",
+    description: "Linear / Vercel 标志性卡片。鼠标移动时，径向渐变聚光灯随光标在卡片群中漫游，照亮边框高光与背景纹理。",
+    enDescription: "Linear/Vercel style card. Radial spotlight follows the cursor across cards, illuminating border highlights.",
+    demoHtml: `
+      <div class="preview-spotlight-wrap">
+        <div class="preview-spotlight-card"><div class="preview-spotlight-glow"></div><span>01</span></div>
+        <div class="preview-spotlight-card"><div class="preview-spotlight-glow"></div><span>02</span></div>
+      </div>
+    `,
+    prompt: "请帮我实现一个网页动效：光标聚光灯卡片（Spotlight Border Card）。监听鼠标在卡片容器上的移动坐标，通过 CSS 变量 --mouse-x 和 --mouse-y 动态更新伪元素上的 radial-gradient 径向渐变，使柔和的聚光灯光晕跟随光标照亮卡片内部与边框。",
+    enPrompt: "Please help me implement a web motion: Spotlight Border Card. Track mouse coordinates on cards and update CSS variables --mouse-x and --mouse-y to render a glowing radial gradient spotlight."
+  },
+  {
+    id: "border-beam",
+    zhName: "流光环形边框",
+    enName: "Border Beam Animation",
+    category: "进入",
+    description: "Magic UI 经典动效。一道高亮炫彩渐变光柱沿着圆角卡片的边缘无缝周游循环，极具科技高级感。",
+    enDescription: "Magic UI classic. A glowing gradient beam seamlessly travels along the rounded card perimeter.",
+    demoHtml: '<div class="preview-border-beam-box"><div class="preview-border-beam-ray"></div><span>BEAM</span></div>',
+    prompt: "请帮我实现一个网页动效：流光环形边框（Border Beam Animation）。在圆角卡片边框上绘制一段带有高斯模糊和色彩渐变的光柱，利用 CSS conic-gradient 或 offset-path 使光柱沿着矩形外边框持续匀速绕圈旋转。",
+    enPrompt: "Please help me implement a web motion: Border Beam Animation. Create an animated gradient ray that travels continuously along the container's border using conic-gradient or offset-path."
+  },
+  {
+    id: "animated-flow-beams",
+    zhName: "流程连线脉冲光波",
+    enName: "Animated Flow Beams",
+    category: "进入",
+    description: "AI 工作流与系统拓扑图神器。在多个 UI 节点间以贝塞尔曲线相连，发光的脉冲粒子沿着线条持续流动传输。",
+    enDescription: "AI workflow visual. Glowing pulse particles continuously travel along SVG bezier paths between nodes.",
+    demoHtml: `
+      <div class="preview-flow-beams-wrap">
+        <div class="preview-beam-node n1"></div>
+        <div class="preview-beam-line"><div class="preview-beam-pulse"></div></div>
+        <div class="preview-beam-node n2"></div>
+      </div>
+    `,
+    prompt: "请帮我实现一个网页动效：流程连线脉冲光波（Animated Flow Beams）。在多个节点之间绘制 SVG 平滑贝塞尔曲线，利用 stroke-dasharray 和 stroke-dashoffset 制作连续向前流动的发光能量脉冲粒子，模拟数据流动。",
+    enPrompt: "Please help me implement a web motion: Animated Flow Beams. Draw SVG bezier paths between UI nodes and animate glowing pulse waves flowing along the paths."
+  },
+  {
+    id: "text-scramble",
+    zhName: "黑客密码解密文本",
+    enName: "Text Scramble Decrypt",
+    category: "反馈",
+    description: "Cyberpunk 风格文本动效。加载或悬停时字符像矩阵密码一样高速随机滚动，随后逐字解密定格为真实文案。",
+    enDescription: "Cyberpunk text decoding. Characters cycle through random cipher glyphs before locking into words.",
+    demoHtml: '<div class="preview-text-scramble"><span class="scramble-span">DECRYPT</span></div>',
+    prompt: "请帮我实现一个网页动效：黑客密码解密文本（Text Scramble Decrypt）。当触发时，通过 JavaScript 高频替换文字中的字符为随机特殊符号（如 !<>-_\\/[]{}—=+*^?#_），随后由左至右逐字收敛锁定为原始文本。",
+    enPrompt: "Please help me implement a web motion: Text Scramble Decrypt. Rapidly randomize characters with cipher glyphs and progressively resolve them left-to-right to the final text."
+  },
+  {
+    id: "dynamic-island",
+    zhName: "灵动岛悬浮胶囊",
+    enName: "Dynamic Island Morph",
+    category: "反馈",
+    description: "苹果灵动岛多态交互。极简黑色小药丸，点击时以平滑弹性阻尼物理曲线变形展开为音乐面板、通话或通知卡片。",
+    enDescription: "Apple Dynamic Island interaction. Compact capsule morphs smoothly into music player or notification cards with spring physics.",
+    demoHtml: '<div class="preview-dynamic-island"><div class="island-dot"></div><div class="island-bar"></div></div>',
+    prompt: "请帮我实现一个网页动效：灵动岛悬浮胶囊（Dynamic Island Morph）。顶部居中的黑色胶囊卡片，支持 Compact、Music、Alert 多种状态切换，展开与收起时带有自然的弹性阻尼贝塞尔过渡，内容元素平滑淡入交替。",
+    enPrompt: "Please help me implement a web motion: Dynamic Island Morph. Morph a centered black pill into expanded music/alert cards using spring-like cubic-bezier physics."
+  },
+  {
+    id: "macos-dock",
+    zhName: "拟物鱼眼缩放 Dock",
+    enName: "macOS Fisheye Dock",
+    category: "悬停",
+    description: "经典桌面 Dock 拟物栏。鼠标在底部滑动时，图标根据与光标的距离呈现非线性的高斯鱼眼放大与浮动回弹。",
+    enDescription: "Classic macOS dock. Icons scale up based on a cosine/gaussian distance curve as the cursor glides across.",
+    demoHtml: `
+      <div class="preview-macos-dock">
+        <div class="dock-mini-icon"></div>
+        <div class="dock-mini-icon active"></div>
+        <div class="dock-mini-icon"></div>
+      </div>
+    `,
+    prompt: "请帮我实现一个网页动效：macOS 拟物鱼眼缩放 Dock 栏（macOS Fisheye Dock）。在底部固定悬浮的图标栏中监听 mousemove，根据光标与各个图标中心的水平距离计算高斯/余弦缩放系数，使光标周围图标产生连贯的鱼眼放大波浪。",
+    enPrompt: "Please help me implement a web motion: macOS Fisheye Dock. Scale dock icons smoothly based on cursor proximity using a gaussian distance function."
+  },
+  {
+    id: "card-stack-swipe",
+    zhName: "层叠卡片手势抽卡",
+    enName: "Stack Card Swipe",
+    category: "布局",
+    description: "Apple Wallet / 探探风格层叠卡片。支持点击或拖拽将顶层卡片飞出，底层卡片平滑缩放补位上升。",
+    enDescription: "Layered card stack. Flick the top card away while background cards scale up and take its place.",
+    demoHtml: `
+      <div class="preview-card-stack">
+        <div class="stack-card c3"></div>
+        <div class="stack-card c2"></div>
+        <div class="stack-card c1"></div>
+      </div>
+    `,
+    prompt: "请帮我实现一个网页动效：层叠卡片手势抽卡（Stack Card Swipe）。多张卡片以 z-index 和 translateY/scale 叠加放置，用户点击或拖拽最上层卡片使其带有旋转飞出视口，后续卡片平滑放大升入顶层，支持无限循环抽取。",
+    enPrompt: "Please help me implement a web motion: Stack Card Swipe. Stack layered cards and animate top cards flying away on click/swipe while lower cards scale up seamlessly."
+  },
+  {
+    id: "spring-drawer",
+    zhName: "弹性手势阻尼抽屉",
+    enName: "Spring Sheet Drawer",
+    category: "反馈",
+    description: "现代 App 级底部/侧边抽屉。支持触摸拖拽、阻尼滑动与手势速率感应，松手自动依附或回弹关闭。",
+    enDescription: "Native-like bottom drawer. Supports smooth drag gestures, spring damping, and swipe-to-dismiss.",
+    demoHtml: `
+      <div class="preview-spring-drawer">
+        <div class="drawer-handle"></div>
+        <div class="drawer-content-stub"></div>
+      </div>
+    `,
+    prompt: "请帮我实现一个网页动效：弹性手势阻尼抽屉（Spring Sheet Drawer）。实现一个底部弹出的模态抽屉，支持手指/鼠标拖拽顶部 Handle 控制高度，带有越界阻尼感，松手根据滑动距离与速度决定贴靠展开或回弹收起。",
+    enPrompt: "Please help me implement a web motion: Spring Sheet Drawer. Build a bottom drawer with drag gestures, rubber-band resistance, and smooth snap points."
+  },
+  {
+    id: "confetti-explosion",
+    zhName: "物理重力礼花爆炸",
+    enName: "Confetti Explosion Burst",
+    category: "反馈",
+    description: "成就与支付成功必备。点击瞬间从中心喷射出五彩缤纷的纸屑颗粒，并在重力、阻力与旋转模拟下优雅下落散开。",
+    enDescription: "Celebratory confetti blast. Spawns colorful particle fragments on click governed by gravity and air drag physics.",
+    demoHtml: `
+      <div class="preview-confetti-btn">
+        <div class="confetti-spark s1"></div>
+        <div class="confetti-spark s2"></div>
+        <div class="confetti-spark s3"></div>
+        <span>🎉 Celebrate</span>
+      </div>
+    `,
+    prompt: "请帮我实现一个网页动效：物理重力礼花爆炸（Confetti Explosion Burst）。使用 HTML5 Canvas 在按钮点击瞬间生成 100+ 随机颜色、形状、初始速度与角度的粒子，通过物理公式模拟重力加速度、风阻与 3D 自转，形成真实的礼花漫天飞散效果。",
+    enPrompt: "Please help me implement a web motion: Confetti Explosion. Spawn Canvas confetti particles on click with physics velocity, gravity, and 3D rotation."
+  },
+  {
+    id: "magnetic-glow-button",
+    zhName: "磁吸吸附光晕按钮",
+    enName: "Magnetic Glow Button",
+    category: "悬停",
+    description: "Awwwards 级高级按钮。光标靠近时按钮主动朝光标方向位移吸附，内部伴随光晕扩散与触感粘滞。",
+    enDescription: "Award-winning button. Button magnetically pulls toward the cursor with shifting internal ambient glow.",
+    demoHtml: '<div class="preview-mag-glow-btn"><div class="btn-glow-ring"></div><span>Explore</span></div>',
+    prompt: "请帮我实现一个网页动效：磁吸吸附光晕按钮（Magnetic Glow Button）。计算光标与按钮中心的距离向量，在感应半径内对按钮应用 translate 磁吸吸附偏移，并在按钮内部渲染跟随光标角度的光晕扩散图层，移出时光滑弹回原位。",
+    enPrompt: "Please help me implement a web motion: Magnetic Glow Button. Apply magnetic translation toward the cursor within a threshold radius, combined with an internal moving glow layer."
+  },
+  {
+    id: "metallic-shimmer-text",
+    zhName: "金属光泽扫光文字",
+    enName: "Metallic Shimmer Text",
+    category: "进入",
+    description: "苹果发布会级标题质感。高精度金属质感渐变在深色文字上缓缓扫过，散发奢华流光溢彩的工业设计美感。",
+    enDescription: "Apple Keynote title aesthetic. A metallic specular sheen sweeps smoothly across high-contrast typography.",
+    demoHtml: '<div class="preview-metallic-text"><span class="shimmer-txt">TITANIUM</span></div>',
+    prompt: "请帮我实现一个网页动效：金属光泽扫光文字（Metallic Shimmer Text）。使用 background-clip: text 和多段高对比金属渐变（Silver/Gold），配合 keyframes 沿 45 度对角线平滑平移 background-position，创造出奢华的金属光影流淌效果。",
+    enPrompt: "Please help me implement a web motion: Metallic Shimmer Text. Animate high-contrast linear gradient reflections across text using background-clip: text."
+  },
+  {
+    id: "rolling-number-odometer",
+    zhName: "机械滚轮数字翻牌器",
+    enName: "Rolling Number Odometer",
+    category: "反馈",
+    description: "老虎机与机械仪表盘质感。数值变动时，每位数字像滚轮一样纵向旋转翻滚过渡，数字感与仪式感拉满。",
+    enDescription: "Mechanical slot-machine counter. Each digit rolls vertically along an internal column with staggered easing.",
+    demoHtml: `
+      <div class="preview-odometer">
+        <div class="odo-col"><div class="odo-ribbon"><span>1</span><span>8</span><span>9</span></div></div>
+        <div class="odo-col"><div class="odo-ribbon"><span>4</span><span>5</span><span>6</span></div></div>
+        <div class="odo-col"><div class="odo-ribbon"><span>2</span><span>7</span><span>0</span></div></div>
+      </div>
+    `,
+    prompt: "请帮我实现一个网页动效：机械滚轮数字翻牌器（Rolling Number Odometer）。将多位数字拆分为独立的竖向列，每列包含 0-9 数字序列，当数值更新时通过 translateY 平滑滚动至目标数字，配合各列错开的 transition-delay 营造机械翻牌效果。",
+    enPrompt: "Please help me implement a web motion: Rolling Number Odometer. Build vertical columns containing 0-9 digits and animate their translateY offsets with staggered delays."
+  },
+  {
+    id: "bento-grid-stagger",
+    zhName: "便当网格交错入场",
+    enName: "Bento Grid Stagger",
+    category: "布局",
+    description: "Apple / Linear 标志性非对称 Bento 排版。滚动进入视口时按权重与空间顺序交错弹入，并自带微光扫过。",
+    enDescription: "Apple/Linear Bento layout. Asymmetrical grid cells pop in sequentially with staggered delays and border glints.",
+    demoHtml: `
+      <div class="preview-bento-grid">
+        <div class="bento-box b1"></div>
+        <div class="bento-box b2"></div>
+        <div class="bento-box b3"></div>
+        <div class="bento-box b4"></div>
+      </div>
+    `,
+    prompt: "请帮我实现一个网页动效：便当网格交错入场（Bento Grid Stagger）。使用 CSS Grid 创建 2x2 与多跨度的非对称 Bento 结构，当网格进入视口时，子卡片按照空间顺序以 cubic-bezier(0.16, 1, 0.3, 1) 错峰放大淡入，并伴随边框高光。",
+    enPrompt: "Please help me implement a web motion: Bento Grid Stagger. Construct an asymmetric CSS Grid Bento box and animate card reveals with staggered timing."
+  },
+  {
+    id: "scroll-drawn-svg",
+    zhName: "滚动手绘线条勾勒",
+    enName: "Scroll-Drawn SVG Path",
+    category: "滚动",
+    description: "Stripe 首页同款叙事。页面向下滚动时，复杂的矢量线条与产品架构轮廓依照绝对滚动百分比精准手绘呈现。",
+    enDescription: "Stripe-style scroll storytelling. SVG paths trace out dynamically in lockstep with page scroll depth.",
+    demoHtml: `
+      <div class="preview-scroll-svg">
+        <svg viewBox="0 0 100 40"><path d="M5,20 Q25,5 50,20 T95,20" class="svg-stroke-path"></path></svg>
+      </div>
+    `,
+    prompt: "请帮我实现一个网页动效：滚动手绘线条勾勒（Scroll-Drawn SVG Path）。测量 SVG path 的 getTotalLength()，初始化 stroke-dasharray 和 stroke-dashoffset 为全长，监听窗口滚动进度，将滚动百分比实时映射到 dashoffset 实现手绘画线效果。",
+    enPrompt: "Please help me implement a web motion: Scroll-Drawn SVG Path. Bind SVG strokeDashoffset to the page scroll percentage using getTotalLength()."
+  },
+  {
+    id: "split-text-3d-wave",
+    zhName: "文字 3D 逐字波浪飞入",
+    enName: "Split-Text 3D Wave",
+    category: "进入",
+    description: "Codrops 封面级排版。大标题文字在入场时拆分为单字，每个字符带有独立的 3D 空间翻折（rotateX）与模糊递进。",
+    enDescription: "Editorial 3D typography. Splits headlines into characters that flip in from rotateX(90deg) with perspective waves.",
+    demoHtml: '<div class="preview-split-3d"><span class="ch-3d">F</span><span class="ch-3d">L</span><span class="ch-3d">I</span><span class="ch-3d">P</span></div>',
+    prompt: "请帮我实现一个网页动效：文字 3D 逐字波浪飞入（Split-Text 3D Wave）。在包含 perspective 透视的容器中将文本拆分为 span 字符，初始状态设置 transform: rotateX(90deg) translateY(30px) filter: blur(8px)，通过错开的延时让字符如波浪般顺滑翻折归位。",
+    enPrompt: "Please help me implement a web motion: Split-Text 3D Wave. Split text into spans with 3D rotateX and perspective, staggering character arrivals sequentially."
+  },
+  {
+    id: "card-sticky-stacking",
+    zhName: "滚动卡片层叠固化",
+    enName: "Card Sticky Stacking",
+    category: "滚动",
+    description: "现代产品介绍页标配。向下滚动时卡片依次在视口顶部吸附固化，后续卡片从下方覆盖上来并伴随缩放与变暗。",
+    enDescription: "Product narrative stack. Cards pin to viewport top on scroll, stacking and scaling down as new cards overlay.",
+    demoHtml: `
+      <div class="preview-sticky-stack">
+        <div class="stack-slice s1"></div>
+        <div class="stack-slice s2"></div>
+        <div class="stack-slice s3"></div>
+      </div>
+    `,
+    prompt: "请帮我实现一个网页动效：滚动卡片层叠固化（Card Sticky Stacking）。使用 position: sticky 配合 top 偏移，使多张大卡片在向下滚动时依次吸顶停靠，后一张卡片覆盖上去的同时，前一张卡片通过 scale(0.95) 与 brightness(0.8) 产生纵深层叠堆积感。",
+    enPrompt: "Please help me implement a web motion: Card Sticky Stacking. Use position: sticky with progressive top offsets and scale transforms to create stacked card decks on scroll."
   }
 ];
 

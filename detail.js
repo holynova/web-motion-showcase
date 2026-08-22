@@ -1538,6 +1538,1042 @@ const motions = [
         </div>
       `;
     }
+  },
+
+  // --- 16 New Trending Motions (35-50) ---
+  {
+    id: "spotlight-card",
+    zhName: "光标聚光灯卡片",
+    enName: "Spotlight Border Card",
+    category: "悬停",
+    description: "Linear / Vercel 标志性卡片。鼠标移动时，径向渐变聚光灯随光标在卡片群中漫游，照亮边框高光与背景纹理。",
+    enDescription: "Linear/Vercel style card. Radial spotlight follows the cursor across cards, illuminating border highlights.",
+    prompt: "请帮我实现一个网页动效：光标聚光灯卡片（Spotlight Border Card）。监听鼠标在卡片容器上的移动坐标，通过 CSS 变量 --mouse-x 和 --mouse-y 动态更新伪元素上的 radial-gradient 径向渐变，使柔和的聚光灯光晕跟随光标照亮卡片内部与边框。",
+    enPrompt: "Please help me implement a web motion: Spotlight Border Card. Track mouse coordinates on cards and update CSS variables --mouse-x and --mouse-y to render a glowing radial gradient spotlight.",
+    render: (container) => {
+      container.innerHTML = `
+        <div class="sandbox-spotlight-container">
+          <div class="sandbox-spotlight-header">
+            <h2 class="sandbox-hero-title">INTELLIGENT WORKSPACE</h2>
+            <p class="sandbox-hero-sub">移动鼠标体验边框跟随聚光灯高光效果</p>
+          </div>
+          <div class="sandbox-spotlight-grid" id="spotlightGrid">
+            <div class="spotlight-card-item">
+              <div class="spotlight-card-border"></div>
+              <div class="spotlight-card-inner">
+                <div class="spotlight-card-icon">⚡</div>
+                <h3>Real-time Engine</h3>
+                <p>毫秒级状态同步，基于 CRDT 算法构建的多人协作流体引擎。</p>
+                <div class="spotlight-card-tag">Ultra Fast</div>
+              </div>
+            </div>
+            <div class="spotlight-card-item">
+              <div class="spotlight-card-border"></div>
+              <div class="spotlight-card-inner">
+                <div class="spotlight-card-icon">🛡️</div>
+                <h3>End-to-End Vault</h3>
+                <p>零知识证明加密存储，保障企业级数据隐私与资产安全。</p>
+                <div class="spotlight-card-tag">Zero Trust</div>
+              </div>
+            </div>
+            <div class="spotlight-card-item">
+              <div class="spotlight-card-border"></div>
+              <div class="spotlight-card-inner">
+                <div class="spotlight-card-icon">✨</div>
+                <h3>Autonomous AI</h3>
+                <p>多智能体自主协作中枢，自动化编排代码分析与重构工作流。</p>
+                <div class="spotlight-card-tag">Neural Mesh</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      const grid = container.querySelector("#spotlightGrid");
+      const cards = container.querySelectorAll(".spotlight-card-item");
+
+      const handleMouseMove = (e) => {
+        cards.forEach((card) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          card.style.setProperty("--mouse-x", `${x}px`);
+          card.style.setProperty("--mouse-y", `${y}px`);
+        });
+      };
+
+      window.addEventListener("mousemove", handleMouseMove);
+      container.addEventListener("cleanup", () => {
+        window.removeEventListener("mousemove", handleMouseMove);
+      });
+    }
+  },
+  {
+    id: "border-beam",
+    zhName: "流光环形边框",
+    enName: "Border Beam Animation",
+    category: "进入",
+    description: "Magic UI 经典动效。一道高亮炫彩渐变光柱沿着圆角卡片的边缘无缝周游循环，极具科技高级感。",
+    enDescription: "Magic UI classic. A glowing gradient beam seamlessly travels along the rounded card perimeter.",
+    prompt: "请帮我实现一个网页动效：流光环形边框（Border Beam Animation）。在圆角卡片边框上绘制一段带有高斯模糊和色彩渐变的光柱，利用 CSS conic-gradient 或 offset-path 使光柱沿着矩形外边框持续匀速绕圈旋转。",
+    enPrompt: "Please help me implement a web motion: Border Beam Animation. Create an animated gradient ray that travels continuously along the container's border using conic-gradient or offset-path.",
+    render: (container) => {
+      container.innerHTML = `
+        <div class="sandbox-beam-container">
+          <div class="sandbox-beam-card" id="beamCard">
+            <div class="sandbox-beam-ray"></div>
+            <div class="sandbox-beam-content">
+              <div class="sandbox-beam-badge">PRO EDITION</div>
+              <h2>Autonomous Neural Core</h2>
+              <p>采用下一代超线程异步计算流，全天候监听并自动优化应用吞吐量与渲染帧率。</p>
+              <div class="sandbox-beam-stats">
+                <div><span class="stat-num">99.99%</span><span class="stat-lbl">Uptime SLA</span></div>
+                <div><span class="stat-num">&lt; 1.2ms</span><span class="stat-lbl">Global Latency</span></div>
+                <div><span class="stat-num">120 FPS</span><span class="stat-lbl">Fluid Motion</span></div>
+              </div>
+              <button class="sandbox-beam-btn" type="button">Deploy Node</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+  },
+  {
+    id: "animated-flow-beams",
+    zhName: "流程连线脉冲光波",
+    enName: "Animated Flow Beams",
+    category: "进入",
+    description: "AI 工作流与系统拓扑图神器。在多个 UI 节点间以贝塞尔曲线相连，发光的脉冲粒子沿着线条持续流动传输。",
+    enDescription: "AI workflow visual. Glowing pulse particles continuously travel along SVG bezier paths between nodes.",
+    prompt: "请帮我实现一个网页动效：流程连线脉冲光波（Animated Flow Beams）。在多个节点之间绘制 SVG 平滑贝塞尔曲线，利用 stroke-dasharray 和 stroke-dashoffset 制作连续向前流动的发光能量脉冲粒子，模拟数据流动。",
+    enPrompt: "Please help me implement a web motion: Animated Flow Beams. Draw SVG bezier paths between UI nodes and animate glowing pulse waves flowing along the paths.",
+    render: (container) => {
+      container.innerHTML = `
+        <div class="sandbox-flow-container">
+          <div class="flow-dag-stage">
+            <!-- Left Input Nodes -->
+            <div class="flow-col flow-inputs">
+              <div class="flow-node" id="nodeUser"><span class="flow-icon">👤</span><span class="flow-txt">User Prompt</span></div>
+              <div class="flow-node" id="nodeDocs"><span class="flow-icon">📚</span><span class="flow-txt">API Docs</span></div>
+              <div class="flow-node" id="nodeRepo"><span class="flow-icon">📦</span><span class="flow-txt">Codebase</span></div>
+            </div>
+
+            <!-- Center Core -->
+            <div class="flow-col flow-center">
+              <div class="flow-hub-core" id="nodeCore">
+                <div class="hub-pulse-ring"></div>
+                <div class="hub-icon">⚡</div>
+                <div class="hub-title">Agentic Engine</div>
+              </div>
+            </div>
+
+            <!-- Right Output Nodes -->
+            <div class="flow-col flow-outputs">
+              <div class="flow-node" id="nodeGen"><span class="flow-icon">🚀</span><span class="flow-txt">Auto Code</span></div>
+              <div class="flow-node" id="nodeTest"><span class="flow-icon">🧪</span><span class="flow-txt">CI Verify</span></div>
+              <div class="flow-node" id="nodePR"><span class="flow-icon">✨</span><span class="flow-txt">GitHub PR</span></div>
+            </div>
+
+            <!-- SVG Connecting Lines -->
+            <svg class="flow-svg-canvas" id="flowSvg"></svg>
+          </div>
+        </div>
+      `;
+
+      const svg = container.querySelector("#flowSvg");
+      const drawBeams = () => {
+        const stage = container.querySelector(".flow-dag-stage");
+        if (!stage || !svg) return;
+        const sRect = stage.getBoundingClientRect();
+        svg.setAttribute("viewBox", `0 0 ${sRect.width} ${sRect.height}`);
+
+        const core = container.querySelector("#nodeCore").getBoundingClientRect();
+        const coreX = core.left - sRect.left + core.width / 2;
+        const coreY = core.top - sRect.top + core.height / 2;
+
+        const inputs = [container.querySelector("#nodeUser"), container.querySelector("#nodeDocs"), container.querySelector("#nodeRepo")];
+        const outputs = [container.querySelector("#nodeGen"), container.querySelector("#nodeTest"), container.querySelector("#nodePR")];
+
+        let pathsHtml = "";
+
+        // Inputs to Core
+        inputs.forEach((inp, idx) => {
+          const r = inp.getBoundingClientRect();
+          const startX = r.right - sRect.left;
+          const startY = r.top - sRect.top + r.height / 2;
+          const cpx1 = startX + (coreX - startX) * 0.5;
+          const cpx2 = startX + (coreX - startX) * 0.5;
+          const d = `M ${startX} ${startY} C ${cpx1} ${startY}, ${cpx2} ${coreY}, ${coreX - 40} ${coreY}`;
+          pathsHtml += `
+            <path class="beam-base-track" d="${d}" />
+            <path class="beam-flow-pulse" d="${d}" style="animation-delay: ${idx * 0.4}s;" />
+          `;
+        });
+
+        // Core to Outputs
+        outputs.forEach((out, idx) => {
+          const r = out.getBoundingClientRect();
+          const endX = r.left - sRect.left;
+          const endY = r.top - sRect.top + r.height / 2;
+          const cpx1 = coreX + (endX - coreX) * 0.5;
+          const cpx2 = coreX + (endX - coreX) * 0.5;
+          const d = `M ${coreX + 40} ${coreY} C ${cpx1} ${coreY}, ${cpx2} ${endY}, ${endX} ${endY}`;
+          pathsHtml += `
+            <path class="beam-base-track" d="${d}" />
+            <path class="beam-flow-pulse" d="${d}" style="animation-delay: ${(idx + 3) * 0.35}s;" />
+          `;
+        });
+
+        svg.innerHTML = pathsHtml;
+      };
+
+      setTimeout(drawBeams, 50);
+      window.addEventListener("resize", drawBeams);
+      container.addEventListener("cleanup", () => {
+        window.removeEventListener("resize", drawBeams);
+      });
+    }
+  },
+  {
+    id: "text-scramble",
+    zhName: "黑客密码解密文本",
+    enName: "Text Scramble Decrypt",
+    category: "反馈",
+    description: "Cyberpunk 风格文本动效。加载或悬停时字符像矩阵密码一样高速随机滚动，随后逐字解密定格为真实文案。",
+    enDescription: "Cyberpunk text decoding. Characters cycle through random cipher glyphs before locking into words.",
+    prompt: "请帮我实现一个网页动效：黑客密码解密文本（Text Scramble Decrypt）。当触发时，通过 JavaScript 高频替换文字中的字符为随机特殊符号（如 !<>-_\\/[]{}—=+*^?#_），随后由左至右逐字收敛锁定为原始文本。",
+    enPrompt: "Please help me implement a web motion: Text Scramble Decrypt. Rapidly randomize characters with cipher glyphs and progressively resolve them left-to-right to the final text.",
+    render: (container) => {
+      container.innerHTML = `
+        <div class="sandbox-scramble-wrap">
+          <div class="scramble-matrix-tag">STATUS: ENCRYPTED // TERMINAL_V2</div>
+          <h1 class="scramble-headline" id="scrambleTarget">INITIALIZING PROTOCOL</h1>
+          <div class="scramble-subtext" id="scrambleSub">SECURE_HANDSHAKE_COMPLETED</div>
+          <div class="scramble-controls">
+            <button class="btn-scramble-trigger" id="btnScrambleTrigger" type="button">
+              <span>↻ 重新解密 (Scramble)</span>
+            </button>
+            <div class="scramble-presets">
+              <button class="preset-chip" data-phrase="QUANTUM COMPUTATION ACTIVE">Quantum</button>
+              <button class="preset-chip" data-phrase="NEURAL INTERFACE LINKED">Neural</button>
+              <button class="preset-chip" data-phrase="CYBERNETIC ARCHITECTURE">Cyber</button>
+            </div>
+          </div>
+        </div>
+      `;
+
+      const chars = "!<>-_\\/[]{}—=+*^?#________0123456789";
+      let intervalId = null;
+
+      function scrambleText(element, targetText, duration = 1200) {
+        if (intervalId) clearInterval(intervalId);
+        const startTime = Date.now();
+        const length = targetText.length;
+
+        intervalId = setInterval(() => {
+          const elapsed = Date.now() - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const resolvedCount = Math.floor(progress * length);
+
+          let output = "";
+          for (let i = 0; i < length; i++) {
+            if (targetText[i] === " ") {
+              output += " ";
+            } else if (i < resolvedCount) {
+              output += targetText[i];
+            } else {
+              output += chars[Math.floor(Math.random() * chars.length)];
+            }
+          }
+
+          element.textContent = output;
+
+          if (progress >= 1) {
+            clearInterval(intervalId);
+            element.textContent = targetText;
+          }
+        }, 35);
+      }
+
+      const targetEl = container.querySelector("#scrambleTarget");
+      const triggerBtn = container.querySelector("#btnScrambleTrigger");
+      const chips = container.querySelectorAll(".preset-chip");
+
+      let currentPhrase = "INITIALIZING PROTOCOL";
+      scrambleText(targetEl, currentPhrase);
+
+      triggerBtn.addEventListener("click", () => {
+        scrambleText(targetEl, currentPhrase);
+      });
+
+      chips.forEach(chip => {
+        chip.addEventListener("click", () => {
+          currentPhrase = chip.dataset.phrase;
+          scrambleText(targetEl, currentPhrase);
+        });
+      });
+
+      container.addEventListener("cleanup", () => {
+        if (intervalId) clearInterval(intervalId);
+      });
+    }
+  },
+  {
+    id: "dynamic-island",
+    zhName: "灵动岛悬浮胶囊",
+    enName: "Dynamic Island Morph",
+    category: "反馈",
+    description: "苹果灵动岛多态交互。极简黑色小药丸，点击时以平滑弹性阻尼物理曲线变形展开为音乐面板、通话或通知卡片。",
+    enDescription: "Apple Dynamic Island interaction. Compact capsule morphs smoothly into music player or notification cards with spring physics.",
+    prompt: "请帮我实现一个网页动效：灵动岛悬浮胶囊（Dynamic Island Morph）。顶部居中的黑色胶囊卡片，支持 Compact、Music、Alert 多种状态切换，展开与收起时带有自然的弹性阻尼贝塞尔过渡，内容元素平滑淡入交替。",
+    enPrompt: "Please help me implement a web motion: Dynamic Island Morph. Morph a centered black pill into expanded music/alert cards using spring-like cubic-bezier physics.",
+    render: (container) => {
+      container.innerHTML = `
+        <div class="sandbox-island-stage">
+          <!-- Island Capsule -->
+          <div class="island-chassis state-compact" id="islandChassis">
+            <!-- Compact Mode Content -->
+            <div class="island-view island-compact-view">
+              <div class="island-camera-dot"></div>
+              <div class="island-compact-music">
+                <span class="island-wave-bar"></span>
+                <span class="island-wave-bar"></span>
+                <span class="island-wave-bar"></span>
+              </div>
+            </div>
+
+            <!-- Music Mode Content -->
+            <div class="island-view island-music-view">
+              <div class="island-album-art">🎵</div>
+              <div class="island-music-meta">
+                <div class="music-title">Starboy (Liquid Mix)</div>
+                <div class="music-artist">The Weeknd & Daft Punk</div>
+                <div class="music-progress-bar"><div class="music-progress-fill"></div></div>
+              </div>
+              <div class="island-music-wave">
+                <span></span><span></span><span></span><span></span>
+              </div>
+            </div>
+
+            <!-- Call Mode Content -->
+            <div class="island-view island-call-view">
+              <div class="island-avatar">👩‍💻</div>
+              <div class="island-call-info">
+                <div class="caller-name">Sarah Connor</div>
+                <div class="call-status">Cyberdyne Incoming...</div>
+              </div>
+              <div class="island-call-actions">
+                <button class="btn-call-decline" type="button">✕</button>
+                <button class="btn-call-accept" type="button">✓</button>
+              </div>
+            </div>
+
+            <!-- Timer Mode Content -->
+            <div class="island-view island-timer-view">
+              <div class="timer-pie">⏱️</div>
+              <div class="timer-digits">14:59</div>
+              <div class="timer-tag">Deep Work</div>
+            </div>
+          </div>
+
+          <!-- Mode Switches -->
+          <div class="island-controller">
+            <button class="btn-island-mode active" data-state="state-compact">Compact</button>
+            <button class="btn-island-mode" data-state="state-music">Now Playing</button>
+            <button class="btn-island-mode" data-state="state-call">Incoming Call</button>
+            <button class="btn-island-mode" data-state="state-timer">Timer</button>
+          </div>
+          <div class="island-hint">点击上方按钮或胶囊本身体验 iOS 弹性形变</div>
+        </div>
+      `;
+
+      const chassis = container.querySelector("#islandChassis");
+      const modeBtns = container.querySelectorAll(".btn-island-mode");
+      const states = ["state-compact", "state-music", "state-call", "state-timer"];
+
+      const setIslandState = (st) => {
+        states.forEach(s => chassis.classList.remove(s));
+        chassis.classList.add(st);
+        modeBtns.forEach(btn => {
+          btn.classList.toggle("active", btn.dataset.state === st);
+        });
+      };
+
+      modeBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+          setIslandState(btn.dataset.state);
+        });
+      });
+
+      chassis.addEventListener("click", () => {
+        const curIdx = states.findIndex(s => chassis.classList.contains(s));
+        const nextIdx = (curIdx + 1) % states.length;
+        setIslandState(states[nextIdx]);
+      });
+    }
+  },
+  {
+    id: "macos-dock",
+    zhName: "拟物鱼眼缩放 Dock",
+    enName: "macOS Fisheye Dock",
+    category: "悬停",
+    description: "经典桌面 Dock 拟物栏。鼠标在底部滑动时，图标根据与光标的距离呈现非线性的高斯鱼眼放大与浮动回弹。",
+    enDescription: "Classic macOS dock. Icons scale up based on a cosine/gaussian distance curve as the cursor glides across.",
+    prompt: "请帮我实现一个网页动效：macOS 拟物鱼眼缩放 Dock 栏（macOS Fisheye Dock）。在底部固定悬浮的图标栏中监听 mousemove，根据光标与各个图标中心的水平距离计算高斯/余弦缩放系数，使光标周围图标产生连贯的鱼眼放大波浪。",
+    enPrompt: "Please help me implement a web motion: macOS Fisheye Dock. Scale dock icons smoothly based on cursor proximity using a gaussian distance function.",
+    render: (container) => {
+      const icons = [
+        { label: "Finder", emoji: "📁", bg: "linear-gradient(135deg, #38bdf8, #2563eb)" },
+        { label: "Safari", emoji: "🧭", bg: "linear-gradient(135deg, #60a5fa, #1d4ed8)" },
+        { label: "Messages", emoji: "💬", bg: "linear-gradient(135deg, #4ade80, #16a34a)" },
+        { label: "Mail", emoji: "✉️", bg: "linear-gradient(135deg, #38bdf8, #0284c7)" },
+        { label: "Photos", emoji: "🌸", bg: "linear-gradient(135deg, #f472b6, #db2777)" },
+        { label: "Terminal", emoji: "⚡", bg: "linear-gradient(135deg, #1e293b, #0f172a)" },
+        { label: "Code", emoji: "💻", bg: "linear-gradient(135deg, #818cf8, #4f46e5)" },
+        { label: "Settings", emoji: "⚙️", bg: "linear-gradient(135deg, #94a3b8, #64748b)" }
+      ];
+
+      const iconsHtml = icons.map(ic => `
+        <div class="dock-app-item" data-title="${ic.label}">
+          <div class="dock-app-icon" style="background: ${ic.bg};">${ic.emoji}</div>
+          <div class="dock-tooltip">${ic.label}</div>
+          <div class="dock-app-dot"></div>
+        </div>
+      `).join("");
+
+      container.innerHTML = `
+        <div class="sandbox-dock-stage">
+          <div class="dock-scene-title">MACOS SEQUOIA DOCK</div>
+          <div class="dock-bar-glass" id="dockBar">
+            ${iconsHtml}
+          </div>
+        </div>
+      `;
+
+      const dock = container.querySelector("#dockBar");
+      const items = container.querySelectorAll(".dock-app-item");
+      const baseWidth = 52;
+      const maxScale = 1.85;
+      const maxDist = 140;
+
+      const handleDockMove = (e) => {
+        const mouseX = e.clientX;
+        items.forEach(item => {
+          const rect = item.getBoundingClientRect();
+          const itemCenterX = rect.left + rect.width / 2;
+          const dist = Math.abs(mouseX - itemCenterX);
+
+          if (dist < maxDist) {
+            const scale = 1 + (maxScale - 1) * Math.cos((dist / maxDist) * (Math.PI / 2));
+            item.style.width = `${baseWidth * scale}px`;
+            item.style.height = `${baseWidth * scale}px`;
+          } else {
+            item.style.width = `${baseWidth}px`;
+            item.style.height = `${baseWidth}px`;
+          }
+        });
+      };
+
+      const handleDockLeave = () => {
+        items.forEach(item => {
+          item.style.width = `${baseWidth}px`;
+          item.style.height = `${baseWidth}px`;
+        });
+      };
+
+      items.forEach(item => {
+        item.addEventListener("click", () => {
+          item.classList.add("dock-bouncing");
+          setTimeout(() => item.classList.remove("dock-bouncing"), 1000);
+        });
+      });
+
+      dock.addEventListener("mousemove", handleDockMove);
+      dock.addEventListener("mouseleave", handleDockLeave);
+
+      container.addEventListener("cleanup", () => {
+        dock.removeEventListener("mousemove", handleDockMove);
+        dock.removeEventListener("mouseleave", handleDockLeave);
+      });
+    }
+  },
+  {
+    id: "card-stack-swipe",
+    zhName: "层叠卡片手势抽卡",
+    enName: "Stack Card Swipe",
+    category: "布局",
+    description: "Apple Wallet / 探探风格层叠卡片。支持点击或拖拽将顶层卡片飞出，底层卡片平滑缩放补位上升。",
+    enDescription: "Layered card stack. Flick the top card away while background cards scale up and take its place.",
+    prompt: "请帮我实现一个网页动效：层叠卡片手势抽卡（Stack Card Swipe）。多张卡片以 z-index 和 translateY/scale 叠加放置，用户点击或拖拽最上层卡片使其带有旋转飞出视口，后续卡片平滑放大升入顶层，支持无限循环抽取。",
+    enPrompt: "Please help me implement a web motion: Stack Card Swipe. Stack layered cards and animate top cards flying away on click/swipe while lower cards scale up seamlessly.",
+    render: (container) => {
+      const cardsData = [
+        { id: 1, title: "Design Systems", sub: "Token Architecture & Components", icon: "🎨", color: "#3b82f6" },
+        { id: 2, title: "Kinetic Motion", sub: "Spring Physics & Cubic Bezier", icon: "⚡", color: "#8b5cf6" },
+        { id: 3, title: "Web Performance", sub: "60 FPS GPU Acceleration", icon: "🚀", color: "#10b981" },
+        { id: 4, title: "Autonomous AI", sub: "Multi-Agent Orchestration", icon: "✨", color: "#f59e0b" }
+      ];
+
+      container.innerHTML = `
+        <div class="sandbox-stack-stage">
+          <div class="stack-deck-container" id="stackDeck"></div>
+          <div class="stack-controls">
+            <button class="btn-stack-action" id="btnStackFlick">Swipe Next Card ➔</button>
+          </div>
+        </div>
+      `;
+
+      const deck = container.querySelector("#stackDeck");
+      let cardList = [...cardsData];
+
+      const renderDeck = () => {
+        deck.innerHTML = "";
+        cardList.forEach((card, index) => {
+          const el = document.createElement("div");
+          el.className = `deck-card-layer layer-${index}`;
+          el.style.zIndex = `${cardList.length - index}`;
+          el.style.setProperty("--layer-offset", `${index}`);
+          el.style.borderTop = `4px solid ${card.color}`;
+          el.innerHTML = `
+            <div class="deck-card-icon">${card.icon}</div>
+            <div class="deck-card-title">${card.title}</div>
+            <div class="deck-card-sub">${card.sub}</div>
+            <div class="deck-card-num">0${card.id} // 04</div>
+          `;
+          deck.appendChild(el);
+        });
+      };
+
+      const flickTopCard = () => {
+        const topCard = deck.querySelector(".deck-card-layer.layer-0");
+        if (!topCard || topCard.classList.contains("flicking")) return;
+        topCard.classList.add("flicking");
+        setTimeout(() => {
+          const removed = cardList.shift();
+          cardList.push(removed);
+          renderDeck();
+        }, 400);
+      };
+
+      renderDeck();
+      const flickBtn = container.querySelector("#btnStackFlick");
+      flickBtn.addEventListener("click", flickTopCard);
+      deck.addEventListener("click", flickTopCard);
+    }
+  },
+  {
+    id: "spring-drawer",
+    zhName: "弹性手势阻尼抽屉",
+    enName: "Spring Sheet Drawer",
+    category: "反馈",
+    description: "现代 App 级底部/侧边抽屉。支持触摸拖拽、阻尼滑动与手势速率感应，松手自动依附或回弹关闭。",
+    enDescription: "Native-like bottom drawer. Supports smooth drag gestures, spring damping, and swipe-to-dismiss.",
+    prompt: "请帮我实现一个网页动效：弹性手势阻尼抽屉（Spring Sheet Drawer）。实现一个底部弹出的模态抽屉，支持手指/鼠标拖拽顶部 Handle 控制高度，带有越界阻尼感，松手根据滑动距离与速度决定贴靠展开或回弹收起。",
+    enPrompt: "Please help me implement a web motion: Spring Sheet Drawer. Build a bottom drawer with drag gestures, rubber-band resistance, and smooth snap points.",
+    render: (container) => {
+      container.innerHTML = `
+        <div class="sandbox-drawer-stage">
+          <div class="drawer-trigger-center">
+            <button class="btn-drawer-open" id="btnDrawerOpen">Open Interactive Drawer</button>
+          </div>
+
+          <!-- Modal Backdrop -->
+          <div class="drawer-backdrop" id="drawerBackdrop"></div>
+
+          <!-- Bottom Sheet Container -->
+          <div class="drawer-sheet" id="drawerSheet">
+            <div class="drawer-drag-pill" id="drawerHandle"></div>
+            <div class="drawer-sheet-body">
+              <div class="drawer-sheet-header">
+                <h3>System Configuration</h3>
+                <span class="drawer-badge">Active Session</span>
+              </div>
+              <div class="drawer-options-list">
+                <div class="drawer-row"><span>GPU Hardware Acceleration</span><input type="checkbox" checked /></div>
+                <div class="drawer-row"><span>Reduced Motion Overrides</span><input type="checkbox" /></div>
+                <div class="drawer-row"><span>Audio Feedback Haptics</span><input type="checkbox" checked /></div>
+                <div class="drawer-row"><span>High Contrast Borders</span><input type="checkbox" /></div>
+              </div>
+              <button class="btn-drawer-done" id="btnDrawerDone">Confirm Settings</button>
+            </div>
+          </div>
+        </div>
+      `;
+
+      const sheet = container.querySelector("#drawerSheet");
+      const backdrop = container.querySelector("#drawerBackdrop");
+      const openBtn = container.querySelector("#btnDrawerOpen");
+      const doneBtn = container.querySelector("#btnDrawerDone");
+
+      const openDrawer = () => {
+        sheet.classList.add("open");
+        backdrop.classList.add("open");
+      };
+
+      const closeDrawer = () => {
+        sheet.classList.remove("open");
+        backdrop.classList.remove("open");
+      };
+
+      openBtn.addEventListener("click", openDrawer);
+      backdrop.addEventListener("click", closeDrawer);
+      doneBtn.addEventListener("click", closeDrawer);
+    }
+  },
+  {
+    id: "confetti-explosion",
+    zhName: "物理重力礼花爆炸",
+    enName: "Confetti Explosion Burst",
+    category: "反馈",
+    description: "成就与支付成功必备。点击瞬间从中心喷射出五彩缤纷的纸屑颗粒，并在重力、阻力与旋转模拟下优雅下落散开。",
+    enDescription: "Celebratory confetti blast. Spawns colorful particle fragments on click governed by gravity and air drag physics.",
+    prompt: "请帮我实现一个网页动效：物理重力礼花爆炸（Confetti Explosion Burst）。使用 HTML5 Canvas 在按钮点击瞬间生成 100+ 随机颜色、形状、初始速度与角度的粒子，通过物理公式模拟重力加速度、风阻与 3D 自转，形成真实的礼花漫天飞散效果。",
+    enPrompt: "Please help me implement a web motion: Confetti Explosion. Spawn Canvas confetti particles on click with physics velocity, gravity, and 3D rotation.",
+    render: (container) => {
+      container.innerHTML = `
+        <div class="sandbox-confetti-stage">
+          <canvas class="confetti-canvas" id="confettiCanvas"></canvas>
+          <div class="confetti-center-ui">
+            <h1 class="confetti-title">ACHIEVEMENT UNLOCKED</h1>
+            <p class="confetti-sub">点击下方按钮触发全屏重力粒子物理礼花</p>
+            <button class="btn-confetti-hero" id="btnConfettiHero">
+              <span class="hero-confetti-icon">🎉</span>
+              <span>Launch Celebration!</span>
+            </button>
+          </div>
+        </div>
+      `;
+
+      const canvas = container.querySelector("#confettiCanvas");
+      const ctx = canvas.getContext("2d");
+      let particles = [];
+      let animId = null;
+
+      const resizeCanvas = () => {
+        canvas.width = container.clientWidth;
+        canvas.height = container.clientHeight;
+      };
+      resizeCanvas();
+      window.addEventListener("resize", resizeCanvas);
+
+      const colors = ["#3b82f6", "#10b981", "#f59e0b", "#ec4899", "#8b5cf6", "#38bdf8", "#fbbf24"];
+
+      class Particle {
+        constructor(x, y) {
+          this.x = x;
+          this.y = y;
+          const angle = Math.random() * Math.PI * 2;
+          const speed = Math.random() * 16 + 6;
+          this.vx = Math.cos(angle) * speed;
+          this.vy = Math.sin(angle) * speed - 6;
+          this.gravity = 0.35;
+          this.drag = 0.95;
+          this.rotation = Math.random() * 360;
+          this.rotSpeed = (Math.random() - 0.5) * 12;
+          this.color = colors[Math.floor(Math.random() * colors.length)];
+          this.size = Math.random() * 8 + 5;
+          this.life = 1;
+          this.decay = Math.random() * 0.012 + 0.008;
+        }
+
+        update() {
+          this.vx *= this.drag;
+          this.vy = (this.vy + this.gravity) * this.drag;
+          this.x += this.vx;
+          this.y += this.vy;
+          this.rotation += this.rotSpeed;
+          this.life -= this.decay;
+        }
+
+        draw(ctx) {
+          ctx.save();
+          ctx.translate(this.x, this.y);
+          ctx.rotate((this.rotation * Math.PI) / 180);
+          ctx.globalAlpha = Math.max(this.life, 0);
+          ctx.fillStyle = this.color;
+          ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size * 0.6);
+          ctx.restore();
+        }
+      }
+
+      const explode = (originX, originY) => {
+        for (let i = 0; i < 140; i++) {
+          particles.push(new Particle(originX, originY));
+        }
+      };
+
+      const loop = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles = particles.filter(p => p.life > 0);
+        particles.forEach(p => {
+          p.update();
+          p.draw(ctx);
+        });
+        animId = requestAnimationFrame(loop);
+      };
+      loop();
+
+      const btn = container.querySelector("#btnConfettiHero");
+      btn.addEventListener("click", (e) => {
+        const rect = btn.getBoundingClientRect();
+        const cRect = container.getBoundingClientRect();
+        explode(rect.left - cRect.left + rect.width / 2, rect.top - cRect.top + rect.height / 2);
+      });
+
+      container.addEventListener("cleanup", () => {
+        if (animId) cancelAnimationFrame(animId);
+        window.removeEventListener("resize", resizeCanvas);
+      });
+    }
+  },
+  {
+    id: "magnetic-glow-button",
+    zhName: "磁吸吸附光晕按钮",
+    enName: "Magnetic Glow Button",
+    category: "悬停",
+    description: "Awwwards 级高级按钮。光标靠近时按钮主动朝光标方向位移吸附，内部伴随光晕扩散与触感粘滞。",
+    enDescription: "Award-winning button. Button magnetically pulls toward the cursor with shifting internal ambient glow.",
+    prompt: "请帮我实现一个网页动效：磁吸吸附光晕按钮（Magnetic Glow Button）。计算光标与按钮中心的距离向量，在感应半径内对按钮应用 translate 磁吸吸附偏移，并在按钮内部渲染跟随光标角度的光晕扩散图层，移出时光滑弹回原位。",
+    enPrompt: "Please help me implement a web motion: Magnetic Glow Button. Apply magnetic translation toward the cursor within a threshold radius, combined with an internal moving glow layer.",
+    render: (container) => {
+      container.innerHTML = `
+        <div class="sandbox-mag-stage">
+          <div class="mag-btn-wrapper" id="magWrapper">
+            <button class="mag-hero-button" id="magBtn">
+              <div class="mag-glow-ambient" id="magGlow"></div>
+              <span class="mag-btn-text">Explore Galaxies</span>
+              <svg class="mag-arrow" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+            </button>
+          </div>
+          <div class="mag-stage-hint">将鼠标靠近按钮（140px 磁吸阈值）感受物理引力</div>
+        </div>
+      `;
+
+      const wrapper = container.querySelector("#magWrapper");
+      const btn = container.querySelector("#magBtn");
+      const glow = container.querySelector("#magGlow");
+
+      const handleMagMove = (e) => {
+        const rect = btn.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        const dx = e.clientX - centerX;
+        const dy = e.clientY - centerY;
+        const dist = Math.hypot(dx, dy);
+        const maxThreshold = 150;
+
+        if (dist < maxThreshold) {
+          const power = (1 - dist / maxThreshold);
+          const moveX = dx * power * 0.35;
+          const moveY = dy * power * 0.35;
+          btn.style.transform = `translate(${moveX}px, ${moveY}px) scale(1.05)`;
+          glow.style.opacity = "1";
+          glow.style.transform = `translate(${dx * 0.5}px, ${dy * 0.5}px)`;
+        } else {
+          btn.style.transform = "translate(0px, 0px) scale(1)";
+          glow.style.opacity = "0.3";
+          glow.style.transform = "translate(0px, 0px)";
+        }
+      };
+
+      window.addEventListener("mousemove", handleMagMove);
+      container.addEventListener("cleanup", () => {
+        window.removeEventListener("mousemove", handleMagMove);
+      });
+    }
+  },
+  {
+    id: "metallic-shimmer-text",
+    zhName: "金属光泽扫光文字",
+    enName: "Metallic Shimmer Text",
+    category: "进入",
+    description: "苹果发布会级标题质感。高精度金属质感渐变在深色文字上缓缓扫过，散发奢华流光溢彩的工业设计美感。",
+    enDescription: "Apple Keynote title aesthetic. A metallic specular sheen sweeps smoothly across high-contrast typography.",
+    prompt: "请帮我实现一个网页动效：金属光泽扫光文字（Metallic Shimmer Text）。使用 background-clip: text 和多段高对比金属渐变（Silver/Gold），配合 keyframes 沿 45 度对角线平滑平移 background-position，创造出奢华的金属光影流淌效果。",
+    enPrompt: "Please help me implement a web motion: Metallic Shimmer Text. Animate high-contrast linear gradient reflections across text using background-clip: text.",
+    render: (container) => {
+      container.innerHTML = `
+        <div class="sandbox-shimmer-stage">
+          <div class="shimmer-hero-wrap">
+            <div class="shimmer-kicker">APPLE SILICON ARCHITECTURE</div>
+            <h1 class="shimmer-monumental-text" id="shimmerHeadline">TITANIUM PRO</h1>
+            <p class="shimmer-subhead">Aerospace-grade precision engineered for ultimate computing speed.</p>
+          </div>
+          <div class="shimmer-palette-bar">
+            <button class="palette-chip active" data-palette="titanium">Titanium</button>
+            <button class="palette-chip" data-palette="gold">Solar Gold</button>
+            <button class="palette-chip" data-palette="emerald">Cyber Emerald</button>
+          </div>
+        </div>
+      `;
+
+      const headline = container.querySelector("#shimmerHeadline");
+      const chips = container.querySelectorAll(".palette-chip");
+
+      chips.forEach(chip => {
+        chip.addEventListener("click", () => {
+          chips.forEach(c => c.classList.remove("active"));
+          chip.classList.add("active");
+          headline.className = `shimmer-monumental-text theme-${chip.dataset.palette}`;
+        });
+      });
+    }
+  },
+  {
+    id: "rolling-number-odometer",
+    zhName: "机械滚轮数字翻牌器",
+    enName: "Rolling Number Odometer",
+    category: "反馈",
+    description: "老虎机与机械仪表盘质感。数值变动时，每位数字像滚轮一样纵向旋转翻滚过渡，数字感与仪式感拉满。",
+    enDescription: "Mechanical slot-machine counter. Each digit rolls vertically along an internal column with staggered easing.",
+    prompt: "请帮我实现一个网页动效：机械滚轮数字翻牌器（Rolling Number Odometer）。将多位数字拆分为独立的竖向列，每列包含 0-9 数字序列，当数值更新时通过 translateY 平滑滚动至目标数字，配合各列错开的 transition-delay 营造机械翻牌效果。",
+    enPrompt: "Please help me implement a web motion: Rolling Number Odometer. Build vertical columns containing 0-9 digits and animate their translateY offsets with staggered delays.",
+    render: (container) => {
+      container.innerHTML = `
+        <div class="sandbox-odometer-stage">
+          <div class="odometer-card">
+            <div class="odometer-header">
+              <span class="odo-title">TOTAL REVENUE (USD)</span>
+              <span class="odo-live-pill">● LIVE LEDGER</span>
+            </div>
+            <div class="odometer-display" id="odometerDisplay">
+              <span class="odo-currency">$</span>
+              <div class="odo-digits-rack" id="digitsRack"></div>
+            </div>
+            <div class="odometer-actions">
+              <button class="btn-odo-action" id="btnOdoAdd">+ $12,450</button>
+              <button class="btn-odo-action" id="btnOdoRandom">Randomize</button>
+            </div>
+          </div>
+        </div>
+      `;
+
+      let currentVal = 8492350;
+      const rack = container.querySelector("#digitsRack");
+
+      const updateOdometer = (num) => {
+        const formatted = num.toLocaleString("en-US");
+        rack.innerHTML = "";
+
+        formatted.split("").forEach((char, idx) => {
+          if (char === ",") {
+            const sep = document.createElement("span");
+            sep.className = "odo-separator";
+            sep.textContent = ",";
+            rack.appendChild(sep);
+          } else {
+            const col = document.createElement("div");
+            col.className = "odo-digit-column";
+            col.style.transitionDelay = `${idx * 0.05}s`;
+            const digitNum = parseInt(char, 10);
+            col.innerHTML = `
+              <div class="odo-digit-strip" style="transform: translateY(-${digitNum * 10}%);">
+                <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span>
+              </div>
+            `;
+            rack.appendChild(col);
+          }
+        });
+      };
+
+      updateOdometer(currentVal);
+
+      container.querySelector("#btnOdoAdd").addEventListener("click", () => {
+        currentVal += 12450;
+        updateOdometer(currentVal);
+      });
+
+      container.querySelector("#btnOdoRandom").addEventListener("click", () => {
+        currentVal = Math.floor(Math.random() * 9000000) + 1000000;
+        updateOdometer(currentVal);
+      });
+    }
+  },
+  {
+    id: "bento-grid-stagger",
+    zhName: "便当网格交错入场",
+    enName: "Bento Grid Stagger",
+    category: "布局",
+    description: "Apple / Linear 标志性非对称 Bento 排版。滚动进入视口时按权重与空间顺序交错弹入，并自带微光扫过。",
+    enDescription: "Apple/Linear Bento layout. Asymmetrical grid cells pop in sequentially with staggered delays and border glints.",
+    prompt: "请帮我实现一个网页动效：便当网格交错入场（Bento Grid Stagger）。使用 CSS Grid 创建 2x2 与多跨度的非对称 Bento 结构，当网格进入视口时，子卡片按照空间顺序以 cubic-bezier(0.16, 1, 0.3, 1) 错峰放大淡入，并伴随边框高光。",
+    enPrompt: "Please help me implement a web motion: Bento Grid Stagger. Construct an asymmetric CSS Grid Bento box and animate card reveals with staggered timing.",
+    render: (container) => {
+      container.innerHTML = `
+        <div class="sandbox-bento-stage">
+          <div class="bento-stage-header">
+            <h2 class="bento-stage-title">ECOSYSTEM PLATFORM</h2>
+            <button class="btn-bento-replay" id="btnBentoReplay">↻ Re-trigger Stagger</button>
+          </div>
+          <div class="bento-grid-wrapper" id="bentoGrid">
+            <div class="bento-cell cell-1" style="--stagger-idx: 0">
+              <div class="bento-badge">Real-Time</div>
+              <h3>Telemetry Streaming</h3>
+              <p>50,000 req/sec zero-latency ingestion pipeline.</p>
+              <div class="bento-graph-mock">
+                <div class="mock-bar b1"></div><div class="mock-bar b2"></div><div class="mock-bar b3"></div><div class="mock-bar b4"></div>
+              </div>
+            </div>
+            <div class="bento-cell cell-2" style="--stagger-idx: 1">
+              <div class="bento-badge">Edge</div>
+              <h3>Global Mesh</h3>
+              <p>280+ POP edge locations world-wide.</p>
+            </div>
+            <div class="bento-cell cell-3" style="--stagger-idx: 2">
+              <div class="bento-badge">Security</div>
+              <h3>Zero-Knowledge HSM</h3>
+              <p>Hardware-level cryptographic authentication.</p>
+            </div>
+            <div class="bento-cell cell-4" style="--stagger-idx: 3">
+              <div class="bento-badge">AI Synthesis</div>
+              <h3>Predictive Cache</h3>
+              <p>Pre-renders dynamic UI states before user click.</p>
+            </div>
+          </div>
+        </div>
+      `;
+
+      const grid = container.querySelector("#bentoGrid");
+      const replayBtn = container.querySelector("#btnBentoReplay");
+
+      const replayStagger = () => {
+        grid.classList.remove("play-stagger");
+        void grid.offsetWidth;
+        grid.classList.add("play-stagger");
+      };
+
+      setTimeout(replayStagger, 50);
+      replayBtn.addEventListener("click", replayStagger);
+    }
+  },
+  {
+    id: "scroll-drawn-svg",
+    zhName: "滚动手绘线条勾勒",
+    enName: "Scroll-Drawn SVG Path",
+    category: "滚动",
+    description: "Stripe 首页同款叙事。页面向下滚动时，复杂的矢量线条与产品架构轮廓依照绝对滚动百分比精准手绘呈现。",
+    enDescription: "Stripe-style scroll storytelling. SVG paths trace out dynamically in lockstep with page scroll depth.",
+    prompt: "请帮我实现一个网页动效：滚动手绘线条勾勒（Scroll-Drawn SVG Path）。测量 SVG path 的 getTotalLength()，初始化 stroke-dasharray 和 stroke-dashoffset 为全长，监听窗口滚动进度，将滚动百分比实时映射到 dashoffset 实现手绘画线效果。",
+    enPrompt: "Please help me implement a web motion: Scroll-Drawn SVG Path. Bind SVG strokeDashoffset to the page scroll percentage using getTotalLength().",
+    render: (container) => {
+      container.innerHTML = `
+        <div class="sandbox-scroll-svg-stage">
+          <div class="scroll-svg-hud">
+            <span>SCROLL PROGRESS: </span><strong id="svgProgressVal">0%</strong>
+          </div>
+          <div class="scroll-svg-track">
+            <svg class="circuit-svg" viewBox="0 0 600 1200" id="circuitSvg">
+              <path class="circuit-path" id="circuitPath" d="M 300 50 L 300 200 L 150 300 L 150 500 L 450 650 L 450 850 L 300 950 L 300 1150" />
+            </svg>
+            <div class="circuit-milestone m1" style="top: 200px;"><span>01 // INTAKE</span></div>
+            <div class="circuit-milestone m2" style="top: 500px;"><span>02 // PARALLEL COMPUTE</span></div>
+            <div class="circuit-milestone m3" style="top: 850px;"><span>03 // SYNTHESIS</span></div>
+            <div class="circuit-milestone m4" style="top: 1150px;"><span>04 // DISPATCH</span></div>
+          </div>
+        </div>
+      `;
+
+      const path = container.querySelector("#circuitPath");
+      const progressText = container.querySelector("#svgProgressVal");
+      const length = path.getTotalLength();
+      path.style.strokeDasharray = `${length}`;
+      path.style.strokeDashoffset = `${length}`;
+
+      const handleScroll = () => {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = maxScroll > 0 ? Math.min(Math.max(scrollTop / maxScroll, 0), 1) : 0;
+        
+        path.style.strokeDashoffset = `${length * (1 - progress)}`;
+        if (progressText) progressText.textContent = `${Math.round(progress * 100)}%`;
+      };
+
+      window.addEventListener("scroll", handleScroll);
+      container.addEventListener("cleanup", () => {
+        window.removeEventListener("scroll", handleScroll);
+      });
+    }
+  },
+  {
+    id: "split-text-3d-wave",
+    zhName: "文字 3D 逐字波浪飞入",
+    enName: "Split-Text 3D Wave",
+    category: "进入",
+    description: "Codrops 封面级排版。大标题文字在入场时拆分为单字，每个字符带有独立的 3D 空间翻折（rotateX）与模糊递进。",
+    enDescription: "Editorial 3D typography. Splits headlines into characters that flip in from rotateX(90deg) with perspective waves.",
+    prompt: "请帮我实现一个网页动效：文字 3D 逐字波浪飞入（Split-Text 3D Wave）。在包含 perspective 透视的容器中将文本拆分为 span 字符，初始状态设置 transform: rotateX(90deg) translateY(30px) filter: blur(8px)，通过错开的延时让字符如波浪般顺滑翻折归位。",
+    enPrompt: "Please help me implement a web motion: Split-Text 3D Wave. Split text into spans with 3D rotateX and perspective, staggering character arrivals sequentially.",
+    render: (container) => {
+      container.innerHTML = `
+        <div class="sandbox-split-3d-stage">
+          <div class="split-3d-wrapper" id="splitStage"></div>
+          <div class="split-3d-input-bar">
+            <input type="text" id="splitInput" value="FUTURE AESTHETICS" maxlength="30" />
+            <button id="btnSplitPlay" type="button">Animate Text</button>
+          </div>
+        </div>
+      `;
+
+      const stage = container.querySelector("#splitStage");
+      const input = container.querySelector("#splitInput");
+      const playBtn = container.querySelector("#btnSplitPlay");
+
+      const animateText = (str) => {
+        stage.innerHTML = "";
+        str.split("").forEach((char, idx) => {
+          const span = document.createElement("span");
+          span.className = "split-char-3d";
+          span.style.setProperty("--char-i", `${idx}`);
+          span.innerHTML = char === " " ? "&nbsp;" : char;
+          stage.appendChild(span);
+        });
+      };
+
+      animateText(input.value);
+      playBtn.addEventListener("click", () => animateText(input.value));
+    }
+  },
+  {
+    id: "card-sticky-stacking",
+    zhName: "滚动卡片层叠固化",
+    enName: "Card Sticky Stacking",
+    category: "滚动",
+    description: "现代产品介绍页标配。向下滚动时卡片依次在视口顶部吸附固化，后续卡片从下方覆盖上来并伴随缩放与变暗。",
+    enDescription: "Product narrative stack. Cards pin to viewport top on scroll, stacking and scaling down as new cards overlay.",
+    prompt: "请帮我实现一个网页动效：滚动卡片层叠固化（Card Sticky Stacking）。使用 position: sticky 配合 top 偏移，使多张大卡片在向下滚动时依次吸顶停靠，后一张卡片覆盖上去的同时，前一张卡片通过 scale(0.95) 与 brightness(0.8) 产生纵深层叠堆积感。",
+    enPrompt: "Please help me implement a web motion: Card Sticky Stacking. Use position: sticky with progressive top offsets and scale transforms to create stacked card decks on scroll.",
+    render: (container) => {
+      container.innerHTML = `
+        <div class="sandbox-sticky-stack-container">
+          <div class="sticky-stack-hero">
+            <h1>CRAFTING THE FUTURE</h1>
+            <p>向下垂直滚动以观察卡片在视口顶部的逐级层叠与缩放</p>
+          </div>
+          <div class="sticky-cards-column">
+            <div class="sticky-stack-card card-step-1" style="--card-index: 1;">
+              <div class="step-badge">PHASE 01</div>
+              <h2>Ideate & Conceptualize</h2>
+              <p>深入分析用户交互心智模型，绘制高保真动态叙事原型与微交互时间线。</p>
+            </div>
+            <div class="sticky-stack-card card-step-2" style="--card-index: 2;">
+              <div class="step-badge">PHASE 02</div>
+              <h2>Fluid Physics Simulation</h2>
+              <p>使用胡克定律弹簧算法驱动阻尼运动，确保每一帧位移符合真实物理规律。</p>
+            </div>
+            <div class="sticky-stack-card card-step-3" style="--card-index: 3;">
+              <div class="step-badge">PHASE 03</div>
+              <h2>Hardware GPU Acceleration</h2>
+              <p>严格限定使用 transform 与 opacity 属性，实现稳态 60 FPS 满帧丝滑呈现。</p>
+            </div>
+            <div class="sticky-stack-card card-step-4" style="--card-index: 4;">
+              <div class="step-badge">PHASE 04</div>
+              <h2>Production Delivery</h2>
+              <p>零外部依赖纯原生代码库输出，无缝嵌入任何现代前端技术栈。</p>
+            </div>
+          </div>
+        </div>
+      `;
+    }
   }
 ];
 

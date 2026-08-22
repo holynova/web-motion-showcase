@@ -1884,6 +1884,390 @@ a:hover {
   35%, 65% { height: 42px; opacity: 1; }
 }
 
+/* 31. Spotlight Card Preview */
+.preview-spotlight-wrap {
+  display: flex;
+  gap: 8px;
+}
+.preview-spotlight-card {
+  width: 54px;
+  height: 60px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+.preview-spotlight-glow {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent-color) 0%, transparent 70%);
+  opacity: 0.5;
+  animation: keyframe-spotlight-move 3s ease-in-out infinite alternate;
+}
+@keyframes keyframe-spotlight-move {
+  0% { transform: translate(-20px, -20px); }
+  100% { transform: translate(20px, 20px); }
+}
+
+/* 32. Border Beam Preview */
+.preview-border-beam-box {
+  width: 90px;
+  height: 60px;
+  border-radius: var(--radius-md);
+  background: var(--bg-tertiary);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+.preview-border-beam-ray {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(from 0deg, transparent 0deg, transparent 280deg, var(--accent-color) 340deg, transparent 360deg);
+  animation: keyframe-spin-beam 3s linear infinite;
+  z-index: 0;
+}
+.preview-border-beam-box span {
+  position: relative;
+  z-index: 1;
+  background: var(--bg-secondary);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+}
+@keyframes keyframe-spin-beam {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 33. Animated Flow Beams Preview */
+.preview-flow-beams-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.preview-beam-node {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--bg-tertiary);
+  border: 2px solid var(--accent-color);
+  box-shadow: 0 0 10px var(--accent-soft);
+}
+.preview-beam-line {
+  width: 50px;
+  height: 3px;
+  background: var(--border-color);
+  position: relative;
+  border-radius: 2px;
+}
+.preview-beam-pulse {
+  position: absolute;
+  width: 14px;
+  height: 100%;
+  background: var(--accent-color);
+  border-radius: 2px;
+  box-shadow: 0 0 8px var(--accent-color);
+  animation: keyframe-beam-flow 1.8s ease-in-out infinite;
+}
+@keyframes keyframe-beam-flow {
+  0% { left: 0; opacity: 0; width: 4px; }
+  50% { opacity: 1; width: 18px; }
+  100% { left: 100%; opacity: 0; width: 4px; }
+}
+
+/* 34. Text Scramble Preview */
+.preview-text-scramble {
+  font-family: monospace;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--accent-color);
+  background: var(--bg-tertiary);
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  letter-spacing: 0.08em;
+}
+
+/* 35. Dynamic Island Preview */
+.preview-dynamic-island {
+  width: 70px;
+  height: 22px;
+  background: #000000;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  animation: keyframe-island-morph 3s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+.island-dot { width: 6px; height: 6px; border-radius: 50%; background: #10b981; }
+.island-bar { width: 16px; height: 4px; border-radius: 2px; background: var(--accent-color); }
+@keyframes keyframe-island-morph {
+  0%, 100% { width: 65px; height: 22px; }
+  45%, 65% { width: 110px; height: 32px; border-radius: 12px; }
+}
+
+/* 36. macOS Dock Preview */
+.preview-macos-dock {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  padding: 6px 10px;
+  background: var(--bg-tertiary);
+  border-radius: 14px;
+  border: 1px solid var(--border-color);
+}
+.dock-mini-icon {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  background: var(--accent-soft);
+  border: 1px solid var(--border-hover);
+  transition: all var(--transition-fast);
+}
+.dock-mini-icon.active {
+  width: 28px;
+  height: 28px;
+  background: var(--accent-color);
+  transform: translateY(-4px);
+  box-shadow: 0 4px 10px var(--accent-soft);
+}
+
+/* 37. Card Stack Preview */
+.preview-card-stack {
+  position: relative;
+  width: 70px;
+  height: 55px;
+}
+.stack-card {
+  position: absolute;
+  width: 55px;
+  height: 40px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+}
+.stack-card.c3 { top: 0; left: 10px; transform: scale(0.85); background: var(--bg-tertiary); opacity: 0.6; }
+.stack-card.c2 { top: 6px; left: 6px; transform: scale(0.92); background: var(--bg-secondary); opacity: 0.8; }
+.stack-card.c1 { top: 12px; left: 2px; transform: scale(1); background: var(--accent-soft); border-color: var(--accent-color); animation: keyframe-stack-flick 3.2s ease-in-out infinite; }
+@keyframes keyframe-stack-flick {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  40% { transform: translateY(-16px) rotate(-8deg) translateX(-12px); opacity: 0.3; }
+  60% { transform: translateY(0) rotate(0deg); opacity: 1; }
+}
+
+/* 38. Spring Drawer Preview */
+.preview-spring-drawer {
+  width: 80px;
+  height: 60px;
+  background: var(--bg-tertiary);
+  border-radius: 8px 8px 0 0;
+  border: 1px solid var(--border-color);
+  border-bottom: none;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: keyframe-drawer-bounce 2.6s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
+}
+.drawer-handle { width: 22px; height: 3px; border-radius: 2px; background: var(--text-muted); margin-bottom: 8px; }
+.drawer-content-stub { width: 100%; height: 26px; border-radius: 4px; background: var(--accent-soft); }
+@keyframes keyframe-drawer-bounce {
+  0%, 100% { transform: translateY(18px); }
+  45%, 65% { transform: translateY(0); }
+}
+
+/* 39. Confetti Explosion Preview */
+.preview-confetti-btn {
+  position: relative;
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--accent-color);
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  overflow: visible;
+}
+.confetti-spark {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 2px;
+  animation: keyframe-confetti-burst 2.4s ease-out infinite;
+}
+.confetti-spark.s1 { background: #f59e0b; top: 50%; left: 50%; animation-delay: 0s; }
+.confetti-spark.s2 { background: #ec4899; top: 50%; left: 50%; animation-delay: 0.1s; }
+.confetti-spark.s3 { background: #3b82f6; top: 50%; left: 50%; animation-delay: 0.2s; }
+@keyframes keyframe-confetti-burst {
+  0% { transform: translate(0, 0) scale(1); opacity: 1; }
+  50%, 100% { transform: translate(var(--dx, 24px), var(--dy, -24px)) rotate(180deg) scale(0.4); opacity: 0; }
+}
+.confetti-spark.s1 { --dx: -28px; --dy: -24px; }
+.confetti-spark.s2 { --dx: 30px; --dy: -20px; }
+.confetti-spark.s3 { --dx: 0px; --dy: -32px; }
+
+/* 40. Magnetic Glow Button Preview */
+.preview-mag-glow-btn {
+  position: relative;
+  padding: 8px 18px;
+  border-radius: 30px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-hover);
+  color: var(--text-primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  animation: keyframe-mag-pull 2.8s ease-in-out infinite alternate;
+}
+.btn-glow-ring {
+  position: absolute;
+  inset: -1px;
+  border-radius: 30px;
+  background: radial-gradient(circle at 30% 30%, var(--accent-color), transparent 60%);
+  opacity: 0.6;
+}
+@keyframes keyframe-mag-pull {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(6px, -4px); }
+}
+
+/* 41. Metallic Shimmer Text Preview */
+.preview-metallic-text .shimmer-txt {
+  font-size: 0.95rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  background: linear-gradient(110deg, var(--text-primary) 30%, #ffffff 50%, var(--text-primary) 70%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: keyframe-shimmer-sweep 2.5s linear infinite;
+}
+@keyframes keyframe-shimmer-sweep {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+
+/* 42. Rolling Number Odometer Preview */
+.preview-odometer {
+  display: flex;
+  gap: 3px;
+  background: var(--bg-tertiary);
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  font-family: monospace;
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+.odo-col { height: 1.1em; overflow: hidden; }
+.odo-ribbon { display: flex; flex-direction: column; animation: keyframe-odo-roll 2.8s cubic-bezier(0.45, 0, 0.15, 1) infinite; }
+@keyframes keyframe-odo-roll {
+  0%, 10% { transform: translateY(0); }
+  45%, 55% { transform: translateY(-1.1em); }
+  90%, 100% { transform: translateY(-2.2em); }
+}
+
+/* 43. Bento Grid Stagger Preview */
+.preview-bento-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  width: 80px;
+  height: 60px;
+}
+.bento-box {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+}
+.bento-box.b1 { grid-row: span 2; background: var(--accent-soft); border-color: var(--accent-color); }
+.bento-box.b2 { animation: keyframe-bento-pop 2.5s ease infinite 0.1s; }
+.bento-box.b3 { animation: keyframe-bento-pop 2.5s ease infinite 0.2s; }
+@keyframes keyframe-bento-pop {
+  0%, 100% { transform: scale(0.95); opacity: 0.7; }
+  50% { transform: scale(1); opacity: 1; }
+}
+
+/* 44. Scroll-Drawn SVG Path Preview */
+.preview-scroll-svg {
+  width: 90px;
+  height: 40px;
+}
+.svg-stroke-path {
+  fill: none;
+  stroke: var(--accent-color);
+  stroke-width: 3;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: keyframe-draw-stroke 2.8s ease-in-out infinite alternate;
+}
+@keyframes keyframe-draw-stroke {
+  0% { stroke-dashoffset: 100; }
+  100% { stroke-dashoffset: 0; }
+}
+
+/* 45. Split-Text 3D Wave Preview */
+.preview-split-3d {
+  display: flex;
+  gap: 4px;
+  perspective: 400px;
+}
+.ch-3d {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--accent-color);
+  display: inline-block;
+  animation: keyframe-flip-3d 2.8s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+.ch-3d:nth-child(1) { animation-delay: 0s; }
+.ch-3d:nth-child(2) { animation-delay: 0.1s; }
+.ch-3d:nth-child(3) { animation-delay: 0.2s; }
+.ch-3d:nth-child(4) { animation-delay: 0.3s; }
+@keyframes keyframe-flip-3d {
+  0%, 100% { transform: rotateX(90deg); opacity: 0; }
+  35%, 75% { transform: rotateX(0deg); opacity: 1; }
+}
+
+/* 46. Card Sticky Stacking Preview */
+.preview-sticky-stack {
+  position: relative;
+  width: 75px;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.stack-slice {
+  width: 60px;
+  height: 24px;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+  position: absolute;
+  transition: all var(--transition-normal);
+}
+.stack-slice.s1 { top: 0; background: var(--bg-tertiary); transform: scale(0.9); z-index: 1; }
+.stack-slice.s2 { top: 12px; background: var(--bg-secondary); transform: scale(0.95); z-index: 2; }
+.stack-slice.s3 { top: 24px; background: var(--accent-soft); border-color: var(--accent-color); transform: scale(1); z-index: 3; }
+
 /* ==========================================================================
    FAQ & Knowledge Base Section
    ========================================================================== */
