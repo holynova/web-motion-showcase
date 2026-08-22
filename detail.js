@@ -2032,57 +2032,166 @@ const motions = [
     enPrompt: "Please help me implement a web motion: Stack Card Swipe. Stack layered cards and animate top cards flying away on click/swipe while lower cards scale up seamlessly.",
     render: (container) => {
       const cardsData = [
-        { id: 1, title: "Design Systems", sub: "Token Architecture & Components", icon: "🎨", color: "#3b82f6" },
-        { id: 2, title: "Kinetic Motion", sub: "Spring Physics & Cubic Bezier", icon: "⚡", color: "#8b5cf6" },
-        { id: 3, title: "Web Performance", sub: "60 FPS GPU Acceleration", icon: "🚀", color: "#10b981" },
-        { id: 4, title: "Autonomous AI", sub: "Multi-Agent Orchestration", icon: "✨", color: "#f59e0b" }
+        { 
+          id: 1, 
+          title: "Design Systems", 
+          sub: "Token Architecture & Components", 
+          badge: "UI ARCHITECTURE",
+          color: "#3b82f6",
+          iconSvg: `<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>`
+        },
+        { 
+          id: 2, 
+          title: "Kinetic Motion", 
+          sub: "Spring Physics & Cubic Bezier", 
+          badge: "PHYSICS ENGINE",
+          color: "#8b5cf6",
+          iconSvg: `<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`
+        },
+        { 
+          id: 3, 
+          title: "Web Performance", 
+          sub: "60 FPS GPU Acceleration", 
+          badge: "RENDER PIPELINE",
+          color: "#10b981",
+          iconSvg: `<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>`
+        },
+        { 
+          id: 4, 
+          title: "Autonomous AI", 
+          sub: "Multi-Agent Orchestration", 
+          badge: "INTELLIGENCE",
+          color: "#f59e0b",
+          iconSvg: `<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L15 9L22 12L15 15L12 22L9 15L2 12L9 9Z"/></svg>`
+        }
       ];
 
       container.innerHTML = `
         <div class="sandbox-stack-stage">
           <div class="stack-deck-container" id="stackDeck"></div>
           <div class="stack-controls">
-            <button class="btn-stack-action" id="btnStackFlick">Swipe Next Card ➔</button>
+            <button class="btn-stack-action" id="btnSwipeLeft">👈 向左划出</button>
+            <button class="btn-stack-action btn-primary" id="btnStackFlick">⚡ 下一张卡片 (抽卡)</button>
+            <button class="btn-stack-action" id="btnSwipeRight">向右划出 👉</button>
           </div>
+          <div class="stack-hint">💡 支持鼠标或触摸直接按住卡片左右拖拽甩出</div>
         </div>
       `;
 
       const deck = container.querySelector("#stackDeck");
       let cardList = [...cardsData];
+      let isAnimating = false;
 
       const renderDeck = () => {
         deck.innerHTML = "";
         cardList.forEach((card, index) => {
           const el = document.createElement("div");
           el.className = `deck-card-layer layer-${index}`;
+          el.dataset.index = index;
           el.style.zIndex = `${cardList.length - index}`;
           el.style.setProperty("--layer-offset", `${index}`);
           el.style.borderTop = `4px solid ${card.color}`;
           el.innerHTML = `
-            <div class="deck-card-icon">${card.icon}</div>
-            <div class="deck-card-title">${card.title}</div>
-            <div class="deck-card-sub">${card.sub}</div>
-            <div class="deck-card-num">0${card.id} // 04</div>
+            <div class="deck-card-header">
+              <span class="deck-card-badge" style="color: ${card.color}; background: ${card.color}15; border: 1px solid ${card.color}40;">${card.badge}</span>
+              <span class="deck-card-num">0${card.id} / 04</span>
+            </div>
+            <div class="deck-card-body">
+              <div class="deck-card-icon" style="color: ${card.color};">${card.iconSvg}</div>
+              <div class="deck-card-title">${card.title}</div>
+              <div class="deck-card-sub">${card.sub}</div>
+            </div>
+            <div class="deck-card-footer">
+              <span class="deck-swipe-guide">← SWIPE TO DISMISS →</span>
+            </div>
           `;
+
+          if (index === 0) {
+            bindDragEvents(el);
+          }
+
           deck.appendChild(el);
         });
       };
 
-      const flickTopCard = () => {
+      const flickCard = (direction = 1) => {
+        if (isAnimating) return;
         const topCard = deck.querySelector(".deck-card-layer.layer-0");
-        if (!topCard || topCard.classList.contains("flicking")) return;
-        topCard.classList.add("flicking");
+        if (!topCard) return;
+        isAnimating = true;
+        
+        topCard.style.transition = "transform 420ms cubic-bezier(0.2, 0.9, 0.3, 1), opacity 400ms ease";
+        const targetX = direction * (deck.offsetWidth + 200);
+        const targetRot = direction * 28;
+        topCard.style.transform = `translate3d(${targetX}px, -40px, 0) rotate(${targetRot}deg)`;
+        topCard.style.opacity = "0";
+
+        // Promote background cards immediately
+        const otherCards = deck.querySelectorAll(".deck-card-layer:not(.layer-0)");
+        otherCards.forEach((c, i) => {
+          const newOffset = i;
+          c.style.transition = "transform 400ms cubic-bezier(0.16, 1, 0.3, 1), opacity 400ms ease";
+          c.style.transform = `translate3d(0, calc(${newOffset} * 16px), 0) scale(calc(1 - ${newOffset} * 0.05))`;
+          c.style.opacity = `${1 - newOffset * 0.18}`;
+        });
+
         setTimeout(() => {
           const removed = cardList.shift();
           cardList.push(removed);
           renderDeck();
+          isAnimating = false;
         }, 400);
       };
 
+      const bindDragEvents = (cardEl) => {
+        let isDragging = false;
+        let startX = 0;
+        let startY = 0;
+        let currentX = 0;
+        let currentY = 0;
+
+        const onPointerDown = (e) => {
+          if (isAnimating) return;
+          isDragging = true;
+          startX = e.clientX;
+          startY = e.clientY;
+          currentX = 0;
+          currentY = 0;
+          cardEl.setPointerCapture?.(e.pointerId);
+          cardEl.style.transition = "none";
+        };
+
+        const onPointerMove = (e) => {
+          if (!isDragging) return;
+          currentX = e.clientX - startX;
+          currentY = e.clientY - startY;
+          const rot = currentX * 0.08;
+          cardEl.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) rotate(${rot}deg) scale(1.02)`;
+        };
+
+        const onPointerUp = () => {
+          if (!isDragging) return;
+          isDragging = false;
+          const threshold = 90;
+          if (Math.abs(currentX) > threshold) {
+            flickCard(currentX > 0 ? 1 : -1);
+          } else {
+            // Spring back
+            cardEl.style.transition = "transform 360ms cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+            cardEl.style.transform = "translate3d(0, 0, 0) rotate(0deg) scale(1)";
+          }
+        };
+
+        cardEl.addEventListener("pointerdown", onPointerDown);
+        cardEl.addEventListener("pointermove", onPointerMove);
+        cardEl.addEventListener("pointerup", onPointerUp);
+        cardEl.addEventListener("pointercancel", onPointerUp);
+      };
+
       renderDeck();
-      const flickBtn = container.querySelector("#btnStackFlick");
-      flickBtn.addEventListener("click", flickTopCard);
-      deck.addEventListener("click", flickTopCard);
+      container.querySelector("#btnStackFlick").addEventListener("click", () => flickCard(1));
+      container.querySelector("#btnSwipeLeft").addEventListener("click", () => flickCard(-1));
+      container.querySelector("#btnSwipeRight").addEventListener("click", () => flickCard(1));
     }
   },
   {
@@ -2265,44 +2374,95 @@ const motions = [
           <div class="mag-btn-wrapper" id="magWrapper">
             <button class="mag-hero-button" id="magBtn">
               <div class="mag-glow-ambient" id="magGlow"></div>
-              <span class="mag-btn-text">Explore Galaxies</span>
-              <svg class="mag-arrow" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+              <div class="mag-border-beam"></div>
+              <span class="mag-sparkle-dot"></span>
+              <span class="mag-btn-text">Explore Quantum Realm</span>
+              <svg class="mag-arrow" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
             </button>
           </div>
-          <div class="mag-stage-hint">将鼠标靠近按钮（140px 磁吸阈值）感受物理引力</div>
+          <div class="mag-status-telemetry">
+            <span id="magDistanceText">光标引力距离: 0px</span>
+            <span class="mag-stage-hint">移动鼠标靠近按钮（220px 物理引力场）感受弹性阻尼磁吸与局部光斑跟随</span>
+          </div>
         </div>
       `;
 
       const wrapper = container.querySelector("#magWrapper");
       const btn = container.querySelector("#magBtn");
       const glow = container.querySelector("#magGlow");
+      const distText = container.querySelector("#magDistanceText");
 
-      const handleMagMove = (e) => {
+      let targetX = 0, targetY = 0, currentX = 0, currentY = 0;
+      let targetScale = 1, currentScale = 1;
+      let targetGlowOpacity = 0, currentGlowOpacity = 0;
+      let animFrame = null;
+
+      const updatePhysics = () => {
+        currentX += (targetX - currentX) * 0.16;
+        currentY += (targetY - currentY) * 0.16;
+        currentScale += (targetScale - currentScale) * 0.16;
+        currentGlowOpacity += (targetGlowOpacity - currentGlowOpacity) * 0.18;
+
+        btn.style.transform = `translate3d(${currentX.toFixed(2)}px, ${currentY.toFixed(2)}px, 0) scale(${currentScale.toFixed(3)})`;
+        glow.style.opacity = currentGlowOpacity.toFixed(2);
+
+        animFrame = requestAnimationFrame(updatePhysics);
+      };
+      animFrame = requestAnimationFrame(updatePhysics);
+
+      const handlePointerMove = (e) => {
         const rect = btn.getBoundingClientRect();
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height / 2;
         const dx = e.clientX - centerX;
         const dy = e.clientY - centerY;
         const dist = Math.hypot(dx, dy);
-        const maxThreshold = 150;
+        const maxThreshold = 220;
+
+        // Local coordinates for internal spotlight
+        const localX = e.clientX - rect.left;
+        const localY = e.clientY - rect.top;
+        btn.style.setProperty("--glow-x", `${localX}px`);
+        btn.style.setProperty("--glow-y", `${localY}px`);
 
         if (dist < maxThreshold) {
-          const power = (1 - dist / maxThreshold);
-          const moveX = dx * power * 0.35;
-          const moveY = dy * power * 0.35;
-          btn.style.transform = `translate(${moveX}px, ${moveY}px) scale(1.05)`;
-          glow.style.opacity = "1";
-          glow.style.transform = `translate(${dx * 0.5}px, ${dy * 0.5}px)`;
+          const power = Math.pow(1 - dist / maxThreshold, 1.4);
+          targetX = dx * power * 0.42;
+          targetY = dy * power * 0.42;
+          targetScale = 1.06;
+          targetGlowOpacity = 0.95;
+          if (distText) distText.textContent = `光标引力距离: ${Math.round(dist)}px (磁吸捕获中)`;
         } else {
-          btn.style.transform = "translate(0px, 0px) scale(1)";
-          glow.style.opacity = "0.3";
-          glow.style.transform = "translate(0px, 0px)";
+          targetX = 0;
+          targetY = 0;
+          targetScale = 1;
+          targetGlowOpacity = 0.15;
+          if (distText) distText.textContent = `光标引力距离: ${Math.round(dist)}px (未激活)`;
         }
       };
 
-      window.addEventListener("mousemove", handleMagMove);
+      const handlePointerLeave = () => {
+        targetX = 0;
+        targetY = 0;
+        targetScale = 1;
+        targetGlowOpacity = 0.15;
+      };
+
+      window.addEventListener("pointermove", handlePointerMove);
+      window.addEventListener("pointerleave", handlePointerLeave);
+
+      btn.addEventListener("pointerdown", () => {
+        targetScale = 0.95;
+      });
+      btn.addEventListener("pointerup", () => {
+        targetScale = 1.08;
+        setTimeout(() => { targetScale = 1.05; }, 150);
+      });
+
       container.addEventListener("cleanup", () => {
-        window.removeEventListener("mousemove", handleMagMove);
+        if (animFrame) cancelAnimationFrame(animFrame);
+        window.removeEventListener("pointermove", handlePointerMove);
+        window.removeEventListener("pointerleave", handlePointerLeave);
       });
     }
   },
@@ -2319,14 +2479,16 @@ const motions = [
       container.innerHTML = `
         <div class="sandbox-shimmer-stage">
           <div class="shimmer-hero-wrap">
-            <div class="shimmer-kicker">APPLE SILICON ARCHITECTURE</div>
-            <h1 class="shimmer-monumental-text" id="shimmerHeadline">TITANIUM PRO</h1>
-            <p class="shimmer-subhead">Aerospace-grade precision engineered for ultimate computing speed.</p>
+            <div class="shimmer-pill-badge">AEROSPACE GRADE SPECULAR SHEEN</div>
+            <h1 class="shimmer-monumental-text theme-titanium" id="shimmerHeadline">TITANIUM PRO</h1>
+            <p class="shimmer-subhead">多段超高精度镜面反射光栅，以 45° 角度在微米级金属质感轮廓上流淌流动。</p>
           </div>
           <div class="shimmer-palette-bar">
-            <button class="palette-chip active" data-palette="titanium">Titanium</button>
-            <button class="palette-chip" data-palette="gold">Solar Gold</button>
-            <button class="palette-chip" data-palette="emerald">Cyber Emerald</button>
+            <button class="palette-chip active" data-palette="titanium">✦ Titanium Silver</button>
+            <button class="palette-chip" data-palette="gold">★ Solar Gold</button>
+            <button class="palette-chip" data-palette="emerald">◆ Cyber Emerald</button>
+            <button class="palette-chip" data-palette="rosegold">♥ Desert Rose</button>
+            <button class="palette-chip" data-palette="obsidian">● Obsidian Chrome</button>
           </div>
         </div>
       `;
@@ -2358,7 +2520,7 @@ const motions = [
           <div class="odometer-card">
             <div class="odometer-header">
               <span class="odo-title">TOTAL REVENUE (USD)</span>
-              <span class="odo-live-pill">● LIVE LEDGER</span>
+              <span class="odo-live-pill">● LIVE MECHANICAL LEDGER</span>
             </div>
             <div class="odometer-display" id="odometerDisplay">
               <span class="odo-currency">$</span>
@@ -2366,7 +2528,8 @@ const motions = [
             </div>
             <div class="odometer-actions">
               <button class="btn-odo-action" id="btnOdoAdd">+ $12,450</button>
-              <button class="btn-odo-action" id="btnOdoRandom">Randomize</button>
+              <button class="btn-odo-action" id="btnOdoBig">+ $850,000</button>
+              <button class="btn-odo-action" id="btnOdoRandom">⚡ 随机数值</button>
             </div>
           </div>
         </div>
@@ -2375,41 +2538,53 @@ const motions = [
       let currentVal = 8492350;
       const rack = container.querySelector("#digitsRack");
 
-      const updateOdometer = (num) => {
+      const updateOdometer = (num, isInitial = false) => {
         const formatted = num.toLocaleString("en-US");
-        rack.innerHTML = "";
+        const chars = formatted.split("");
 
-        formatted.split("").forEach((char, idx) => {
+        rack.innerHTML = chars.map((char, idx) => {
           if (char === ",") {
-            const sep = document.createElement("span");
-            sep.className = "odo-separator";
-            sep.textContent = ",";
-            rack.appendChild(sep);
+            return `<span class="odo-separator">,</span>`;
           } else {
-            const col = document.createElement("div");
-            col.className = "odo-digit-column";
-            col.style.transitionDelay = `${idx * 0.05}s`;
-            const digitNum = parseInt(char, 10);
-            col.innerHTML = `
-              <div class="odo-digit-strip" style="transform: translateY(-${digitNum * 10}%);">
-                <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span>
+            const digit = parseInt(char, 10);
+            return `
+              <div class="odo-digit-column" style="transition-delay: ${idx * 0.05}s">
+                <div class="odo-digit-strip" data-target="${digit}" style="transform: translateY(${isInitial ? "0%" : `-${digit * 10}%`})">
+                  <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span>
+                </div>
               </div>
             `;
-            rack.appendChild(col);
           }
-        });
+        }).join("");
+
+        // On initial render, trigger a brief delay then roll up to the target number for visceral visual flip
+        if (isInitial) {
+          setTimeout(() => {
+            const strips = rack.querySelectorAll(".odo-digit-strip");
+            strips.forEach((strip, i) => {
+              const target = strip.dataset.target;
+              strip.style.transform = `translateY(-${target * 10}%)`;
+            });
+          }, 60);
+        }
       };
 
-      updateOdometer(currentVal);
+      // Initial roll up animation
+      updateOdometer(currentVal, true);
 
       container.querySelector("#btnOdoAdd").addEventListener("click", () => {
         currentVal += 12450;
-        updateOdometer(currentVal);
+        updateOdometer(currentVal, false);
+      });
+
+      container.querySelector("#btnOdoBig").addEventListener("click", () => {
+        currentVal += 850000;
+        updateOdometer(currentVal, false);
       });
 
       container.querySelector("#btnOdoRandom").addEventListener("click", () => {
         currentVal = Math.floor(Math.random() * 9000000) + 1000000;
-        updateOdometer(currentVal);
+        updateOdometer(currentVal, false);
       });
     }
   },
@@ -2604,27 +2779,28 @@ const motions = [
     zhName: "极光渐变弥散流光",
     enName: "Aurora Glow Background",
     category: "进入",
-    description: "Siri / Apple Intelligence 质感流体光晕。多层高斯模糊与多色径向渐变网格，通过连续流体位移与色相轻微自旋，营造极光般的梦幻背景。",
-    enDescription: "Apple-inspired ethereal flow. Layered radial gradients and high-blur meshes orbiting smoothly to create ambient aurora illumination.",
-    prompt: "请帮我实现一个网页动效：极光渐变弥散流光（Aurora Glow Background）。在深色或纯色背景上放置多个带有 filter: blur(60px) 的绝对定位径向渐变色块，运用 @keyframes 结合 transform: translate() rotate() 与 opacity 呼吸律动，创造高级柔和的极光背景动效。",
-    enPrompt: "Please help me implement a web motion: Aurora Glow Background. Combine heavy gaussian blur layers with radial gradients animating along continuous parametric curves.",
+    description: "北极真境极光流体光晕。多层高斯模糊与多色翡翠/青冰/柠金径向渐变网格，通过连续流体位移与有机形变，营造极光般的梦幻背景。",
+    enDescription: "Boreal ethereal flow. Layered emerald, cyan and lime radial gradients orbiting smoothly to create ambient aurora illumination.",
+    prompt: "请帮我实现一个网页动效：极光渐变弥散流光（Aurora Glow Background）。在深黑夜空背景上放置多个带有 filter: blur(60px) 的翡翠绿/青冰/柠金径向渐变色块，运用 @keyframes 结合 transform: translate() rotate() 与有机形变呼吸律动，创造高级柔和的极光背景动效。",
+    enPrompt: "Please help me implement a web motion: Aurora Glow Background. Combine heavy gaussian blur layers with emerald, cyan, and lime gradients animating along continuous parametric curves.",
     render: (container) => {
       container.innerHTML = `
-        <div class="sandbox-aurora-stage">
+        <div class="sandbox-aurora-stage" data-aurora-palette="boreal">
           <div class="aurora-mesh">
             <div class="aurora-light-orb orb-1"></div>
             <div class="aurora-light-orb orb-2"></div>
             <div class="aurora-light-orb orb-3"></div>
             <div class="aurora-light-orb orb-4"></div>
+            <div class="aurora-light-orb orb-5"></div>
           </div>
           <div class="aurora-hero-content">
-            <div class="aurora-pill-tag">✨ NEXT-GEN AMBIENCE</div>
-            <h1 class="aurora-title">Intelligence in Motion</h1>
-            <p class="aurora-sub">移动鼠标感受极光光晕的自然漫射与交互式视差流转</p>
+            <div class="aurora-pill-tag">✦ NORTHERN BOREALIS AMBIENCE</div>
+            <h1 class="aurora-title">Aurora Borealis</h1>
+            <p class="aurora-sub">翡翠绿与极地青冰的高速流体弥散，移动鼠标感受流光幕帘的交互式引力扰动</p>
             <div class="aurora-palette-ctrl">
-              <button class="btn-aurora-theme active" data-theme="siri">Siri Ethereal</button>
-              <button class="btn-aurora-theme" data-theme="cyber">Neon Cyber</button>
-              <button class="btn-aurora-theme" data-theme="sunset">Warm Sunset</button>
+              <button class="btn-aurora-theme active" data-theme="boreal">✦ Boreal Emerald</button>
+              <button class="btn-aurora-theme" data-theme="solar">★ Solar Amber</button>
+              <button class="btn-aurora-theme" data-theme="arctic">❄ Arctic Glacial</button>
             </div>
           </div>
         </div>
@@ -2633,13 +2809,14 @@ const motions = [
       const orbs = container.querySelectorAll(".aurora-light-orb");
       const themeBtns = container.querySelectorAll(".btn-aurora-theme");
 
-      stage.addEventListener("mousemove", (e) => {
+      stage.addEventListener("pointermove", (e) => {
         const rect = stage.getBoundingClientRect();
         const nx = (e.clientX - rect.left) / rect.width - 0.5;
         const ny = (e.clientY - rect.top) / rect.height - 0.5;
         orbs.forEach((orb, i) => {
-          const factor = (i + 1) * 20;
-          orb.style.transform = `translate(${nx * factor}px, ${ny * factor}px)`;
+          const factor = (i + 1) * 35;
+          orb.style.setProperty("--mouse-x", `${(nx * factor).toFixed(1)}px`);
+          orb.style.setProperty("--mouse-y", `${(ny * factor).toFixed(1)}px`);
         });
       });
 
@@ -2657,42 +2834,97 @@ const motions = [
     zhName: "流星夜空划过特效",
     enName: "Meteors Shower Background",
     category: "进入",
-    description: "深邃夜空氛围动效。带有渐变尾迹的倾斜光束以随机延迟和速度从右上角滑向左下角，伴随头部光斑微闪与渐隐。",
-    enDescription: "Ambient cosmic trail. Angled glowing streaks shooting across dark cards with random delays, subtle head glows, and linear trails.",
-    prompt: "请帮我实现一个网页动效：流星夜空划过特效（Meteors Shower Background）。通过纯 CSS 生成倾斜 215deg 的流星光束，伪元素头部添加圆点发光阴影，主体使用 linear-gradient 尾迹渐变，通过 @keyframes 从屏幕外滑入并淡出消失。",
-    enPrompt: "Please help me implement a web motion: Meteors Shower Background. Render angled meteor streaks with glowing head points and fading gradients shooting across containers.",
+    description: "深邃奢华夜空天文台动效。超细渐变尾迹光束以真实流星轨道高速划破夜空，头部伴随耀眼钻石高光，点缀微光星海。",
+    enDescription: "Luxury observatory night sky. High-speed tapered needle meteors shoot across dark starfields with diamond head glows.",
+    prompt: "请帮我实现一个网页动效：流星夜空划过特效（Meteors Shower Background）。通过纯 CSS 生成倾斜 215deg 的针尖流星光束，头部添加白炽发光光斑，主体使用极致平滑的 linear-gradient 尾迹渐变，配合微光星空背景创造奢华夜空动效。",
+    enPrompt: "Please help me implement a web motion: Meteors Shower Background. Render angled needle-sharp meteor streaks with diamond head points and fading trails shooting across cosmic starfields.",
     render: (container) => {
       container.innerHTML = `
         <div class="sandbox-meteors-stage">
+          <canvas class="meteors-starfield-canvas" id="meteorsStarfield"></canvas>
           <div class="meteors-sky-layer" id="meteorsSky"></div>
           <div class="meteors-center-card">
-            <div class="meteor-badge">COSMIC EXPERIENCE</div>
-            <h2>Night Sky Serenade</h2>
-            <p>20+ 道倾斜流星以物理随机速度穿梭滑过暗夜，点击下方按钮唤醒流星雨风暴。</p>
-            <button class="btn-meteor-burst" id="btnMeteorBurst">🌠 触发流星雨爆发</button>
+            <div class="meteor-badge">OBSERVATORY TELEMETRY</div>
+            <div class="meteor-coords">RA 14h 29m 42s // DEC -62° 40′ 46″</div>
+            <h2>Night Sky Celestial Flow</h2>
+            <p>真实天文流星轨道模拟，纯净白炽星芒与渐隐离子尾迹滑破天际。</p>
+            <div class="meteor-hud-stats">
+              <div class="hud-item"><span class="hud-val" id="hudMeteorCount">28</span><span class="hud-lbl">ACTIVE METEORS</span></div>
+              <div class="hud-item"><span class="hud-val">72 km/s</span><span class="hud-lbl">ENTRY VELOCITY</span></div>
+            </div>
+            <button class="btn-meteor-burst" id="btnMeteorBurst">🌠 唤醒流星雨风暴</button>
           </div>
         </div>
       `;
+
+      const canvas = container.querySelector("#meteorsStarfield");
+      const ctx = canvas.getContext("2d");
       const sky = container.querySelector("#meteorsSky");
       const burstBtn = container.querySelector("#btnMeteorBurst");
+      const countDisplay = container.querySelector("#hudMeteorCount");
+      let starAnimId = null;
+
+      // Draw starry night
+      const stars = [];
+      const resizeStarfield = () => {
+        canvas.width = container.clientWidth;
+        canvas.height = container.clientHeight;
+        stars.length = 0;
+        for (let i = 0; i < 180; i++) {
+          stars.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            radius: Math.random() * 1.2 + 0.3,
+            alpha: Math.random() * 0.8 + 0.2,
+            speed: Math.random() * 0.02 + 0.005,
+            phase: Math.random() * Math.PI * 2
+          });
+        }
+      };
+      resizeStarfield();
+      window.addEventListener("resize", resizeStarfield);
+
+      let t = 0;
+      const renderStars = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        t += 0.03;
+        stars.forEach(s => {
+          const a = s.alpha * (0.6 + 0.4 * Math.sin(t * s.speed * 20 + s.phase));
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(226, 232, 240, ${a})`;
+          ctx.shadowBlur = s.radius > 1 ? 4 : 0;
+          ctx.shadowColor = "#ffffff";
+          ctx.fill();
+        });
+        starAnimId = requestAnimationFrame(renderStars);
+      };
+      starAnimId = requestAnimationFrame(renderStars);
 
       const createMeteors = (count) => {
         sky.innerHTML = "";
+        if (countDisplay) countDisplay.textContent = count;
         for (let i = 0; i < count; i++) {
           const m = document.createElement("span");
           m.className = "full-meteor-ray";
-          m.style.top = Math.random() * 80 + "%";
-          m.style.left = Math.random() * 100 + "%";
-          m.style.animationDelay = Math.random() * 3 + "s";
-          m.style.animationDuration = (Math.random() * 1.5 + 1.2) + "s";
+          m.style.top = (Math.random() * 70 - 10) + "%";
+          m.style.left = (Math.random() * 90 + 10) + "%";
+          m.style.animationDelay = (Math.random() * 4).toFixed(2) + "s";
+          m.style.animationDuration = (Math.random() * 1.2 + 1.0).toFixed(2) + "s";
+          m.style.setProperty("--trail-len", `${Math.floor(Math.random() * 120 + 160)}px`);
           sky.appendChild(m);
         }
       };
 
-      createMeteors(24);
+      createMeteors(28);
       burstBtn.addEventListener("click", () => {
-        createMeteors(60);
-        setTimeout(() => createMeteors(24), 5000);
+        createMeteors(75);
+        setTimeout(() => createMeteors(28), 6000);
+      });
+
+      container.addEventListener("cleanup", () => {
+        if (starAnimId) cancelAnimationFrame(starAnimId);
+        window.removeEventListener("resize", resizeStarfield);
       });
     }
   },
@@ -3381,9 +3613,9 @@ const motions = [
    Page Routing & Initialization Logic
    ========================================================================== */
 
-// 1. Read 'id' or 'name' from URL query params
+// 1. Read 'id', 'effect', or 'name' from URL query params
 const urlParams = new URLSearchParams(window.location.search);
-const selectedId = urlParams.get("id");
+const selectedId = urlParams.get("id") || urlParams.get("effect");
 const selectedName = urlParams.get("name") || urlParams.get("name_en") || urlParams.get("motion");
 
 // Find motion data by id or by name

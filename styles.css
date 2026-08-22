@@ -2112,16 +2112,24 @@ a:hover {
   border-radius: 6px;
   border: 1px solid var(--border-color);
   background: var(--bg-secondary);
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
   transition: all var(--transition-normal);
 }
-.stack-card.c3 { top: 0; left: 10px; transform: scale(0.85); background: var(--bg-tertiary); opacity: 0.6; }
-.stack-card.c2 { top: 6px; left: 6px; transform: scale(0.92); background: var(--bg-secondary); opacity: 0.8; }
-.stack-card.c1 { top: 12px; left: 2px; transform: scale(1); background: var(--accent-soft); border-color: var(--accent-color); animation: keyframe-stack-flick 3.2s ease-in-out infinite; }
+.stack-card.c3 { top: 0; left: 10px; transform: scale(0.86); background: var(--bg-tertiary); opacity: 0.5; }
+.stack-card.c2 { top: 6px; left: 6px; transform: scale(0.93); background: var(--bg-secondary); opacity: 0.75; }
+.stack-card.c1 {
+  top: 12px;
+  left: 2px;
+  transform: scale(1);
+  background: var(--accent-soft);
+  border-color: var(--accent-color);
+  animation: keyframe-stack-flick 2.8s cubic-bezier(0.2, 0.9, 0.3, 1) infinite;
+}
 @keyframes keyframe-stack-flick {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  40% { transform: translateY(-16px) rotate(-8deg) translateX(-12px); opacity: 0.3; }
-  60% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  0%, 15% { transform: translate3d(0, 0, 0) rotate(0deg); opacity: 1; }
+  45% { transform: translate3d(28px, -18px, 0) rotate(16deg); opacity: 0; }
+  46% { transform: translate3d(0, -8px, 0) scale(0.85); opacity: 0; }
+  65%, 100% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); opacity: 1; }
 }
 
 /* 38. Spring Drawer Preview */
@@ -2177,25 +2185,29 @@ a:hover {
 /* 40. Magnetic Glow Button Preview */
 .preview-mag-glow-btn {
   position: relative;
-  padding: 8px 18px;
+  padding: 8px 20px;
   border-radius: 30px;
-  background: var(--bg-tertiary);
+  background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
   border: 1px solid var(--border-hover);
   color: var(--text-primary);
   font-size: 0.75rem;
   font-weight: 700;
-  animation: keyframe-mag-pull 2.8s ease-in-out infinite alternate;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+  animation: keyframe-mag-pull 2.6s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
 }
 .btn-glow-ring {
   position: absolute;
   inset: -1px;
   border-radius: 30px;
-  background: radial-gradient(circle at 30% 30%, var(--accent-color), transparent 60%);
-  opacity: 0.6;
+  background: radial-gradient(40px circle at 40% 40%, var(--accent-color), transparent 70%);
+  opacity: 0.75;
+  mix-blend-mode: screen;
 }
 @keyframes keyframe-mag-pull {
-  0% { transform: translate(0, 0); }
-  100% { transform: translate(6px, -4px); }
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(5px, -3px, 0) scale(1.04); }
+  100% { transform: translate3d(-4px, 3px, 0) scale(1.02); }
 }
 
 /* 41. Metallic Shimmer Text Preview */
@@ -2203,35 +2215,42 @@ a:hover {
   font-size: 0.95rem;
   font-weight: 900;
   letter-spacing: 0.12em;
-  background: linear-gradient(110deg, var(--text-primary) 30%, #ffffff 50%, var(--text-primary) 70%);
-  background-size: 200% 100%;
+  background: linear-gradient(110deg, var(--text-primary) 20%, #cbd5e1 40%, #ffffff 50%, #cbd5e1 60%, var(--text-primary) 80%);
+  background-size: 250% 100%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: keyframe-shimmer-sweep 2.5s linear infinite;
+  animation: keyframe-shimmer-sweep 2.4s linear infinite;
+  display: inline-block;
 }
 @keyframes keyframe-shimmer-sweep {
-  0% { background-position: 100% 0; }
-  100% { background-position: -100% 0; }
+  0% { background-position: 150% 0; }
+  100% { background-position: -150% 0; }
 }
 
 /* 42. Rolling Number Odometer Preview */
 .preview-odometer {
   display: flex;
-  gap: 3px;
+  gap: 2px;
   background: var(--bg-tertiary);
   padding: 4px 8px;
   border-radius: 6px;
   border: 1px solid var(--border-color);
-  font-family: monospace;
-  font-size: 0.85rem;
-  font-weight: 800;
+  font-family: ui-monospace, monospace;
+  font-size: 0.88rem;
+  font-weight: 900;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.2), inset 0 -2px 4px rgba(0,0,0,0.2);
 }
-.odo-col { height: 1.1em; overflow: hidden; }
-.odo-ribbon { display: flex; flex-direction: column; animation: keyframe-odo-roll 2.8s cubic-bezier(0.45, 0, 0.15, 1) infinite; }
+.odo-col { height: 1.15em; overflow: hidden; position: relative; }
+.odo-ribbon {
+  display: flex;
+  flex-direction: column;
+  animation: keyframe-odo-roll 2.6s cubic-bezier(0.34, 1.25, 0.64, 1) infinite;
+}
+.odo-ribbon span { height: 1.15em; display: flex; align-items: center; justify-content: center; }
 @keyframes keyframe-odo-roll {
-  0%, 10% { transform: translateY(0); }
-  45%, 55% { transform: translateY(-1.1em); }
-  90%, 100% { transform: translateY(-2.2em); }
+  0%, 15% { transform: translateY(0); }
+  45%, 60% { transform: translateY(-1.15em); }
+  85%, 100% { transform: translateY(-2.3em); }
 }
 
 /* 43. Bento Grid Stagger Preview */
@@ -2321,7 +2340,7 @@ a:hover {
   width: 90px;
   height: 60px;
   border-radius: var(--radius-md);
-  background: var(--bg-primary);
+  background: #030a08;
   border: 1px solid var(--border-color);
   position: relative;
   overflow: hidden;
@@ -2329,16 +2348,17 @@ a:hover {
 .aurora-blob {
   position: absolute;
   border-radius: 50%;
-  filter: blur(14px);
-  opacity: 0.7;
-  animation: keyframe-aurora-orbit 4s ease-in-out infinite alternate;
+  filter: blur(10px);
+  opacity: 0.85;
+  animation: keyframe-aurora-orbit 3.2s ease-in-out infinite alternate;
 }
-.aurora-blob.a1 { width: 50px; height: 50px; background: var(--accent-color); top: -10px; left: -10px; }
-.aurora-blob.a2 { width: 45px; height: 45px; background: #ec4899; bottom: -10px; right: -5px; animation-delay: -1.5s; }
-.aurora-blob.a3 { width: 40px; height: 40px; background: #3b82f6; top: 10px; right: 10px; animation-delay: -3s; }
+.aurora-blob.a1 { width: 50px; height: 50px; background: #059669; top: -10px; left: -10px; }
+.aurora-blob.a2 { width: 45px; height: 45px; background: #10b981; bottom: -10px; right: -5px; animation-delay: -1.2s; }
+.aurora-blob.a3 { width: 40px; height: 40px; background: #06b6d4; top: 10px; right: 10px; animation-delay: -2.4s; }
+.aurora-blob.a4 { width: 35px; height: 35px; background: #84cc16; bottom: 5px; left: 15px; animation-delay: -0.6s; }
 @keyframes keyframe-aurora-orbit {
-  0% { transform: translate(0, 0) scale(1); }
-  100% { transform: translate(15px, 10px) scale(1.2); }
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  100% { transform: translate3d(14px, 8px, 0) scale(1.25); }
 }
 
 /* 52. Meteors Background Preview */
@@ -2346,19 +2366,29 @@ a:hover {
   width: 90px;
   height: 60px;
   border-radius: var(--radius-md);
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-color);
+  background: #030712;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   position: relative;
   overflow: hidden;
 }
+.preview-meteors-box::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.4) 0.6px, transparent 0.8px),
+                    radial-gradient(circle at 20% 80%, rgba(255,255,255,0.3) 0.5px, transparent 0.7px),
+                    radial-gradient(circle at 80% 20%, rgba(255,255,255,0.5) 0.6px, transparent 0.8px);
+  background-size: 100% 100%;
+  pointer-events: none;
+}
 .m-beam {
   position: absolute;
-  width: 35px;
-  height: 1.5px;
-  background: linear-gradient(to right, var(--accent-color), transparent);
-  transform: rotate(-45deg);
+  width: 45px;
+  height: 1.2px;
+  background: linear-gradient(90deg, #ffffff 0%, rgba(186, 230, 253, 0.8) 25%, rgba(56, 189, 248, 0.3) 60%, transparent 100%);
+  transform: rotate(-35deg);
   opacity: 0;
-  animation: keyframe-meteor-shoot 2.6s linear infinite;
+  animation: keyframe-meteor-shoot 2.2s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
 }
 .m-beam::before {
   content: '';
@@ -2369,15 +2399,15 @@ a:hover {
   height: 4px;
   border-radius: 50%;
   background: #ffffff;
-  box-shadow: 0 0 6px var(--accent-color);
+  box-shadow: 0 0 6px 1px #ffffff, 0 0 10px 2px rgba(56, 189, 248, 0.8);
 }
-.m-beam.m1 { top: 10px; right: 10px; animation-delay: 0s; }
-.m-beam.m2 { top: 25px; right: 2px; animation-delay: 0.9s; }
-.m-beam.m3 { top: 5px; right: 35px; animation-delay: 1.8s; }
+.m-beam.m1 { top: 8px; right: 10px; animation-delay: 0s; }
+.m-beam.m2 { top: 28px; right: 4px; animation-delay: 0.7s; }
+.m-beam.m3 { top: 4px; right: 35px; animation-delay: 1.4s; }
 @keyframes keyframe-meteor-shoot {
-  0% { transform: rotate(-45deg) translateX(0); opacity: 0; }
+  0% { transform: rotate(-35deg) translateX(0); opacity: 0; }
   15% { opacity: 1; }
-  60% { transform: rotate(-45deg) translateX(-80px); opacity: 0; }
+  75% { transform: rotate(-35deg) translateX(-110px); opacity: 0; }
   100% { opacity: 0; }
 }
 

@@ -725,25 +725,26 @@ const motions = [
     zhName: "极光渐变弥散流光",
     enName: "Aurora Glow Background",
     category: "进入",
-    description: "Siri / Apple Intelligence 质感流体光晕。多层高斯模糊与多色径向渐变网格，通过连续流体位移与色相轻微自旋，营造极光般的梦幻背景。",
-    enDescription: "Apple-inspired ethereal flow. Layered radial gradients and high-blur meshes orbiting smoothly to create ambient aurora illumination.",
+    description: "北极真境极光流体光晕。多层高斯模糊与翡翠/青冰/柠金径向渐变网格，通过连续流体位移与有机形变，营造极光般的梦幻背景。",
+    enDescription: "Boreal ethereal flow. Layered emerald, cyan, and lime radial gradients orbiting smoothly to create ambient aurora illumination.",
     demoHtml: `
       <div class="preview-aurora-glow">
         <div class="aurora-blob a1"></div>
         <div class="aurora-blob a2"></div>
         <div class="aurora-blob a3"></div>
+        <div class="aurora-blob a4"></div>
       </div>
     `,
-    prompt: "请帮我实现一个网页动效：极光渐变弥散流光（Aurora Glow Background）。在深色或纯色背景上放置多个带有 filter: blur(60px) 的绝对定位径向渐变色块，运用 @keyframes 结合 transform: translate() rotate() 与 opacity 呼吸律动，创造高级柔和的极光背景动效。",
-    enPrompt: "Please help me implement a web motion: Aurora Glow Background. Combine heavy gaussian blur layers with radial gradients animating along continuous parametric curves."
+    prompt: "请帮我实现一个网页动效：极光渐变弥散流光（Aurora Glow Background）。在深黑夜空背景上放置多个带有 filter: blur(60px) 的翡翠绿/青冰/柠金径向渐变色块，运用 @keyframes 结合 transform: translate() rotate() 与有机形变呼吸律动，创造高级柔和的极光背景动效。",
+    enPrompt: "Please help me implement a web motion: Aurora Glow Background. Combine heavy gaussian blur layers with emerald, cyan, and lime gradients animating along continuous parametric curves."
   },
   {
     id: "meteors-background",
     zhName: "流星夜空划过特效",
     enName: "Meteors Shower Background",
     category: "进入",
-    description: "深邃夜空氛围动效。带有渐变尾迹的倾斜光束以随机延迟和速度从右上角滑向左下角，伴随头部光斑微闪与渐隐。",
-    enDescription: "Ambient cosmic trail. Angled glowing streaks shooting across dark cards with random delays, subtle head glows, and linear trails.",
+    description: "深邃奢华夜空天文台动效。超细渐变尾迹光束以真实流星轨道高速划破夜空，头部伴随耀眼钻石高光，点缀微光星海。",
+    enDescription: "Luxury observatory night sky. High-speed tapered needle meteors shoot across dark starfields with diamond head glows.",
     demoHtml: `
       <div class="preview-meteors-box">
         <span class="m-beam m1"></span>
@@ -751,8 +752,8 @@ const motions = [
         <span class="m-beam m3"></span>
       </div>
     `,
-    prompt: "请帮我实现一个网页动效：流星夜空划过特效（Meteors Shower Background）。通过纯 CSS 生成倾斜 215deg 的流星光束，伪元素头部添加圆点发光阴影，主体使用 linear-gradient 尾迹渐变，通过 @keyframes 从屏幕外滑入并淡出消失。",
-    enPrompt: "Please help me implement a web motion: Meteors Shower Background. Render angled meteor streaks with glowing head points and fading gradients shooting across containers."
+    prompt: "请帮我实现一个网页动效：流星夜空划过特效（Meteors Shower Background）。通过纯 CSS 生成倾斜 215deg 的针尖流星光束，头部添加白炽发光光斑，主体使用极致平滑的 linear-gradient 尾迹渐变，配合微光星空背景创造奢华夜空动效。",
+    enPrompt: "Please help me implement a web motion: Meteors Shower Background. Render angled needle-sharp meteor streaks with diamond head points and fading trails shooting across cosmic starfields."
   },
   {
     id: "typewriter-cycle",
