@@ -1092,51 +1092,212 @@ export const motions = [
     zhName: "粘性滚动叙事",
     enName: "Sticky Scroll Storytelling",
     category: "滚动",
-    description: "左侧视觉展示块为 `position: sticky` 锁死，右侧长文字继续流动。在文字流过不同节点时，左侧颜色产生响应演变。",
-    enDescription: "Locks the left visual box in place via position sticky while the right narrative text scrolls, changing the visual state dynamically.",
-    prompt: "请帮我实现一个网页动效：粘性滚动叙事（Sticky Scroll）。左右双栏，滚动时左栏图表常驻，右栏文字滚动时更新左栏图表状态。",
-    enPrompt: "Please help me implement a web motion: Sticky Scroll Storytelling. A two-column layout where the visual illustration locks in place while the text scrolls, updating the visual state at key scroll points.",
-    demoHtml: "\n      <div class=\"preview-sticky-container\">\n        <div class=\"preview-sticky-left\">\n          <div class=\"preview-sticky-box\"></div>\n        </div>\n        <div class=\"preview-sticky-right\">\n          <div class=\"preview-sticky-item\"></div>\n          <div class=\"preview-sticky-item\"></div>\n          <div class=\"preview-sticky-item\"></div>\n          <div class=\"preview-sticky-item\"></div>\n        </div>\n      </div>\n    ",
+    description: "左侧视觉图形卡片 `position: sticky` 吸顶锁死，右侧叙事长文持续流动。随章节滚动，左侧图形实时产生多维动态形态演变。",
+    enDescription: "Locks the left visual illustration in place via position sticky while the right narrative text scrolls, dynamically morphing through multi-phase kinetic states.",
+    prompt: "请帮我实现一个网页动效：粘性滚动叙事（Sticky Scroll Storytelling）。左右双栏布局，左侧图形展示卡片吸顶常驻，右侧文字滚动到不同章节节点时，左侧图形平滑切换形态、指标与动态图表，并带有进度指示与高亮边框。",
+    enPrompt: "Please help me implement a web motion: Sticky Scroll Storytelling. A two-column layout where the left visual graphic locks in place via position sticky while the narrative text scrolls, dynamically updating multi-state kinetic illustrations and telemetry chips.",
+    demoHtml: `
+      <div class="preview-sticky-container">
+        <div class="preview-sticky-left">
+          <div class="preview-sticky-box"></div>
+        </div>
+        <div class="preview-sticky-right">
+          <div class="preview-sticky-item"></div>
+          <div class="preview-sticky-item"></div>
+          <div class="preview-sticky-item"></div>
+        </div>
+      </div>
+    `,
     render: (container) => {
       container.innerHTML = `
         <div class="sticky-scroll-full-page">
+          <!-- Left Sticky Visual Card -->
           <div class="sticky-left-panel">
-            <div class="sticky-visual-box" id="visualBox"></div>
+            <div class="sticky-visual-stage">
+              <div class="sticky-visual-card" id="visualCard">
+                <div class="sticky-card-header">
+                  <div class="sticky-phase-pill" id="visualPhasePill">PHASE 01 / 03</div>
+                  <div class="sticky-status-dot"></div>
+                </div>
+
+                <div class="sticky-artboard">
+                  <!-- State 0: Concentric Radar & Architecture Matrix -->
+                  <div class="sticky-state-layer state-layer-0 active" id="stateLayer0">
+                    <div class="sticky-graphic-core core-radar">
+                      <div class="radar-ring ring-1"></div>
+                      <div class="radar-ring ring-2"></div>
+                      <div class="radar-ring ring-3"></div>
+                      <div class="radar-center-node">
+                        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                      </div>
+                    </div>
+                    <div class="sticky-metric-pill">
+                      <span class="metric-key">LATENCY</span>
+                      <span class="metric-val">12ms · 60 FPS</span>
+                    </div>
+                  </div>
+
+                  <!-- State 1: Dynamic Waveform & Velocity Flux -->
+                  <div class="sticky-state-layer state-layer-1" id="stateLayer1">
+                    <div class="sticky-graphic-core core-wave">
+                      <div class="wave-bars-container">
+                        <div class="wave-bar-col b1"></div>
+                        <div class="wave-bar-col b2"></div>
+                        <div class="wave-bar-col b3"></div>
+                        <div class="wave-bar-col b4"></div>
+                        <div class="wave-bar-col b5"></div>
+                        <div class="wave-bar-col b6"></div>
+                        <div class="wave-bar-col b7"></div>
+                      </div>
+                      <div class="wave-center-icon">
+                        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                      </div>
+                    </div>
+                    <div class="sticky-metric-pill">
+                      <span class="metric-key">VELOCITY FLUX</span>
+                      <span class="metric-val">340 rad/s</span>
+                    </div>
+                  </div>
+
+                  <!-- State 2: Neural Mesh & Security Shield -->
+                  <div class="sticky-state-layer state-layer-2" id="stateLayer2">
+                    <div class="sticky-graphic-core core-mesh">
+                      <div class="mesh-hex-grid"></div>
+                      <div class="mesh-center-shield">
+                        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+                      </div>
+                    </div>
+                    <div class="sticky-metric-pill">
+                      <span class="metric-key">ECOSYSTEM</span>
+                      <span class="metric-val">VERIFIED ✓</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="sticky-card-footer-bar">
+                  <div class="sticky-track-name" id="visualTrackName">${getCurrentLang() === "en" ? "01. Core Architecture" : "01. 极简架构基座"}</div>
+                  <div class="sticky-progress-track">
+                    <div class="sticky-progress-fill" id="visualProgressFill" style="width: 33.3%;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
+
+          <!-- Right Narrative Flow -->
           <div class="sticky-right-panel">
-            <div class="sticky-text-section" data-step="0">
-              <h2>${getCurrentLang() === "en" ? "Chapter 1. Pure Essence" : "第一章. 极致纯净"}</h2>
-              <p>${getCurrentLang() === "en" ? "At the beginning of the scroll, the visual block displays its classic original blue, indicating a solid foundation." : "在滚动的起始段落，核心视觉方块呈现最初的经典蓝色，提示稳固的第一步。"}</p>
+            <div class="sticky-story-hero">
+              <span class="sticky-story-badge">✦ TWO-COLUMN PINNED NARRATIVE</span>
+              <h1>${getCurrentLang() === "en" ? "Interactive Sticky Story" : "双栏粘性滚动叙事"}</h1>
+              <p>${getCurrentLang() === "en" ? "Scroll down to see the locked left illustration dynamically transform through multiple narrative phases." : "向下滚动观察左侧图形吸顶锁死，随右侧章节滚动实时产生多维形态与状态演变。"}</p>
+              <button class="btn-sticky-story-auto" id="btnStoryAuto">
+                ⚡ ${getCurrentLang() === "en" ? "Auto Scroll Story" : "自动演示滚动叙事"}
+              </button>
             </div>
+
+            <div class="sticky-text-section active" data-step="0">
+              <div class="section-badge">CHAPTER 01</div>
+              <h2>${getCurrentLang() === "en" ? "Core Architecture Foundation" : "第一章. 极简架构基座"}</h2>
+              <p>${getCurrentLang() === "en" ? "At the initial viewport, the visual card renders its concentric gyro matrix, representing structural stability, ultra-low latency, and mathematical precision." : "在滚动的初始段落，左侧常驻卡片呈现高精度同心陀螺仪矩阵，象征架构基座的极度稳固与纯净数学秩序。"}</p>
+              <div class="section-tag-list">
+                <span>#Foundation</span><span>#Architecture</span><span>#CleanCode</span>
+              </div>
+            </div>
+
             <div class="sticky-text-section" data-step="1">
-              <h2>${getCurrentLang() === "en" ? "Chapter 2. Vibrant Collision" : "第二章. 热烈碰撞"}</h2>
-              <p>${getCurrentLang() === "en" ? "As you scroll down here, the visual core transitions into a vivid magenta combined with a slight rotation." : "随着页面滚动至此，视觉核心平滑过渡为鲜活的紫红色，伴随轻微的角度自转。"}</p>
+              <div class="section-badge">CHAPTER 02</div>
+              <h2>${getCurrentLang() === "en" ? "Dynamic Fluid Momentum" : "第二章. 动态流体力学"}</h2>
+              <p>${getCurrentLang() === "en" ? "As you scroll down, the visual core seamlessly morphs into an oscillating harmonic wave spectrum with live velocity vector flux." : "随着页面向下滚动，左侧视觉核心无缝形变为高频振荡谐波频谱，展现真实物理阻尼动量与流体加速度。"}</p>
+              <div class="section-tag-list">
+                <span>#KineticPhysics</span><span>#HarmonicWave</span><span>#HookeLaw</span>
+              </div>
             </div>
+
             <div class="sticky-text-section" data-step="2">
-              <h2>${getCurrentLang() === "en" ? "Chapter 3. Tech Rebirth" : "第三章. 科技新生"}</h2>
-              <p>${getCurrentLang() === "en" ? "Nearing the end, the block transitions back to a refreshing emerald green with subtle scaling for features overview." : "步入尾声，模块重归清凉的翡翠绿，并微幅缩放，完成分段式的产品特征讲解。"}</p>
+              <div class="section-badge">CHAPTER 03</div>
+              <h2>${getCurrentLang() === "en" ? "Autonomous Ecosystem" : "第三章. 智能生态闭环"}</h2>
+              <p>${getCurrentLang() === "en" ? "Nearing the conclusion, the visual module evolves into an encrypted mesh security shield, validating full-pipeline deployment." : "步入叙事终章，模块最终演进为互联神经网格与安全校验盾牌，宣告全链路工程化闭环交付。"}</p>
+              <div class="section-tag-list">
+                <span>#Ecosystem</span><span>#ZeroDependency</span><span>#ProductionReady</span>
+              </div>
             </div>
           </div>
         </div>
       `;
-      
-      const visualBox = container.querySelector("#visualBox");
+
       const sections = container.querySelectorAll(".sticky-text-section");
-      
-      const colors = ["#2563eb", "#ec4899", "#10b981"];
-      const transforms = ["rotate(0deg) scale(1)", "rotate(45deg) scale(1.1)", "rotate(90deg) scale(1.0)"];
-      
-      const onScroll = () => {
-        sections.forEach((sec, index) => {
-          const rect = sec.getBoundingClientRect();
-          if (rect.top < window.innerHeight / 2 && rect.bottom > window.innerHeight / 2) {
-            visualBox.style.backgroundColor = colors[index];
-            visualBox.style.transform = transforms[index];
+      const layers = [
+        container.querySelector("#stateLayer0"),
+        container.querySelector("#stateLayer1"),
+        container.querySelector("#stateLayer2")
+      ];
+      const phasePill = container.querySelector("#visualPhasePill");
+      const trackName = container.querySelector("#visualTrackName");
+      const progressFill = container.querySelector("#visualProgressFill");
+      const btnAuto = container.querySelector("#btnStoryAuto");
+
+      const phaseTitles = [
+        getCurrentLang() === "en" ? "01. Core Architecture" : "01. 极简架构基座",
+        getCurrentLang() === "en" ? "02. Dynamic Fluid Momentum" : "02. 动态流体力学",
+        getCurrentLang() === "en" ? "03. Autonomous Ecosystem" : "03. 智能生态闭环"
+      ];
+      const phaseLabels = ["PHASE 01 / 03", "PHASE 02 / 03", "PHASE 03 / 03"];
+      const progressWidths = ["33.3%", "66.6%", "100%"];
+
+      let currentActiveIdx = -1;
+
+      const setActiveStep = (idx) => {
+        if (idx === currentActiveIdx) return;
+        currentActiveIdx = idx;
+
+        layers.forEach((layer, lIdx) => {
+          if (layer) {
+            if (lIdx === idx) layer.classList.add("active");
+            else layer.classList.remove("active");
           }
         });
+
+        sections.forEach((sec, sIdx) => {
+          if (sIdx === idx) sec.classList.add("active");
+          else sec.classList.remove("active");
+        });
+
+        if (phasePill) phasePill.textContent = phaseLabels[idx];
+        if (trackName) trackName.textContent = phaseTitles[idx];
+        if (progressFill) progressFill.style.width = progressWidths[idx];
       };
-      
+
+      const onScroll = () => {
+        const midY = window.innerHeight * 0.5;
+        let chosenIdx = 0;
+        let minDistance = Infinity;
+
+        sections.forEach((sec, idx) => {
+          const rect = sec.getBoundingClientRect();
+          const secCenter = rect.top + rect.height / 2;
+          const dist = Math.abs(secCenter - midY);
+          if (dist < minDistance) {
+            minDistance = dist;
+            chosenIdx = idx;
+          }
+        });
+
+        setActiveStep(chosenIdx);
+      };
+
       window.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+
+      if (btnAuto) {
+        btnAuto.addEventListener("click", () => {
+          const targetY = container.offsetTop + container.scrollHeight - window.innerHeight;
+          window.scrollTo({ top: targetY, behavior: "smooth" });
+          setTimeout(() => {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }, 3600);
+        });
+      }
+
       container.addEventListener("cleanup", () => {
         window.removeEventListener("scroll", onScroll);
       }, { once: true });

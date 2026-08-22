@@ -203,58 +203,108 @@
   }
 }
 
-/* 6. Sticky Position Demo */
+/* 6. Sticky Position Demo (Interactive Multi-State Visual Box) */
 .preview-sticky-container {
-  width: 140px;
+  width: 130px;
   height: 90px;
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
-  background-color: var(--bg-primary);
+  background-color: var(--bg-secondary);
   display: flex;
   overflow: hidden;
+  box-shadow: var(--shadow-sm);
 }
 
 .preview-sticky-left {
-  width: 45%;
+  width: 48%;
   border-right: 1px solid var(--border-color);
   padding: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: var(--bg-primary);
 }
 
 .preview-sticky-box {
-  width: 100%;
-  height: 25px;
+  width: 44px;
+  height: 44px;
   border-radius: var(--radius-sm);
-  background-color: var(--accent-color);
-  transform: translateY(0);
-  /* Stays locked in center */
+  background: var(--bg-secondary);
+  border: 1.5px solid var(--accent-color);
+  box-shadow: 0 4px 14px var(--accent-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  animation: keyframe-sticky-morph 4s ease-in-out infinite;
+}
+
+.preview-sticky-box::after {
+  content: "";
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  background: var(--accent-color);
+  animation: keyframe-sticky-inner 4s ease-in-out infinite;
 }
 
 .preview-sticky-right {
-  width: 55%;
+  width: 52%;
   padding: 8px;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  animation: keyframe-sticky-right 4s linear infinite;
+  animation: keyframe-sticky-right 4s ease-in-out infinite;
 }
 
 .preview-sticky-item {
   width: 100%;
-  height: 16px;
+  height: 14px;
   border-radius: 4px;
   background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
   flex-shrink: 0;
+}
+
+@keyframes keyframe-sticky-morph {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+    border-radius: 8px;
+  }
+  35% {
+    transform: scale(1.08) rotate(45deg);
+    border-radius: 14px;
+  }
+  70% {
+    transform: scale(0.95) rotate(90deg);
+    border-radius: 50%;
+  }
+}
+
+@keyframes keyframe-sticky-inner {
+  0%, 100% {
+    transform: rotate(0deg);
+    border-radius: 3px;
+  }
+  35% {
+    transform: rotate(-45deg);
+    border-radius: 50%;
+  }
+  70% {
+    transform: rotate(-90deg);
+    border-radius: 2px;
+  }
 }
 
 @keyframes keyframe-sticky-right {
   0%, 100% {
     transform: translateY(0);
   }
-  50% {
-    transform: translateY(-38px);
+  35% {
+    transform: translateY(-24px);
+  }
+  70% {
+    transform: translateY(-48px);
   }
 }
 
