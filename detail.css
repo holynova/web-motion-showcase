@@ -4003,23 +4003,29 @@ body {
   text-transform: uppercase;
 }
 .tw-headline-rack {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 1.3em;
+  position: relative;
+  font-size: clamp(2.5rem, 8vw, 4.5rem);
+  min-height: 1.2em;
 }
 .tw-dynamic-word {
-  font-size: clamp(2.5rem, 8vw, 4.5rem);
+  font-size: inherit;
   font-weight: 900;
   color: var(--accent-color);
   letter-spacing: -0.02em;
+  line-height: 1;
 }
 .tw-cursor-caret {
   display: inline-block;
   width: 4px;
-  height: 1.1em;
-  background: var(--text-primary);
+  height: 0.82em;
+  min-height: 36px;
+  background-color: var(--accent-color);
   margin-left: 6px;
+  border-radius: 2px;
+  vertical-align: -0.02em;
   animation: keyframe-tw-blink 0.8s steps(2, start) infinite;
 }
 @keyframes keyframe-tw-blink {
@@ -4061,7 +4067,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #0b0f19;
+  background: #030712;
   overflow: hidden;
 }
 .starfield-canvas {
@@ -4069,26 +4075,36 @@ body {
   inset: 0;
   width: 100%;
   height: 100%;
+  pointer-events: none;
 }
 .starfield-content-card {
   position: relative;
   z-index: 10;
   background: rgba(15, 23, 42, 0.75);
-  backdrop-filter: blur(16px);
+  backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: var(--radius-lg);
-  padding: 36px;
+  padding: 36px 40px;
   text-align: center;
-  max-width: 460px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  max-width: 480px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
 }
-.star-badge { font-size: 0.75rem; font-weight: 800; color: #38bdf8; background: rgba(56, 189, 248, 0.15); padding: 4px 12px; border-radius: 20px; }
-.starfield-content-card h2 { font-size: 1.8rem; font-weight: 800; color: #ffffff; }
-.starfield-content-card p { font-size: 0.95rem; color: #94a3b8; line-height: 1.6; }
+.star-badge {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 4px 14px;
+  border-radius: 20px;
+}
+.starfield-content-card h2 { font-size: 1.85rem; font-weight: 850; color: #ffffff; letter-spacing: -0.02em; }
+.starfield-content-card p { font-size: 0.95rem; color: #cbd5e1; line-height: 1.6; }
 
 /* 55. Interactive Cursor Trail Sandbox */
 .sandbox-trail-stage {
@@ -4102,28 +4118,24 @@ body {
   overflow: hidden;
   cursor: crosshair;
 }
+.trail-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
 .trail-lead-hint {
+  position: relative;
+  z-index: 5;
   text-align: center;
   pointer-events: none;
   user-select: none;
+  max-width: 540px;
+  padding: 0 20px;
 }
-.trail-lead-hint h2 { font-size: 2.2rem; font-weight: 900; color: var(--text-primary); margin-bottom: 8px; }
-.trail-lead-hint p { color: var(--text-secondary); font-size: 1rem; }
-.trail-spark-bead {
-  position: absolute;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: var(--accent-color);
-  box-shadow: 0 0 16px var(--accent-color);
-  transform: translate(-50%, -50%) scale(1);
-  pointer-events: none;
-  animation: keyframe-spark-fade 450ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-@keyframes keyframe-spark-fade {
-  0% { transform: translate(-50%, -50%) scale(1); opacity: 0.9; }
-  100% { transform: translate(-50%, -50%) scale(0.1); opacity: 0; }
-}
+.trail-lead-hint h2 { font-size: 2.2rem; font-weight: 900; color: var(--text-primary); margin-bottom: 10px; letter-spacing: -0.02em; }
+.trail-lead-hint p { color: var(--text-secondary); font-size: 1rem; line-height: 1.6; }
 
 /* 56. Direction-Aware Sandbox */
 .sandbox-dir-stage {
@@ -4349,7 +4361,6 @@ body {
   border-radius: 50%;
   background: var(--accent-color);
   color: #ffffff;
-  font-size: 1.8rem;
   border: none;
   cursor: pointer;
   box-shadow: 0 8px 24px var(--accent-soft);
@@ -4357,11 +4368,21 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 350ms cubic-bezier(0.34, 1.56, 0.64, 1), background-color var(--transition-fast);
+  padding: 0;
+  transition: transform 350ms cubic-bezier(0.34, 1.56, 0.64, 1), background-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+.fab-cross-icon {
+  display: block;
+  margin: auto;
+  pointer-events: none;
+  transition: transform 350ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 .fab-dock-island.expanded .fab-master-trigger {
-  transform: rotate(45deg);
   background-color: var(--text-primary);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+.fab-dock-island.expanded .fab-cross-icon {
+  transform: rotate(45deg);
 }
 .fab-menu-items {
   position: absolute;
@@ -4371,11 +4392,11 @@ body {
   opacity: 0;
   pointer-events: none;
   display: flex;
-  gap: 12px;
+  gap: 8px;
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
   border-radius: 40px;
-  padding: 8px 16px;
+  padding: 8px 14px;
   box-shadow: var(--shadow-lg);
   transition: all 400ms cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -4388,7 +4409,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  justify-content: center;
+  gap: 6px;
   background: none;
   border: none;
   cursor: pointer;
@@ -4397,9 +4419,31 @@ body {
   color: var(--text-primary);
   transition: all var(--transition-fast);
 }
-.fab-action-item:hover { background: var(--bg-tertiary); transform: translateY(-2px); }
-.f-icon { font-size: 1.3rem; }
-.f-lbl { font-size: 0.72rem; font-weight: 700; }
+.fab-action-item:hover {
+  background: var(--bg-tertiary);
+  transform: translateY(-2px);
+}
+.f-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  color: var(--accent-color);
+}
+.f-icon svg {
+  display: block;
+}
+.f-lbl {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+.fab-action-item:hover .f-lbl {
+  color: var(--text-primary);
+}
 
 /* 61. Audio Waveform Sandbox */
 .sandbox-waveform-stage {

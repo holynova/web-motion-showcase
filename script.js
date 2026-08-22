@@ -776,8 +776,8 @@ const motions = [
     zhName: "闪烁微光星空点阵",
     enName: "Twinkling Starfield Particles",
     category: "进入",
-    description: "深色卡片魔法高光。随机分布的微型星芒粒子以不同周期呼吸闪烁与自旋，光标移动时产生极轻微的 2.5D 视差推移。",
-    enDescription: "Subtle cosmic sparkle. Multi-sized twinkling star particles breathing and pulsing at varied frequencies with subtle cursor parallax.",
+    description: "深色卡片魔法高光。纯白微型星芒与星空粒子以不同周期呼吸闪烁与自旋，光标移动时产生极轻微的 2.5D 视差推移。",
+    enDescription: "Subtle cosmic sparkle. Pure white twinkling star particles breathing and pulsing at varied frequencies with subtle cursor parallax.",
     demoHtml: `
       <div class="preview-starfield">
         <span class="star-pt s1">✦</span>
@@ -786,16 +786,16 @@ const motions = [
         <span class="star-pt s4">✧</span>
       </div>
     `,
-    prompt: "请帮我实现一个网页动效：闪烁微光星空点阵（Twinkling Starfield Particles）。在容器内生成随机坐标的微型星芒（✦ / ✧），各自分配随机动画延时与缩放呼吸周期，模拟夜空繁星闪烁的静谧高级氛围。",
-    enPrompt: "Please help me implement a web motion: Twinkling Starfield Particles. Scatter glowing multi-frequency star glyphs with staggered keyframe pulsing and parallax."
+    prompt: "请帮我实现一个网页动效：闪烁微光星空点阵（Twinkling Starfield Particles）。在深黑容器内生成随机坐标的纯白微型星芒（✦ / ✧），各自分配随机动画延时与缩放呼吸周期，模拟夜空繁星闪烁的静谧高级氛围。",
+    enPrompt: "Please help me implement a web motion: Twinkling Starfield Particles. Scatter pure white glowing star glyphs with staggered keyframe pulsing and parallax."
   },
   {
     id: "cursor-trail",
     zhName: "光标轨迹动态拖影",
     enName: "Interactive Cursor Trail",
     category: "悬停",
-    description: "创意工作室品牌秀场。当鼠标在页面快速滑过时，在历史坐标路径上留下一串带惯性滞后、随时间渐隐消散的微缩缩略图或光斑粒子。",
-    enDescription: "Creative agency gesture trail. Leaves a fluid ribbon of decaying image chips or glowing dots lagging smoothly along the pointer's velocity path.",
+    description: "创意工作室品牌秀场。当鼠标在页面快速滑过时，在历史坐标路径上留下一串带惯性滞后、自然衰减渐隐的丝滑流体贝塞尔拖影。",
+    enDescription: "Creative agency gesture trail. Leaves a fluid ribbon of decaying glowing nodes lagging smoothly along the pointer's velocity path.",
     demoHtml: `
       <div class="preview-cursor-trail">
         <div class="trail-ghost g1"></div>
@@ -804,8 +804,8 @@ const motions = [
         <div class="trail-head"></div>
       </div>
     `,
-    prompt: "请帮我实现一个网页动效：光标轨迹动态拖影（Interactive Cursor Trail）。监听 mousemove 事件并在鼠标移动距离超过阈值时生成历史坐标节点，使用 requestAnimationFrame 驱动历史节点按照生命周期逐步缩小和透明度衰减，并在 500ms 后自动清理 DOM。",
-    enPrompt: "Please help me implement a web motion: Interactive Cursor Trail. Spawn ephemeral trailing nodes on mouse trajectory that scale down and fade with inertia."
+    prompt: "请帮我实现一个网页动效：光标轨迹动态拖影（Interactive Cursor Trail）。监听 mousemove 事件并使用 Canvas 2D 记录历史坐标序列，通过贝塞尔样条曲线连接轨迹，配合 requestAnimationFrame 实现平滑的透明度衰减与粒子消散，消除闪烁感。",
+    enPrompt: "Please help me implement a web motion: Interactive Cursor Trail. Render a smooth continuous Canvas ribbon along cursor trajectory with fluid quadratic bezier curve interpolation."
   },
   {
     id: "direction-aware-hover",
@@ -869,8 +869,9 @@ const motions = [
     demoHtml: `
       <div class="preview-sliding-tabs">
         <div class="tab-pill-active"></div>
-        <span class="tab-opt active">Overview</span>
-        <span class="tab-opt">Docs</span>
+        <span class="tab-opt active">Design</span>
+        <span class="tab-opt">Code</span>
+        <span class="tab-opt">Build</span>
       </div>
     `,
     prompt: "请帮我实现一个网页动效：滑动指示器分段标签页（Sliding Indicator Tabs）。Tab 栏内设置一个绝对定位的背景高亮药丸，切换 Tab 时读取目标按钮的 offsetLeft 和 offsetWidth，通过 transform: translateX() 与 width 配合 spring 弹性曲线平滑滑向目标项。",
@@ -885,7 +886,12 @@ const motions = [
     enDescription: "Expanding floating action button. Compact trigger expands with spring damping into an action dock with staggered item reveals.",
     demoHtml: `
       <div class="preview-fab-dock">
-        <div class="fab-bubble"><span class="fab-plus">+</span></div>
+        <div class="fab-bubble">
+          <svg class="fab-svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+        </div>
       </div>
     `,
     prompt: "请帮我实现一个网页动效：折叠展开浮动操作岛（Expanding FAB Island Menu）。初始为右下角圆形悬浮图标，点击时触发 CSS 尺寸膨胀与 border-radius 形变，菜单内部图标按 transition-delay 错峰弹出，再次点击或失焦时平滑收起。",

@@ -3017,9 +3017,9 @@ const motions = [
         <div class="sandbox-starfield-stage" id="starfieldStage">
           <canvas class="starfield-canvas" id="starCanvas"></canvas>
           <div class="starfield-content-card">
-            <span class="star-badge">✨ INFINITE CONSTELLATIONS</span>
-            <h2>Celestial Particle System</h2>
-            <p>180+ 动态微光星芒，随光标位移产生微小 2.5D 深度视差</p>
+            <span class="star-badge">✦ INFINITE CONSTELLATIONS</span>
+            <h2>Pure White Stellar Matrix</h2>
+            <p>180+ 纯白微光星芒阵列，随光标位移产生微小 2.5D 深度视差与静谧呼吸</p>
           </div>
         </div>
       `;
@@ -3031,14 +3031,14 @@ const motions = [
       let height = canvas.height = stage.clientHeight;
 
       const stars = [];
-      for (let i = 0; i < 180; i++) {
+      for (let i = 0; i < 200; i++) {
         stars.push({
           x: Math.random() * width,
           y: Math.random() * height,
-          size: Math.random() * 2 + 0.8,
-          alpha: Math.random(),
-          speed: Math.random() * 0.02 + 0.005,
-          color: Math.random() > 0.3 ? "#ffffff" : (Math.random() > 0.5 ? "#38bdf8" : "#f472b6")
+          size: Math.random() * 2.2 + 0.6,
+          alpha: Math.random() * Math.PI * 2,
+          speed: Math.random() * 0.025 + 0.008,
+          isDiamond: Math.random() > 0.85
         });
       }
 
@@ -3051,20 +3051,54 @@ const motions = [
         mouseY = e.clientY - rect.top;
       });
 
+      window.addEventListener("resize", () => {
+        if (!stage.isConnected) return;
+        width = canvas.width = stage.clientWidth;
+        height = canvas.height = stage.clientHeight;
+      });
+
       let animId;
       const render = () => {
+        if (!stage.isConnected) return;
         ctx.clearRect(0, 0, width, height);
-        const offsetX = (mouseX - width / 2) * 0.04;
-        const offsetY = (mouseY - height / 2) * 0.04;
+        const offsetX = (mouseX - width / 2) * 0.035;
+        const offsetY = (mouseY - height / 2) * 0.035;
 
         stars.forEach(s => {
           s.alpha += s.speed;
-          const currentAlpha = Math.abs(Math.sin(s.alpha));
-          ctx.beginPath();
-          ctx.arc(s.x + offsetX * (s.size * 0.5), s.y + offsetY * (s.size * 0.5), s.size, 0, Math.PI * 2);
-          ctx.fillStyle = s.color;
-          ctx.globalAlpha = currentAlpha * 0.8 + 0.1;
-          ctx.fill();
+          const currentAlpha = Math.abs(Math.sin(s.alpha)) * 0.85 + 0.15;
+          const sx = s.x + offsetX * (s.size * 0.6);
+          const sy = s.y + offsetY * (s.size * 0.6);
+
+          ctx.fillStyle = "#ffffff";
+          ctx.globalAlpha = currentAlpha;
+
+          if (s.isDiamond && s.size > 1.8) {
+            // Draw pure white 4-pointed micro diamond sparkle
+            ctx.save();
+            ctx.translate(sx, sy);
+            ctx.rotate(s.alpha * 0.2);
+            ctx.beginPath();
+            const arm = s.size * 2.2;
+            ctx.moveTo(0, -arm);
+            ctx.lineTo(s.size * 0.35, 0);
+            ctx.lineTo(0, arm);
+            ctx.lineTo(-s.size * 0.35, 0);
+            ctx.closePath();
+            ctx.fill();
+            ctx.beginPath();
+            ctx.moveTo(-arm, 0);
+            ctx.lineTo(0, s.size * 0.35);
+            ctx.lineTo(arm, 0);
+            ctx.lineTo(0, -s.size * 0.35);
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+          } else {
+            ctx.beginPath();
+            ctx.arc(sx, sy, s.size, 0, Math.PI * 2);
+            ctx.fill();
+          }
         });
         animId = requestAnimationFrame(render);
       };
@@ -3083,32 +3117,104 @@ const motions = [
     render: (container) => {
       container.innerHTML = `
         <div class="sandbox-trail-stage" id="trailStage">
+          <canvas class="trail-canvas" id="trailCanvas"></canvas>
           <div class="trail-lead-hint">
-            <h2>Move Pointer to Cast Fluid Ribbon</h2>
-            <p>在画板内快速划动鼠标，观察多级光斑粒子的惯性拖影与生命周期消散</p>
+            <h2>Buttery Fluid Cursor Ribbon</h2>
+            <p>在画板内快速滑动画笔，体验高帧率丝滑贝塞尔光斑拖影与自然消散衰减（消除闪烁抖动）</p>
           </div>
         </div>
       `;
       const stage = container.querySelector("#trailStage");
+      const canvas = container.querySelector("#trailCanvas");
+      const ctx = canvas.getContext("2d");
 
-      let lastX = 0, lastY = 0;
+      let width = canvas.width = stage.clientWidth;
+      let height = canvas.height = stage.clientHeight;
+
+      window.addEventListener("resize", () => {
+        if (!stage.isConnected) return;
+        width = canvas.width = stage.clientWidth;
+        height = canvas.height = stage.clientHeight;
+      });
+
+      const points = [];
+      const MAX_AGE = 35; // Frames of life
+
       stage.addEventListener("mousemove", (e) => {
         const rect = stage.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
 
-        const dist = Math.hypot(x - lastX, y - lastY);
-        if (dist > 14) {
-          lastX = x;
-          lastY = y;
-          const bead = document.createElement("div");
-          bead.className = "trail-spark-bead";
-          bead.style.left = x + "px";
-          bead.style.top = y + "px";
-          stage.appendChild(bead);
-          setTimeout(() => bead.remove(), 450);
-        }
+        points.push({
+          x,
+          y,
+          age: 0,
+          vx: (Math.random() - 0.5) * 0.8,
+          vy: (Math.random() - 0.5) * 0.8,
+          radius: 12 + Math.random() * 4
+        });
       });
+
+      let animId;
+      const render = () => {
+        if (!stage.isConnected) return;
+        ctx.clearRect(0, 0, width, height);
+
+        // Update & draw ribbon points
+        for (let i = points.length - 1; i >= 0; i--) {
+          const pt = points[i];
+          pt.age++;
+          pt.x += pt.vx;
+          pt.y += pt.vy;
+          pt.radius *= 0.96;
+
+          if (pt.age > MAX_AGE || pt.radius < 0.5) {
+            points.splice(i, 1);
+          }
+        }
+
+        // Draw connected smooth ribbon
+        if (points.length > 2) {
+          ctx.beginPath();
+          ctx.moveTo(points[0].x, points[0].y);
+          for (let i = 1; i < points.length - 1; i++) {
+            const xc = (points[i].x + points[i + 1].x) / 2;
+            const yc = (points[i].y + points[i + 1].y) / 2;
+            ctx.quadraticCurveTo(points[i].x, points[i].y, xc, yc);
+          }
+          ctx.strokeStyle = "rgba(59, 130, 246, 0.25)";
+          ctx.lineWidth = 14;
+          ctx.lineCap = "round";
+          ctx.lineJoin = "round";
+          ctx.stroke();
+        }
+
+        // Draw glowing particle nodes with buttery smooth alpha fade
+        points.forEach((pt, idx) => {
+          const progress = pt.age / MAX_AGE;
+          const alpha = (1 - progress) * 0.75;
+          const r = Math.max(0.8, pt.radius * (1 - progress * 0.6));
+
+          const grad = ctx.createRadialGradient(pt.x, pt.y, 0, pt.x, pt.y, r * 1.8);
+          grad.addColorStop(0, `rgba(59, 130, 246, ${alpha})`);
+          grad.addColorStop(0.5, `rgba(96, 165, 250, ${alpha * 0.5})`);
+          grad.addColorStop(1, `rgba(147, 197, 253, 0)`);
+
+          ctx.beginPath();
+          ctx.arc(pt.x, pt.y, r * 1.8, 0, Math.PI * 2);
+          ctx.fillStyle = grad;
+          ctx.fill();
+
+          // Core crisp point
+          ctx.beginPath();
+          ctx.arc(pt.x, pt.y, r * 0.4, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255, 255, 255, ${alpha * 0.9})`;
+          ctx.fill();
+        });
+
+        animId = requestAnimationFrame(render);
+      };
+      render();
     }
   },
   {
@@ -3374,14 +3480,48 @@ const motions = [
             <p>点击下方悬浮按钮，观察其由极简圆点膨胀为全功能交互菜单的弹性过渡</p>
           </div>
           <div class="fab-dock-island" id="fabDock">
-            <button class="fab-master-trigger" id="fabTrigger">
-              <span class="fab-cross">+</span>
+            <button class="fab-master-trigger" id="fabTrigger" aria-label="Toggle Island Menu">
+              <svg class="fab-cross-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
             </button>
             <div class="fab-menu-items">
-              <button class="fab-action-item"><span class="f-icon">✨</span><span class="f-lbl">New Prompt</span></button>
-              <button class="fab-action-item"><span class="f-icon">⚡</span><span class="f-lbl">Quick Boost</span></button>
-              <button class="fab-action-item"><span class="f-icon">📊</span><span class="f-lbl">Metrics</span></button>
-              <button class="fab-action-item"><span class="f-icon">⚙️</span><span class="f-lbl">Config</span></button>
+              <button class="fab-action-item">
+                <span class="f-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+                  </svg>
+                </span>
+                <span class="f-lbl">New Prompt</span>
+              </button>
+              <button class="fab-action-item">
+                <span class="f-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                  </svg>
+                </span>
+                <span class="f-lbl">Quick Boost</span>
+              </button>
+              <button class="fab-action-item">
+                <span class="f-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="20" x2="18" y2="10"></line>
+                    <line x1="12" y1="20" x2="12" y2="4"></line>
+                    <line x1="6" y1="20" x2="6" y2="14"></line>
+                  </svg>
+                </span>
+                <span class="f-lbl">Metrics</span>
+              </button>
+              <button class="fab-action-item">
+                <span class="f-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                  </svg>
+                </span>
+                <span class="f-lbl">Config</span>
+              </button>
             </div>
           </div>
         </div>
