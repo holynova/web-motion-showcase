@@ -322,7 +322,17 @@ const motions = [
     category: "反馈",
     description: "让冰冷数据活起来。在卡片进入屏幕时，数字指标从 0 开始以流畅的缓动加速度向上滚动增长至终值。",
     enDescription: "Breathes life into stats. Numeric values increment smoothly from zero to target value with easing acceleration.",
-    demoHtml: '<div class="preview-count-box">0</div>',
+    demoHtml: `
+      <div class="preview-count-reel">
+        <div class="count-reel-track r1">
+          <span>0</span><span>2</span><span>4</span><span>7</span><span>9</span>
+        </div>
+        <div class="count-reel-track r2">
+          <span>0</span><span>3</span><span>6</span><span>8</span><span>5</span>
+        </div>
+        <span class="count-plus-badge">+</span>
+      </div>
+    `,
     prompt: "请帮我实现一个网页动效：数字滚动（Count Up Animation）。在特定区域展现数据指标时，数字自 0 平滑滚动增加到目标最终数值。",
     enPrompt: "Please help me implement a web motion: Count Up Animation. Animate count-up metrics from zero to the target number using easing curves on load."
   },
@@ -448,7 +458,13 @@ const motions = [
     category: "反馈",
     description: "利用 SVG Turbulence 滤镜渲染出动态的颗粒噪点纹理，Hover 时改变噪点振动，带来越野工业粗野材质感。",
     enDescription: "Renders SVG feTurbulence noise frequency shifts on hover, offering premium industrial rough texture.",
-    demoHtml: '<div class="preview-noise-texture"><span>NOISE</span></div>',
+    demoHtml: `
+      <div class="preview-noise-box">
+        <div class="noise-grain-canvas"></div>
+        <div class="noise-ambient-glow"></div>
+        <span class="noise-badge">NOISE GRAIN</span>
+      </div>
+    `,
     prompt: "请帮我实现一个网页动效：动态噪点材质（Dynamic Noise Texture）。利用 SVG feTurbulence 噪点滤镜，在卡片或背景图层上渲染动态纤维纹路，Hover 时微调噪点频率模拟动态杂讯颗粒效果。",
     enPrompt: "Please help me implement a web motion: Dynamic Noise Texture. Render SVG feTurbulence grain overlay and shift noise frequency on hover."
   },
@@ -459,7 +475,19 @@ const motions = [
     category: "悬停",
     description: "使用 HTML5 Canvas 绘制低密度的点阵。当光标划过时，粒子受重力磁吸排开，并使用胡克定律弹力回弹复位。",
     enDescription: "HTML5 Canvas particle matrix. Hover shifts points away via hookian spring mechanics, returning on leave.",
-    demoHtml: '<div class="preview-ripple-grid"><canvas></canvas></div>',
+    demoHtml: `
+      <div class="preview-ripple-mesh">
+        <span class="r-dot d1"></span>
+        <span class="r-dot d2"></span>
+        <span class="r-dot d3"></span>
+        <span class="r-dot d4"></span>
+        <span class="r-dot d5"></span>
+        <span class="r-dot d6"></span>
+        <span class="r-dot d7"></span>
+        <span class="r-dot d8"></span>
+        <span class="r-dot d9"></span>
+      </div>
+    `,
     prompt: "请帮我实现一个网页动效：Canvas 交互式粒子网格（Interactive Ripple Grid）。在 Canvas 画布上绘制低密度的粒子点阵，计算鼠标位置向量，使其随鼠标滑过而排开，鼠标移开后像橡皮筋一样平滑弹性回弹复位。",
     enPrompt: "Please help me implement a web motion: Canvas Interactive Ripple Grid. Draw particle dots that shift away from the cursor and rebound."
   },
@@ -470,7 +498,13 @@ const motions = [
     category: "反馈",
     description: "点击时 SVG 的矢量 path 进行贝塞尔曲线点插值变形，从基础按钮变成扁平气泡或果冻，伴随弹性震颤。",
     enDescription: "Bouncy shape interpolation. Morph button borders into rounded gel blobs on click.",
-    demoHtml: '<div class="preview-path-morphing"><button class="btn-morphing-effect">Morph Me</button></div>',
+    demoHtml: `
+      <div class="preview-jelly-morph">
+        <div class="jelly-blob">
+          <span>Morph</span>
+        </div>
+      </div>
+    `,
     prompt: "请帮我实现一个网页动效：SVG 路径形变果冻按钮（SVG Path Morphing Button）。当点击或 Hover 按钮时，SVG 背景路径的矢量坐标进行贝塞尔点平滑插值过渡，使其形状产生果冻拉伸并伴随回弹震颤反馈。",
     enPrompt: "Please help me implement a web motion: SVG Path Morphing Button. Interpolate SVG path coordinates for gel shape morphs."
   },
@@ -481,7 +515,14 @@ const motions = [
     category: "悬停",
     description: "标题文字以单个字符拆分，鼠标滑过时应用立方贝塞尔曲线和延迟差，字母呈波浪状平滑向上反弹。",
     enDescription: "Sequence text waves. Hover triggers character offset ripples using cubic-bezier curves.",
-    demoHtml: '<div class="preview-text-wave"><span data-text="WAVE">WAVE</span></div>',
+    demoHtml: `
+      <div class="preview-text-wave">
+        <span class="tw-char c1">W</span>
+        <span class="tw-char c2">A</span>
+        <span class="tw-char c3">V</span>
+        <span class="tw-char c4">E</span>
+      </div>
+    `,
     prompt: "请帮我实现一个网页动效：文字波浪反弹悬停（Text Wave Ripple Hover）。将展示标题拆分为单个字符，在鼠标 Hover 时通过 transition-delay 差值和 cubic-bezier 弹性曲线，让字母呈波浪状顺序向上反弹。",
     enPrompt: "Please help me implement a web motion: Text Wave Ripple Hover. Split text and stagger letter translation offsets on hover."
   },
@@ -537,7 +578,11 @@ const motions = [
     category: "反馈",
     description: "Cyberpunk 风格文本动效。加载或悬停时字符像矩阵密码一样高速随机滚动，随后逐字解密定格为真实文案。",
     enDescription: "Cyberpunk text decoding. Characters cycle through random cipher glyphs before locking into words.",
-    demoHtml: '<div class="preview-text-scramble"><span class="scramble-span">DECRYPT</span></div>',
+    demoHtml: `
+      <div class="preview-text-scramble">
+        <span class="scramble-screen"></span>
+      </div>
+    `,
     prompt: "请帮我实现一个网页动效：黑客密码解密文本（Text Scramble Decrypt）。当触发时，通过 JavaScript 高频替换文字中的字符为随机特殊符号（如 !<>-_\\/[]{}—=+*^?#_），随后由左至右逐字收敛锁定为原始文本。",
     enPrompt: "Please help me implement a web motion: Text Scramble Decrypt. Rapidly randomize characters with cipher glyphs and progressively resolve them left-to-right to the final text."
   },
@@ -561,9 +606,10 @@ const motions = [
     enDescription: "Classic macOS dock. Icons scale up based on a cosine/gaussian distance curve as the cursor glides across.",
     demoHtml: `
       <div class="preview-macos-dock">
-        <div class="dock-mini-icon"></div>
-        <div class="dock-mini-icon active"></div>
-        <div class="dock-mini-icon"></div>
+        <div class="dock-mini-icon d1"></div>
+        <div class="dock-mini-icon d2"></div>
+        <div class="dock-mini-icon d3"></div>
+        <div class="dock-mini-icon d4"></div>
       </div>
     `,
     prompt: "请帮我实现一个网页动效：macOS 拟物鱼眼缩放 Dock 栏（macOS Fisheye Dock）。在底部固定悬浮的图标栏中监听 mousemove，根据光标与各个图标中心的水平距离计算高斯/余弦缩放系数，使光标周围图标产生连贯的鱼眼放大波浪。",

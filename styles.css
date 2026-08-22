@@ -1736,10 +1736,53 @@ a:hover {
 }
 
 /* 23. Count Up Demo */
-.preview-count-box {
+.preview-count-reel {
+  display: inline-flex;
+  align-items: center;
+  height: 38px;
+  overflow: hidden;
   font-size: 2.2rem;
-  font-weight: 800;
+  font-weight: 900;
   color: var(--accent-color);
+  line-height: 38px;
+  letter-spacing: -0.02em;
+}
+.count-reel-track {
+  display: flex;
+  flex-direction: column;
+  height: 38px;
+}
+.count-reel-track span {
+  display: block;
+  height: 38px;
+  line-height: 38px;
+  text-align: center;
+}
+.count-reel-track.r1 {
+  animation: keyframe-count-roll-1 3s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+.count-reel-track.r2 {
+  animation: keyframe-count-roll-2 3s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+.count-plus-badge {
+  font-size: 1.5rem;
+  margin-left: 2px;
+  color: var(--accent-color);
+  animation: keyframe-count-plus-pulse 3s ease-in-out infinite;
+}
+@keyframes keyframe-count-roll-1 {
+  0%, 15% { transform: translateY(0); }
+  45%, 85% { transform: translateY(-152px); }
+  100% { transform: translateY(0); }
+}
+@keyframes keyframe-count-roll-2 {
+  0%, 15% { transform: translateY(0); }
+  55%, 85% { transform: translateY(-152px); }
+  100% { transform: translateY(0); }
+}
+@keyframes keyframe-count-plus-pulse {
+  0%, 15%, 100% { transform: scale(1); opacity: 0.7; }
+  50%, 80% { transform: scale(1.2); opacity: 1; }
 }
 
 /* 24. Image Zoom Demo */
@@ -1920,7 +1963,157 @@ a:hover {
   35%, 65% { height: 42px; opacity: 1; }
 }
 
-/* 31. Spotlight Card Preview */
+/* 31. Dynamic Noise Texture Preview */
+.preview-noise-box {
+  position: relative;
+  width: 96px;
+  height: 62px;
+  border-radius: var(--radius-md);
+  background: #090d16;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-sm);
+}
+.noise-ambient-glow {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent-color) 0%, transparent 70%);
+  opacity: 0.35;
+  filter: blur(8px);
+  animation: keyframe-noise-glow-orbit 4s ease-in-out infinite alternate;
+}
+.noise-grain-canvas {
+  position: absolute;
+  inset: -20px;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.25'/%3E%3C/svg%3E");
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  animation: keyframe-noise-jitter 0.4s steps(4) infinite;
+}
+.noise-badge {
+  position: relative;
+  z-index: 2;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: #ffffff;
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(8px);
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+@keyframes keyframe-noise-jitter {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-3px, 4px); }
+  50% { transform: translate(4px, -3px); }
+  75% { transform: translate(-4px, -2px); }
+  100% { transform: translate(3px, 2px); }
+}
+@keyframes keyframe-noise-glow-orbit {
+  0% { transform: translate(-15px, -10px); }
+  100% { transform: translate(15px, 10px); }
+}
+
+/* 32. Interactive Ripple Grid Preview */
+.preview-ripple-mesh {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  padding: 8px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+}
+.r-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  opacity: 0.3;
+  transition: all 300ms ease;
+  animation: keyframe-grid-wave 2.4s ease-in-out infinite;
+}
+.r-dot.d1 { animation-delay: 0.4s; }
+.r-dot.d2 { animation-delay: 0.2s; }
+.r-dot.d3 { animation-delay: 0.4s; }
+.r-dot.d4 { animation-delay: 0.2s; }
+.r-dot.d5 { animation-delay: 0s; background: var(--accent-color); opacity: 1; }
+.r-dot.d6 { animation-delay: 0.2s; }
+.r-dot.d7 { animation-delay: 0.4s; }
+.r-dot.d8 { animation-delay: 0.2s; }
+.r-dot.d9 { animation-delay: 0.4s; }
+@keyframes keyframe-grid-wave {
+  0%, 100% { transform: scale(0.85); background-color: var(--text-muted); opacity: 0.3; }
+  50% { transform: scale(1.6); background-color: var(--accent-color); opacity: 1; box-shadow: 0 0 8px var(--accent-color); }
+}
+
+/* 33. SVG Path Jelly Morphing Preview */
+.preview-jelly-morph {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.jelly-blob {
+  padding: 10px 22px;
+  background: linear-gradient(135deg, var(--accent-color), #6366f1);
+  color: #ffffff;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  box-shadow: 0 6px 16px var(--accent-soft);
+  animation: keyframe-jelly-blob-morph 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+@keyframes keyframe-jelly-blob-morph {
+  0%, 100% {
+    border-radius: 24px;
+    transform: scale(1) rotate(0deg);
+  }
+  30% {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    transform: scale(1.1, 0.9) rotate(4deg);
+  }
+  65% {
+    border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+    transform: scale(0.92, 1.12) rotate(-4deg);
+  }
+}
+
+/* 34. Text Wave Ripple Hover Preview */
+.preview-text-wave {
+  display: inline-flex;
+  gap: 3px;
+  background: var(--bg-tertiary);
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+}
+.tw-char {
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: var(--accent-color);
+  display: inline-block;
+  animation: keyframe-wave-char-bounce 1.6s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
+}
+.tw-char.c1 { animation-delay: 0s; }
+.tw-char.c2 { animation-delay: 0.15s; }
+.tw-char.c3 { animation-delay: 0.3s; }
+.tw-char.c4 { animation-delay: 0.45s; }
+@keyframes keyframe-wave-char-bounce {
+  0%, 100% { transform: translateY(0) scale(1); }
+  35% { transform: translateY(-8px) scale(1.15); color: var(--text-primary); }
+  60% { transform: translateY(2px) scale(0.95); }
+}
+
+/* 35. Spotlight Card Preview */
 .preview-spotlight-wrap {
   display: flex;
   gap: 8px;
@@ -2039,15 +2232,34 @@ a:hover {
 
 /* 34. Text Scramble Preview */
 .preview-text-scramble {
-  font-family: monospace;
+  font-family: ui-monospace, monospace;
   font-size: 0.85rem;
-  font-weight: 800;
-  color: var(--accent-color);
-  background: var(--bg-tertiary);
-  padding: 6px 12px;
+  font-weight: 900;
+  color: #10b981;
+  background: #020617;
+  padding: 6px 14px;
   border-radius: var(--radius-sm);
-  border: 1px solid var(--border-color);
-  letter-spacing: 0.08em;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  letter-spacing: 0.1em;
+  box-shadow: 0 0 14px rgba(16, 185, 129, 0.18);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 90px;
+}
+.scramble-screen::before {
+  content: "010101";
+  animation: keyframe-scramble-cipher 3.2s steps(1) infinite;
+}
+@keyframes keyframe-scramble-cipher {
+  0% { content: "010101"; }
+  10% { content: "%$9#?@"; }
+  20% { content: "X8#2*!"; }
+  30% { content: "D#3CR7"; }
+  40% { content: "DECR9P"; }
+  50%, 85% { content: "DECRYPT"; color: #34d399; text-shadow: 0 0 8px #10b981; }
+  90% { content: "#!92$0"; }
+  95% { content: "101100"; }
 }
 
 /* 35. Dynamic Island Preview */
@@ -2074,12 +2286,13 @@ a:hover {
 .preview-macos-dock {
   display: flex;
   align-items: flex-end;
-  gap: 5px;
+  gap: 6px;
   padding: 6px 10px;
   background: var(--bg-secondary);
   border-radius: 10px;
   border: 1px solid var(--border-color);
   box-shadow: var(--shadow-sm);
+  height: 36px;
 }
 .dock-mini-icon {
   width: 16px;
@@ -2088,15 +2301,29 @@ a:hover {
   border-radius: 4px;
   background: var(--bg-tertiary);
   border: 1px solid var(--border-color);
-  transition: all var(--transition-fast);
+  animation: keyframe-dock-fisheye-wave 3.2s ease-in-out infinite;
 }
-.dock-mini-icon.active {
-  width: 26px;
-  height: 26px;
-  background: var(--bg-primary);
-  border-color: var(--border-hover);
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-md);
+.dock-mini-icon.d1 { animation-delay: 0s; }
+.dock-mini-icon.d2 { animation-delay: 0.4s; }
+.dock-mini-icon.d3 { animation-delay: 0.8s; }
+.dock-mini-icon.d4 { animation-delay: 1.2s; }
+@keyframes keyframe-dock-fisheye-wave {
+  0%, 100% {
+    width: 14px;
+    height: 14px;
+    background: var(--bg-tertiary);
+    border-color: var(--border-color);
+    transform: translateY(0);
+    box-shadow: none;
+  }
+  20%, 35% {
+    width: 24px;
+    height: 24px;
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+    transform: translateY(-4px);
+    box-shadow: 0 4px 10px var(--accent-soft);
+  }
 }
 
 /* 37. Card Stack Preview */
@@ -2331,9 +2558,40 @@ a:hover {
   position: absolute;
   transition: all var(--transition-normal);
 }
-.stack-slice.s1 { top: 0; background: var(--bg-tertiary); transform: scale(0.9); z-index: 1; }
-.stack-slice.s2 { top: 12px; background: var(--bg-secondary); transform: scale(0.95); z-index: 2; }
-.stack-slice.s3 { top: 24px; background: var(--accent-soft); border-color: var(--accent-color); transform: scale(1); z-index: 3; }
+.stack-slice.s1 {
+  top: 0;
+  background: var(--bg-tertiary);
+  transform: scale(0.9);
+  z-index: 1;
+  animation: keyframe-stack-layer-1 3.2s ease-in-out infinite;
+}
+.stack-slice.s2 {
+  top: 12px;
+  background: var(--bg-secondary);
+  transform: scale(0.95);
+  z-index: 2;
+  animation: keyframe-stack-layer-2 3.2s ease-in-out infinite;
+}
+.stack-slice.s3 {
+  top: 24px;
+  background: var(--accent-soft);
+  border-color: var(--accent-color);
+  transform: scale(1);
+  z-index: 3;
+  animation: keyframe-stack-layer-3 3.2s ease-in-out infinite;
+}
+@keyframes keyframe-stack-layer-1 {
+  0%, 100% { top: 0; transform: scale(0.9); opacity: 0.6; }
+  35%, 65% { top: 0; transform: scale(0.85); opacity: 0.4; }
+}
+@keyframes keyframe-stack-layer-2 {
+  0%, 100% { top: 12px; transform: scale(0.95); opacity: 0.85; }
+  35%, 65% { top: 8px; transform: scale(0.9); opacity: 0.7; }
+}
+@keyframes keyframe-stack-layer-3 {
+  0%, 100% { top: 24px; transform: scale(1) translateY(0); }
+  35%, 65% { top: 16px; transform: scale(0.96) translateY(-4px); }
+}
 
 /* 51. Aurora Background Preview */
 .preview-aurora-glow {
