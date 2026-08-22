@@ -227,7 +227,7 @@ body {
   font-family: var(--font-family);
   background-color: var(--bg-primary);
   color: var(--text-primary);
-  overflow-x: hidden;
+  overflow-x: clip;
   min-height: 100vh;
   transition: background-color var(--transition-normal), color var(--transition-normal);
 }
@@ -239,7 +239,7 @@ body {
   min-height: 100vh;
   position: relative;
   margin-right: 380px;
-  overflow-x: hidden;
+  overflow-x: clip;
   transition: width var(--transition-normal), margin-right var(--transition-normal);
 }
 
@@ -4525,11 +4525,13 @@ body.panel-collapsed .parallax-layer {
 }
 
 /* 50. Card Sticky Stacking Sandbox */
+/* 50. Sticky Stack Sandbox (Progressive Pinning & Layer Deck) */
 .sandbox-sticky-stack-container {
   width: 100%;
-  min-height: 100vh;
+  min-height: 300vh;
   background-color: var(--bg-primary);
-  padding: 30px 24px 340px;
+  padding: 40px 24px 500px;
+  position: relative;
 }
 
 .sticky-stack-hero {
@@ -4538,8 +4540,8 @@ body.panel-collapsed .parallax-layer {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 30px 20px 40px;
-  gap: 12px;
+  padding: 30px 20px 60px;
+  gap: 14px;
 }
 
 .sticky-stack-badge {
@@ -4595,29 +4597,35 @@ body.panel-collapsed .parallax-layer {
 }
 
 .sticky-cards-column {
-  max-width: 660px;
+  max-width: min(640px, 90%);
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 50px;
   position: relative;
+  padding-bottom: 80vh;
 }
 
 .sticky-stack-card {
   position: sticky;
-  top: calc(75px + var(--card-index, 1) * 26px);
+  top: calc(90px + (var(--card-index, 1) - 1) * 36px);
   z-index: var(--card-index, 1);
+  min-height: 260px;
   border-radius: var(--radius-lg);
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
-  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.22), 0 0 0 1px var(--border-color);
-  padding: 38px 32px;
+  box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.3), 0 0 0 1px var(--border-color);
+  padding: 36px 32px;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   gap: 14px;
   transform-origin: top center;
-  transition: transform 120ms ease-out, filter 120ms ease-out, box-shadow 120ms ease-out;
+  transition: transform 80ms ease-out, filter 80ms ease-out, box-shadow 80ms ease-out;
   will-change: transform, filter;
+}
+
+.sticky-stack-card:nth-child(n+2) {
+  margin-top: 40vh;
 }
 
 .step-badge {

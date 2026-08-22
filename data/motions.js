@@ -1517,23 +1517,24 @@ export const motions = [
       const btnAuto = container.querySelector("#btnStickyAuto");
 
       const onScroll = () => {
+        const stickyTops = [90, 126, 162, 198];
         cards.forEach((card, idx) => {
-          const nextCard = cards[idx + 1];
-          if (nextCard) {
-            const cardRect = card.getBoundingClientRect();
+          let stackDepth = 0;
+          for (let j = idx + 1; j < cards.length; j++) {
+            const nextCard = cards[j];
             const nextRect = nextCard.getBoundingClientRect();
-            const overlap = cardRect.bottom - nextRect.top;
-            if (overlap > 0) {
-              const progress = Math.min(Math.max(overlap / (cardRect.height || 200), 0), 1);
-              const scale = 1 - progress * 0.05;
-              const brightness = 1 - progress * 0.14;
-              card.style.transform = `scale(${scale})`;
-              card.style.filter = `brightness(${brightness})`;
-            } else {
-              card.style.transform = "scale(1)";
-              card.style.filter = "brightness(1)";
+            const nextTargetTop = stickyTops[j] || (90 + j * 36);
+            const dist = nextRect.top - nextTargetTop;
+            if (dist < 260) {
+              const factor = Math.min(Math.max((260 - dist) / 260, 0), 1);
+              stackDepth += factor;
             }
           }
+          const scale = Math.max(1 - stackDepth * 0.045, 0.82);
+          const brightness = Math.max(1 - stackDepth * 0.12, 0.65);
+          const translateY = -stackDepth * 6;
+          card.style.transform = `scale(${scale}) translateY(${translateY}px)`;
+          card.style.filter = `brightness(${brightness})`;
         });
       };
 
@@ -1546,7 +1547,7 @@ export const motions = [
           window.scrollTo({ top: targetY, behavior: "smooth" });
           setTimeout(() => {
             window.scrollTo({ top: 0, behavior: "smooth" });
-          }, 3200);
+          }, 3600);
         });
       }
 
