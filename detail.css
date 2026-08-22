@@ -504,16 +504,17 @@ body {
   position: fixed;
   top: 24px;
   right: 24px;
-  width: 330px;
+  width: 380px;
+  max-width: calc(100vw - 48px);
   max-height: calc(100vh - 48px);
   background-color: var(--panel-bg);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
   border: 1px solid var(--panel-border);
   border-radius: var(--radius-lg);
   box-shadow: var(--panel-shadow);
   z-index: 1000;
-  padding: 18px 20px 20px;
+  padding: 20px 22px 22px;
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -533,6 +534,13 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
+}
+
+.panel-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .category-badge {
@@ -540,17 +548,32 @@ body {
   font-weight: 700;
   color: var(--accent-color);
   background-color: var(--accent-soft);
-  padding: 3px 9px;
-  border-radius: 20px;
+  padding: 3px 10px;
+  border-radius: 9999px;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
-  border: 1px solid var(--border-hover);
+  letter-spacing: 0.06em;
+  line-height: 1.4;
 }
 
+.motion-index-badge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+.panel-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-panel-nav,
 .btn-close-panel {
   width: 28px;
   height: 28px;
-  border-radius: 50%;
+  border-radius: 8px;
   background: transparent;
   border: 1px solid transparent;
   color: var(--text-muted);
@@ -561,36 +584,40 @@ body {
   transition: all var(--transition-fast);
 }
 
+.btn-panel-nav:hover,
 .btn-close-panel:hover {
   background-color: var(--bg-tertiary);
   color: var(--text-primary);
   border-color: var(--border-color);
+  transform: scale(1.05);
 }
 
 /* Title Section */
 .panel-title-section {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 4px;
 }
 
 .panel-title-zh {
-  font-size: 1.35rem;
+  font-size: 1.3rem;
   font-weight: 800;
-  line-height: 1.2;
+  line-height: 1.25;
   color: var(--text-primary);
   margin: 0;
+  letter-spacing: -0.015em;
 }
 
 .panel-title-en {
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 500;
   color: var(--text-muted);
+  line-height: 1.3;
 }
 
 /* Description */
 .panel-desc {
-  font-size: 0.875rem;
+  font-size: 0.84rem;
   color: var(--text-secondary);
   line-height: 1.55;
   margin: 0;
@@ -598,42 +625,49 @@ body {
 
 /* AI Prompt Snippet Box */
 .prompt-box-card {
-  background-color: var(--bg-primary);
+  background-color: var(--bg-secondary);
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  padding: 10px 12px;
+  border-radius: 12px;
+  padding: 10px;
   box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .prompt-box-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 8px;
+  gap: 8px;
 }
 
 .prompt-tab-switch {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
   background: var(--bg-tertiary);
-  padding: 2px 3px;
+  padding: 3px;
   border-radius: 8px;
+  flex: 1;
 }
 
 .tab-chip {
+  flex: 1;
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  padding: 3px 8px;
+  justify-content: center;
+  gap: 6px;
+  padding: 5px 8px;
   border-radius: 6px;
-  font-size: 0.72rem;
-  font-weight: 700;
+  font-size: 0.75rem;
+  font-weight: 600;
   color: var(--text-muted);
   transition: all var(--transition-fast);
   cursor: pointer;
   border: none;
   background: transparent;
+  white-space: nowrap;
 }
 
 .tab-chip:hover {
@@ -641,29 +675,37 @@ body {
 }
 
 .tab-chip.active {
-  background: var(--bg-secondary);
-  color: var(--accent-color);
+  background: var(--bg-primary);
+  color: var(--text-primary);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  font-weight: 700;
+}
+
+.tab-chip.active svg {
+  color: var(--accent-color);
 }
 
 .btn-copy-chip {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  font-size: 0.72rem;
-  font-weight: 700;
-  padding: 4px 9px;
-  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 8px;
   background-color: var(--accent-color);
   color: #ffffff;
   border: none;
   cursor: pointer;
+  white-space: nowrap;
   transition: all var(--transition-fast);
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-copy-chip:hover {
   background-color: var(--accent-hover);
   transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }
 
 .btn-copy-chip.copied {
@@ -671,18 +713,19 @@ body {
 }
 
 .prompt-code-wrap {
-  background-color: var(--bg-secondary);
+  background-color: var(--bg-primary);
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
-  padding: 10px;
-  max-height: 120px;
+  border-radius: 8px;
+  padding: 10px 12px;
+  max-height: 135px;
   overflow-y: auto;
+  scrollbar-width: thin;
 }
 
 .prompt-code-text {
   font-size: 0.8rem;
   color: var(--text-primary);
-  line-height: 1.45;
+  line-height: 1.5;
   margin: 0;
   white-space: pre-wrap;
   font-family: inherit;
@@ -690,8 +733,8 @@ body {
 
 .code-syntax-block {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  font-size: 0.75rem;
-  line-height: 1.5;
+  font-size: 0.74rem;
+  line-height: 1.55;
   white-space: pre-wrap;
   word-break: break-all;
   color: var(--text-secondary);
@@ -707,22 +750,29 @@ body {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  height: 42px;
-  border-radius: var(--radius-md);
+  height: 38px;
+  border-radius: 10px;
   font-weight: 600;
-  font-size: 0.875rem;
+  font-size: 0.84rem;
   cursor: pointer;
   transition: all var(--transition-fast);
-  background-color: var(--accent-soft);
-  color: var(--accent-color);
-  border: 1px solid var(--border-hover);
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
   width: 100%;
 }
 
 .btn-replay-action:hover {
   background-color: var(--accent-color);
   color: #ffffff;
+  border-color: var(--accent-color);
   transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-replay-action:active {
+  transform: scale(0.98);
 }
 
 .btn-replay-action:active svg {

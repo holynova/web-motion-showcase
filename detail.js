@@ -759,6 +759,9 @@ const tabCodeBtn = document.getElementById("tabCodeBtn");
 const promptViewWrap = document.getElementById("promptViewWrap");
 const codeViewWrap = document.getElementById("codeViewWrap");
 const codeText = document.getElementById("codeText");
+const prevMotionBtn = document.getElementById("prevMotionBtn");
+const nextMotionBtn = document.getElementById("nextMotionBtn");
+const motionIndexBadge = document.getElementById("motionIndexBadge");
 
 const detailTitleZh = document.getElementById("detailTitleZh");
 const detailTitleEn = document.getElementById("detailTitleEn");
@@ -770,12 +773,27 @@ const panelBackBtn = document.getElementById("panelBackBtn");
 
 // 3. Render Control Panel content
 function initControlPanel() {
+  const currentIndex = motions.findIndex(m => m.id === currentMotion.id);
+  if (motionIndexBadge && currentIndex !== -1) {
+    motionIndexBadge.textContent = `${String(currentIndex + 1).padStart(2, '0')} / ${motions.length}`;
+  }
   if (detailTitleZh) detailTitleZh.textContent = currentLang === "en" ? currentMotion.enName : currentMotion.zhName;
   if (detailTitleEn) detailTitleEn.textContent = currentLang === "en" ? currentMotion.zhName : currentMotion.enName;
   if (detailCategory) detailCategory.textContent = categoryTranslations[currentLang][currentMotion.category] || currentMotion.category;
   if (detailDesc) detailDesc.textContent = currentLang === "en" ? (currentMotion.enDescription || currentMotion.description) : currentMotion.description;
   if (promptText) promptText.textContent = currentLang === "en" ? (currentMotion.enPrompt || currentMotion.prompt) : currentMotion.prompt;
   if (codeText) codeText.textContent = getMotionCodeSnippet(currentMotion);
+}
+
+function navigateMotion(offset) {
+  const currentIndex = motions.findIndex(m => m.id === currentMotion.id);
+  if (currentIndex === -1) return;
+  const targetIndex = (currentIndex + offset + motions.length) % motions.length;
+  const targetMotion = motions[targetIndex];
+  const url = new URL(window.location.href);
+  url.searchParams.set("id", targetMotion.id);
+  url.searchParams.set("name", targetMotion.enName);
+  window.location.href = url.toString();
 }
 
 function getMotionCodeSnippet(motion) {
@@ -1026,6 +1044,14 @@ function init() {
     replayBtn.addEventListener("click", replayMotion);
   }
 
+  // Previous / Next Motion Navigation
+  if (prevMotionBtn) {
+    prevMotionBtn.addEventListener("click", () => navigateMotion(-1));
+  }
+  if (nextMotionBtn) {
+    nextMotionBtn.addEventListener("click", () => navigateMotion(1));
+  }
+
   // Global Keyboard Shortcuts
   window.addEventListener("keydown", (e) => {
     // Ignore if typing inside inputs
@@ -1037,6 +1063,12 @@ function init() {
     } else if (e.key === "h" || e.key === "H") {
       e.preventDefault();
       togglePanel();
+    } else if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      navigateMotion(-1);
+    } else if (e.key === "ArrowRight") {
+      e.preventDefault();
+      navigateMotion(1);
     } else if (e.key === "Escape") {
       if (window.opener) {
         window.close();

@@ -39,7 +39,7 @@
   <meta property="twitter:description" content="网页 UI 动效全屏沉浸式体验，支持参数调整与一键复制 AI 提示词。">
   <meta property="twitter:image" content="https://raw.githubusercontent.com/holynova/web-motion-showcase/main/screenshot.png">
 
-  <link rel="stylesheet" href="./detail.css?v=2.9.0">
+  <link rel="stylesheet" href="./detail.css?v=3.0.0">
 
   <!-- JSON-LD Breadcrumb & TechArticle -->
   <script type="application/ld+json">
@@ -79,12 +79,23 @@
 
   <!-- Floating Motion Inspector Card -->
   <aside class="control-panel" id="controlPanel" aria-label="动效详情卡片">
-    <!-- Header: Category Pill + Close/Collapse Button -->
+    <!-- Header: Category Pill + Motion Index + Prev/Next/Close Buttons -->
     <div class="panel-header-minimal">
-      <span class="category-badge" id="detailCategory">分类</span>
-      <button class="btn-close-panel" id="panelCollapseBtn" type="button" aria-label="收起面板" title="收起面板 (快捷键 H)">
-        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-      </button>
+      <div class="panel-header-left">
+        <span class="category-badge" id="detailCategory">分类</span>
+        <span class="motion-index-badge" id="motionIndexBadge">01 / 64</span>
+      </div>
+      <div class="panel-header-actions">
+        <button class="btn-panel-nav" id="prevMotionBtn" type="button" aria-label="上一个动效" title="上一个动效 (快捷键 ←)">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <button class="btn-panel-nav" id="nextMotionBtn" type="button" aria-label="下一个动效" title="下一个动效 (快捷键 →)">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+        <button class="btn-close-panel" id="panelCollapseBtn" type="button" aria-label="收起面板" title="收起面板 (快捷键 H)">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
     </div>
 
     <!-- Title Section -->
@@ -101,16 +112,16 @@
       <div class="prompt-box-header">
         <div class="prompt-tab-switch" role="tablist" aria-label="提示词与源代码切换">
           <button class="tab-chip active" id="tabPromptBtn" role="tab" aria-selected="true" type="button">
-            <svg class="icon-sparkle" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L15 9L22 12L15 15L12 22L9 15L2 12L9 9Z"></path></svg>
+            <svg class="icon-sparkle" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L15 9L22 12L15 15L12 22L9 15L2 12L9 9Z"></path></svg>
             <span id="promptCardLabel">AI 提示词</span>
           </button>
           <button class="tab-chip" id="tabCodeBtn" role="tab" aria-selected="false" type="button">
-            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
             <span id="codeCardLabel">源代码</span>
           </button>
         </div>
         <button class="btn-copy-chip" id="copyPromptBtn" type="button" title="复制内容到剪贴板">
-          <svg class="icon-copy" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          <svg class="icon-copy" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
           <span id="copyPromptBtnText">复制</span>
         </button>
       </div>
@@ -125,7 +136,7 @@
     <!-- Action Button -->
     <div class="panel-actions">
       <button class="btn-replay-action" id="replayBtn" type="button">
-        <svg class="icon-replay" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+        <svg class="icon-replay" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
         <span id="replayBtnText">重新播放效果</span>
       </button>
     </div>
@@ -143,6 +154,6 @@
     <span class="toast-message">提示词已复制到剪贴板！</span>
   </div>
 
-  <script src="./detail.js?v=2.9.0"></script>
+  <script src="./detail.js?v=3.0.0"></script>
 </body>
 </html>
