@@ -2574,6 +2574,782 @@ const motions = [
         </div>
       `;
     }
+  },
+  {
+    id: "aurora-background",
+    zhName: "极光渐变弥散流光",
+    enName: "Aurora Glow Background",
+    category: "进入",
+    description: "Siri / Apple Intelligence 质感流体光晕。多层高斯模糊与多色径向渐变网格，通过连续流体位移与色相轻微自旋，营造极光般的梦幻背景。",
+    enDescription: "Apple-inspired ethereal flow. Layered radial gradients and high-blur meshes orbiting smoothly to create ambient aurora illumination.",
+    prompt: "请帮我实现一个网页动效：极光渐变弥散流光（Aurora Glow Background）。在深色或纯色背景上放置多个带有 filter: blur(60px) 的绝对定位径向渐变色块，运用 @keyframes 结合 transform: translate() rotate() 与 opacity 呼吸律动，创造高级柔和的极光背景动效。",
+    enPrompt: "Please help me implement a web motion: Aurora Glow Background. Combine heavy gaussian blur layers with radial gradients animating along continuous parametric curves.",
+    render: (container) => {
+      container.innerHTML = `
+        <div class="sandbox-aurora-stage">
+          <div class="aurora-mesh">
+            <div class="aurora-light-orb orb-1"></div>
+            <div class="aurora-light-orb orb-2"></div>
+            <div class="aurora-light-orb orb-3"></div>
+            <div class="aurora-light-orb orb-4"></div>
+          </div>
+          <div class="aurora-hero-content">
+            <div class="aurora-pill-tag">✨ NEXT-GEN AMBIENCE</div>
+            <h1 class="aurora-title">Intelligence in Motion</h1>
+            <p class="aurora-sub">移动鼠标感受极光光晕的自然漫射与交互式视差流转</p>
+            <div class="aurora-palette-ctrl">
+              <button class="btn-aurora-theme active" data-theme="siri">Siri Ethereal</button>
+              <button class="btn-aurora-theme" data-theme="cyber">Neon Cyber</button>
+              <button class="btn-aurora-theme" data-theme="sunset">Warm Sunset</button>
+            </div>
+          </div>
+        </div>
+      `;
+      const stage = container.querySelector(".sandbox-aurora-stage");
+      const orbs = container.querySelectorAll(".aurora-light-orb");
+      const themeBtns = container.querySelectorAll(".btn-aurora-theme");
+
+      stage.addEventListener("mousemove", (e) => {
+        const rect = stage.getBoundingClientRect();
+        const nx = (e.clientX - rect.left) / rect.width - 0.5;
+        const ny = (e.clientY - rect.top) / rect.height - 0.5;
+        orbs.forEach((orb, i) => {
+          const factor = (i + 1) * 20;
+          orb.style.transform = `translate(${nx * factor}px, ${ny * factor}px)`;
+        });
+      });
+
+      themeBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+          themeBtns.forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+          stage.setAttribute("data-aurora-palette", btn.dataset.theme);
+        });
+      });
+    }
+  },
+  {
+    id: "meteors-background",
+    zhName: "流星夜空划过特效",
+    enName: "Meteors Shower Background",
+    category: "进入",
+    description: "深邃夜空氛围动效。带有渐变尾迹的倾斜光束以随机延迟和速度从右上角滑向左下角，伴随头部光斑微闪与渐隐。",
+    enDescription: "Ambient cosmic trail. Angled glowing streaks shooting across dark cards with random delays, subtle head glows, and linear trails.",
+    prompt: "请帮我实现一个网页动效：流星夜空划过特效（Meteors Shower Background）。通过纯 CSS 生成倾斜 215deg 的流星光束，伪元素头部添加圆点发光阴影，主体使用 linear-gradient 尾迹渐变，通过 @keyframes 从屏幕外滑入并淡出消失。",
+    enPrompt: "Please help me implement a web motion: Meteors Shower Background. Render angled meteor streaks with glowing head points and fading gradients shooting across containers.",
+    render: (container) => {
+      container.innerHTML = `
+        <div class="sandbox-meteors-stage">
+          <div class="meteors-sky-layer" id="meteorsSky"></div>
+          <div class="meteors-center-card">
+            <div class="meteor-badge">COSMIC EXPERIENCE</div>
+            <h2>Night Sky Serenade</h2>
+            <p>20+ 道倾斜流星以物理随机速度穿梭滑过暗夜，点击下方按钮唤醒流星雨风暴。</p>
+            <button class="btn-meteor-burst" id="btnMeteorBurst">🌠 触发流星雨爆发</button>
+          </div>
+        </div>
+      `;
+      const sky = container.querySelector("#meteorsSky");
+      const burstBtn = container.querySelector("#btnMeteorBurst");
+
+      const createMeteors = (count) => {
+        sky.innerHTML = "";
+        for (let i = 0; i < count; i++) {
+          const m = document.createElement("span");
+          m.className = "full-meteor-ray";
+          m.style.top = Math.random() * 80 + "%";
+          m.style.left = Math.random() * 100 + "%";
+          m.style.animationDelay = Math.random() * 3 + "s";
+          m.style.animationDuration = (Math.random() * 1.5 + 1.2) + "s";
+          sky.appendChild(m);
+        }
+      };
+
+      createMeteors(24);
+      burstBtn.addEventListener("click", () => {
+        createMeteors(60);
+        setTimeout(() => createMeteors(24), 5000);
+      });
+    }
+  },
+  {
+    id: "typewriter-cycle",
+    zhName: "打字机多词轮播交替",
+    enName: "Typewriter Multi-Text Cycle",
+    category: "进入",
+    description: "大标题标语轮播利器。真实光标伴随敲击节奏逐字键入，停留数秒后反向极速删除，无缝无刷新切换下一个关键词。",
+    enDescription: "Dynamic headline typewriter. Types words character by character with rhythmic pauses and rapid backspace deletion for cycling keywords.",
+    prompt: "请帮我实现一个网页动效：打字机多词轮播交替（Typewriter Multi-Text Cycle）。使用 JS 定时器动态截取字符串，实现逐字输入、自然停顿、快速退格删除，并循环切换数组中的关键词，右侧附带闪烁的竖线光标。",
+    enPrompt: "Please help me implement a web motion: Typewriter Multi-Text Cycle. Rhythmic typewriter simulation cycling through word lists with dynamic character slicing and blinking caret.",
+    render: (container) => {
+      container.innerHTML = `
+        <div class="sandbox-typewriter-stage">
+          <div class="typewriter-hero-box">
+            <span class="tw-prefix">Building the future for</span>
+            <div class="tw-headline-rack">
+              <span class="tw-dynamic-word" id="twWord"></span>
+              <span class="tw-cursor-caret"></span>
+            </div>
+            <p class="tw-sub">支持自然停顿、随机敲击延迟模拟与平滑退格过渡</p>
+            <div class="tw-custom-inputs">
+              <input type="text" id="twCustomList" value="Designers, Developers, Creators, Visionaries" placeholder="输入逗号分隔的关键词...">
+              <button id="btnTwUpdate">更新轮播词</button>
+            </div>
+          </div>
+        </div>
+      `;
+      const wordEl = container.querySelector("#twWord");
+      const listInput = container.querySelector("#twCustomList");
+      const updateBtn = container.querySelector("#btnTwUpdate");
+
+      let words = ["Designers", "Developers", "Creators", "Visionaries"];
+      let wordIdx = 0;
+      let charIdx = 0;
+      let isDeleting = false;
+      let timer = null;
+
+      const typeLoop = () => {
+        const currentWord = words[wordIdx % words.length];
+        if (isDeleting) {
+          wordEl.textContent = currentWord.substring(0, charIdx - 1);
+          charIdx--;
+        } else {
+          wordEl.textContent = currentWord.substring(0, charIdx + 1);
+          charIdx++;
+        }
+
+        let delta = isDeleting ? 45 : 100 + Math.random() * 40;
+
+        if (!isDeleting && charIdx === currentWord.length) {
+          delta = 2000;
+          isDeleting = true;
+        } else if (isDeleting && charIdx === 0) {
+          isDeleting = false;
+          wordIdx++;
+          delta = 400;
+        }
+
+        timer = setTimeout(typeLoop, delta);
+      };
+
+      typeLoop();
+
+      updateBtn.addEventListener("click", () => {
+        const val = listInput.value.trim();
+        if (val) {
+          words = val.split(",").map(s => s.trim()).filter(Boolean);
+          wordIdx = 0;
+          charIdx = 0;
+          isDeleting = false;
+          clearTimeout(timer);
+          typeLoop();
+        }
+      });
+    }
+  },
+  {
+    id: "twinkling-starfield",
+    zhName: "闪烁微光星空点阵",
+    enName: "Twinkling Starfield Particles",
+    category: "进入",
+    description: "深色卡片魔法高光。随机分布的微型星芒粒子以不同周期呼吸闪烁与自旋，光标移动时产生极轻微的 2.5D 视差推移。",
+    enDescription: "Subtle cosmic sparkle. Multi-sized twinkling star particles breathing and pulsing at varied frequencies with subtle cursor parallax.",
+    prompt: "请帮我实现一个网页动效：闪烁微光星空点阵（Twinkling Starfield Particles）。在容器内生成随机坐标的微型星芒（✦ / ✧），各自分配随机动画延时与缩放呼吸周期，模拟夜空繁星闪烁的静谧高级氛围。",
+    enPrompt: "Please help me implement a web motion: Twinkling Starfield Particles. Scatter glowing multi-frequency star glyphs with staggered keyframe pulsing and parallax.",
+    render: (container) => {
+      container.innerHTML = `
+        <div class="sandbox-starfield-stage" id="starfieldStage">
+          <canvas class="starfield-canvas" id="starCanvas"></canvas>
+          <div class="starfield-content-card">
+            <span class="star-badge">✨ INFINITE CONSTELLATIONS</span>
+            <h2>Celestial Particle System</h2>
+            <p>180+ 动态微光星芒，随光标位移产生微小 2.5D 深度视差</p>
+          </div>
+        </div>
+      `;
+      const canvas = container.querySelector("#starCanvas");
+      const stage = container.querySelector("#starfieldStage");
+      const ctx = canvas.getContext("2d");
+
+      let width = canvas.width = stage.clientWidth;
+      let height = canvas.height = stage.clientHeight;
+
+      const stars = [];
+      for (let i = 0; i < 180; i++) {
+        stars.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          size: Math.random() * 2 + 0.8,
+          alpha: Math.random(),
+          speed: Math.random() * 0.02 + 0.005,
+          color: Math.random() > 0.3 ? "#ffffff" : (Math.random() > 0.5 ? "#38bdf8" : "#f472b6")
+        });
+      }
+
+      let mouseX = width / 2;
+      let mouseY = height / 2;
+
+      stage.addEventListener("mousemove", (e) => {
+        const rect = stage.getBoundingClientRect();
+        mouseX = e.clientX - rect.left;
+        mouseY = e.clientY - rect.top;
+      });
+
+      let animId;
+      const render = () => {
+        ctx.clearRect(0, 0, width, height);
+        const offsetX = (mouseX - width / 2) * 0.04;
+        const offsetY = (mouseY - height / 2) * 0.04;
+
+        stars.forEach(s => {
+          s.alpha += s.speed;
+          const currentAlpha = Math.abs(Math.sin(s.alpha));
+          ctx.beginPath();
+          ctx.arc(s.x + offsetX * (s.size * 0.5), s.y + offsetY * (s.size * 0.5), s.size, 0, Math.PI * 2);
+          ctx.fillStyle = s.color;
+          ctx.globalAlpha = currentAlpha * 0.8 + 0.1;
+          ctx.fill();
+        });
+        animId = requestAnimationFrame(render);
+      };
+      render();
+    }
+  },
+  {
+    id: "cursor-trail",
+    zhName: "光标轨迹动态拖影",
+    enName: "Interactive Cursor Trail",
+    category: "悬停",
+    description: "创意工作室品牌秀场。当鼠标在页面快速滑过时，在历史坐标路径上留下一串带惯性滞后、随时间渐隐消散的微缩缩略图或光斑粒子。",
+    enDescription: "Creative agency gesture trail. Leaves a fluid ribbon of decaying image chips or glowing dots lagging smoothly along the pointer's velocity path.",
+    prompt: "请帮我实现一个网页动效：光标轨迹动态拖影（Interactive Cursor Trail）。监听 mousemove 事件并在鼠标移动距离超过阈值时生成历史坐标节点，使用 requestAnimationFrame 驱动历史节点按照生命周期逐步缩小和透明度衰减，并在 500ms 后自动清理 DOM。",
+    enPrompt: "Please help me implement a web motion: Interactive Cursor Trail. Spawn ephemeral trailing nodes on mouse trajectory that scale down and fade with inertia.",
+    render: (container) => {
+      container.innerHTML = `
+        <div class="sandbox-trail-stage" id="trailStage">
+          <div class="trail-lead-hint">
+            <h2>Move Pointer to Cast Fluid Ribbon</h2>
+            <p>在画板内快速划动鼠标，观察多级光斑粒子的惯性拖影与生命周期消散</p>
+          </div>
+        </div>
+      `;
+      const stage = container.querySelector("#trailStage");
+
+      let lastX = 0, lastY = 0;
+      stage.addEventListener("mousemove", (e) => {
+        const rect = stage.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        const dist = Math.hypot(x - lastX, y - lastY);
+        if (dist > 14) {
+          lastX = x;
+          lastY = y;
+          const bead = document.createElement("div");
+          bead.className = "trail-spark-bead";
+          bead.style.left = x + "px";
+          bead.style.top = y + "px";
+          stage.appendChild(bead);
+          setTimeout(() => bead.remove(), 450);
+        }
+      });
+    }
+  },
+  {
+    id: "direction-aware-hover",
+    zhName: "方向感知卡片划入",
+    enName: "Direction-Aware Hover Reveal",
+    category: "悬停",
+    description: "智能感知光标切入方向。三角函数计算光标从上/下/左/右何处进入卡片，遮罩层严格从光标进入侧平滑抽出，离开时沿对应方向滑出。",
+    enDescription: "Vector-aware hover overlay. Calculates entry angle via trigonometry so the overlay slides in strictly from the cursor's entry edge and exits accordingly.",
+    prompt: "请帮我实现一个网页动效：方向感知卡片划入（Direction-Aware Hover Reveal）。在 mouseenter / mouseleave 事件中通过 Math.atan2 计算鼠标相对卡片中心的进入角度（0: 上, 1: 右, 2: 下, 3: 左），动态调整浮层的起始与目标 transform: translate()，实现跟随鼠标方向的抽拉效果。",
+    enPrompt: "Please help me implement a web motion: Direction-Aware Hover Reveal. Compute cursor entry/exit quadrants using atan2 to animate drawer overlays from 4 cardinal directions.",
+    render: (container) => {
+      container.innerHTML = `
+        <div class="sandbox-dir-stage">
+          <div class="dir-stage-header">
+            <h2>Direction-Aware Proximity Grid</h2>
+            <p>从不同方向（上/下/左/右）将鼠标移入或移出卡片，观察遮罩层精准从切入边展开</p>
+          </div>
+          <div class="dir-grid-container">
+            <div class="dir-interactive-card">
+              <div class="dir-card-body"><h3>01. Creative Studio</h3><p>Brand Identity & 3D Visuals</p></div>
+              <div class="dir-overlay-sheet"><span class="dir-tag">DISCOVER CASE</span></div>
+            </div>
+            <div class="dir-interactive-card">
+              <div class="dir-card-body"><h3>02. Motion Systems</h3><p>Design Tokens & Transitions</p></div>
+              <div class="dir-overlay-sheet"><span class="dir-tag">VIEW WORKFLOW</span></div>
+            </div>
+            <div class="dir-interactive-card">
+              <div class="dir-card-body"><h3>03. Spatial Audio</h3><p>Interactive Audio WebGL</p></div>
+              <div class="dir-overlay-sheet"><span class="dir-tag">PLAY DEMO</span></div>
+            </div>
+          </div>
+        </div>
+      `;
+      const cards = container.querySelectorAll(".dir-interactive-card");
+
+      const getDirection = (e, item) => {
+        const rect = item.getBoundingClientRect();
+        const x = e.clientX - (rect.left + rect.width / 2);
+        const y = e.clientY - (rect.top + rect.height / 2);
+        // Returns 0: top, 1: right, 2: bottom, 3: left
+        return Math.round((((Math.atan2(y, x) * (180 / Math.PI)) + 180) / 90) + 3) % 4;
+      };
+
+      const transMap = [
+        { in: "translateY(-100%)", out: "translateY(-100%)" }, // top
+        { in: "translateX(100%)", out: "translateX(100%)" },   // right
+        { in: "translateY(100%)", out: "translateY(100%)" },   // bottom
+        { in: "translateX(-100%)", out: "translateX(-100%)" }  // left
+      ];
+
+      cards.forEach(card => {
+        const overlay = card.querySelector(".dir-overlay-sheet");
+        card.addEventListener("mouseenter", (e) => {
+          const dir = getDirection(e, card);
+          overlay.style.transition = "none";
+          overlay.style.transform = transMap[dir].in;
+          overlay.offsetHeight; // force reflow
+          overlay.style.transition = "transform 350ms cubic-bezier(0.16, 1, 0.3, 1)";
+          overlay.style.transform = "translate(0, 0)";
+        });
+
+        card.addEventListener("mouseleave", (e) => {
+          const dir = getDirection(e, card);
+          overlay.style.transition = "transform 300ms cubic-bezier(0.16, 1, 0.3, 1)";
+          overlay.style.transform = transMap[dir].out;
+        });
+      });
+    }
+  },
+  {
+    id: "grid-dot-proximity",
+    zhName: "点阵网格近邻感应高亮",
+    enName: "Grid Dot Matrix Proximity",
+    category: "悬停",
+    description: "极客开发控制台背景。整齐排列的微型圆点阵列，当光标靠近时，以光标为中心半径内的点阵产生缩放放大与色彩增亮，远离后平滑衰减。",
+    enDescription: "Proximity dot illumination. Regular matrix of micro-dots that scale and illuminate when the cursor approaches within an activation radius.",
+    prompt: "请帮我实现一个网页动效：点阵网格近邻感应高亮（Grid Dot Matrix Proximity）。在 Canvas 或 DOM Grid 中绘制均匀点阵，在 mousemove 时计算每个点到光标的距离 d，根据距离映射 scale(1 -> 2.5) 与 opacity(0.2 -> 1.0)，离开时通过 transition 平滑复位。",
+    enPrompt: "Please help me implement a web motion: Grid Dot Matrix Proximity. Scale and illuminate arrayed dots inversely proportional to Euclidean distance from mouse position.",
+    render: (container) => {
+      container.innerHTML = `
+        <div class="sandbox-dot-prox-stage" id="proxStage">
+          <canvas class="dot-prox-canvas" id="dotCanvas"></canvas>
+          <div class="dot-prox-hud">
+            <h2>Matrix Proximity Field</h2>
+            <p>光标周围 150px 欧几里得距离内的点阵呈现高斯衰减高亮与缩放</p>
+          </div>
+        </div>
+      `;
+      const stage = container.querySelector("#proxStage");
+      const canvas = container.querySelector("#dotCanvas");
+      const ctx = canvas.getContext("2d");
+
+      let width = canvas.width = stage.clientWidth;
+      let height = canvas.height = stage.clientHeight;
+
+      const spacing = 32;
+      const rows = Math.ceil(height / spacing);
+      const cols = Math.ceil(width / spacing);
+
+      let mouseX = -1000, mouseY = -1000;
+      stage.addEventListener("mousemove", (e) => {
+        const rect = stage.getBoundingClientRect();
+        mouseX = e.clientX - rect.left;
+        mouseY = e.clientY - rect.top;
+      });
+      stage.addEventListener("mouseleave", () => { mouseX = -1000; mouseY = -1000; });
+
+      const drawGrid = () => {
+        ctx.clearRect(0, 0, width, height);
+        const radius = 140;
+
+        for (let r = 0; r < rows; r++) {
+          for (let c = 0; c < cols; c++) {
+            const px = c * spacing + spacing / 2;
+            const py = r * spacing + spacing / 2;
+
+            const dist = Math.hypot(px - mouseX, py - mouseY);
+            let size = 2;
+            let alpha = 0.2;
+            let color = "var(--text-muted)";
+
+            if (dist < radius) {
+              const intensity = (1 - dist / radius);
+              size = 2 + intensity * 6;
+              alpha = 0.2 + intensity * 0.8;
+              color = "var(--accent-color)";
+            }
+
+            ctx.beginPath();
+            ctx.arc(px, py, size, 0, Math.PI * 2);
+            ctx.fillStyle = dist < radius ? "#3b82f6" : "#64748b";
+            ctx.globalAlpha = alpha;
+            ctx.fill();
+          }
+        }
+        requestAnimationFrame(drawGrid);
+      };
+      drawGrid();
+    }
+  },
+  {
+    id: "glass-glare-tilt",
+    zhName: "镜面菲涅尔反光 3D 卡片",
+    enName: "Glass Glare Tilt Card",
+    category: "悬停",
+    description: "高端会员卡与资产卡片。在 3D 透视倾斜基础上叠加对角线物理光斑，卡片转动时光斑在磨砂玻璃表面产生真实的漫反射位移。",
+    enDescription: "Luxury reflective tilt card. Combines 3D perspective orientation with a dynamic specular sheen layer tracking mouse angles.",
+    prompt: "请帮我实现一个网页动效：镜面菲涅尔反光 3D 卡片（Glass Glare Tilt Card）。在卡片 3D 透视旋转的同时，卡片内部叠加一层带 linear-gradient(135deg, rgba(255,255,255,0.4), transparent) 的高光层，高光层根据鼠标相对坐标反向位移，产生逼真的玻璃反光效果。",
+    enPrompt: "Please help me implement a web motion: Glass Glare Tilt Card. Pair 3D perspective rotation with a specular highlight sheen layer translating inversely to simulate glass refraction.",
+    render: (container) => {
+      container.innerHTML = `
+        <div class="sandbox-glare-stage">
+          <div class="glare-card-wrapper" id="glareWrap">
+            <div class="glare-master-card" id="glareCard">
+              <div class="glare-sheen-layer" id="glareSheen"></div>
+              <div class="glare-card-body">
+                <div class="card-chip-gold">✦ BLACK EDITION</div>
+                <div class="card-number">4000 8820 9918 2026</div>
+                <div class="card-footer-meta">
+                  <span>VALID THRU 12/29</span>
+                  <span class="card-brand-logo">NOVA CARD</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="glare-hint">移动鼠标观察卡片 3D 旋转与高光层的物理菲涅尔反光</div>
+        </div>
+      `;
+      const wrap = container.querySelector("#glareWrap");
+      const card = container.querySelector("#glareCard");
+      const sheen = container.querySelector("#glareSheen");
+
+      wrap.addEventListener("mousemove", (e) => {
+        const rect = wrap.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        const rotateX = ((y - centerY) / centerY) * -16;
+        const rotateY = ((x - centerX) / centerX) * 16;
+
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.04)`;
+        sheen.style.opacity = "1";
+        sheen.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.55) 0%, transparent 60%)`;
+      });
+
+      wrap.addEventListener("mouseleave", () => {
+        card.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)";
+        sheen.style.opacity = "0";
+      });
+    }
+  },
+  {
+    id: "sliding-indicator-tabs",
+    zhName: "滑动指示器分段标签页",
+    enName: "Sliding Indicator Tabs",
+    category: "反馈",
+    description: "顶流应用标配分段控制器。点击切换 Tab 选项时，背后的药丸高亮胶囊根据目标元素的 offsetLeft 与 offsetWidth，以弹簧阻尼曲线平滑滑动与拉伸变形。",
+    enDescription: "Segmented indicator pill. Active highlight bubble smoothly glides, squashes, and snaps to target tab dimensions using spring physics.",
+    prompt: "请帮我实现一个网页动效：滑动指示器分段标签页（Sliding Indicator Tabs）。Tab 栏内设置一个绝对定位的背景高亮药丸，切换 Tab 时读取目标按钮的 offsetLeft 和 offsetWidth，通过 transform: translateX() 与 width 配合 spring 弹性曲线平滑滑向目标项。",
+    enPrompt: "Please help me implement a web motion: Sliding Indicator Tabs. Measure target tab offsetLeft and offsetWidth to glide an absolute background pill with elastic transition.",
+    render: (container) => {
+      container.innerHTML = `
+        <div class="sandbox-tabs-stage">
+          <div class="segmented-control-bar" id="tabsBar">
+            <div class="pill-active-bubble" id="tabBubble"></div>
+            <button class="seg-tab-btn active" data-tab="overview">Overview</button>
+            <button class="seg-tab-btn" data-tab="performance">Performance</button>
+            <button class="seg-tab-btn" data-tab="analytics">Analytics</button>
+            <button class="seg-tab-btn" data-tab="security">Security</button>
+            <button class="seg-tab-btn" data-tab="settings">Settings</button>
+          </div>
+          <div class="tab-view-panel" id="tabContent">
+            <h3>Overview Dashboard</h3>
+            <p>点击上方不同标签项，观察滑动胶囊在各 Tab 间带物理拉伸与阻尼的顺滑飞掠。</p>
+          </div>
+        </div>
+      `;
+      const tabs = container.querySelectorAll(".seg-tab-btn");
+      const bubble = container.querySelector("#tabBubble");
+      const content = container.querySelector("#tabContent");
+
+      const updateBubble = (target) => {
+        bubble.style.width = target.offsetWidth + "px";
+        bubble.style.transform = `translateX(${target.offsetLeft}px)`;
+      };
+
+      tabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+          tabs.forEach(t => t.classList.remove("active"));
+          tab.classList.add("active");
+          updateBubble(tab);
+          content.innerHTML = `
+            <h3>${tab.textContent} View</h3>
+            <p>当前处于 ${tab.dataset.tab.toUpperCase()} 模块。滑动高亮指示器已自适应匹配按钮宽度并完成平滑就位。</p>
+          `;
+        });
+      });
+
+      // Init on active
+      setTimeout(() => {
+        const activeTab = container.querySelector(".seg-tab-btn.active");
+        if (activeTab) updateBubble(activeTab);
+      }, 50);
+    }
+  },
+  {
+    id: "expanding-fab-menu",
+    zhName: "折叠展开浮动操作岛",
+    enName: "Expanding FAB Island Menu",
+    category: "反馈",
+    description: "移动端与 AI 助手绝佳入口。右下角常驻悬浮按钮（FAB），点击后由单点以弹性物理曲线膨胀展开为带有多项快捷动作的卡片面板。",
+    enDescription: "Expanding floating action button. Compact trigger expands with spring damping into an action dock with staggered item reveals.",
+    prompt: "请帮我实现一个网页动效：折叠展开浮动操作岛（Expanding FAB Island Menu）。初始为右下角圆形悬浮图标，点击时触发 CSS 尺寸膨胀与 border-radius 形变，菜单内部图标按 transition-delay 错峰弹出，再次点击或失焦时平滑收起。",
+    enPrompt: "Please help me implement a web motion: Expanding FAB Island Menu. Morph circular FAB trigger into a responsive action card with staggered menu item entrances.",
+    render: (container) => {
+      container.innerHTML = `
+        <div class="sandbox-fab-stage">
+          <div class="fab-stage-intro">
+            <h2>Expanding Action Island</h2>
+            <p>点击下方悬浮按钮，观察其由极简圆点膨胀为全功能交互菜单的弹性过渡</p>
+          </div>
+          <div class="fab-dock-island" id="fabDock">
+            <button class="fab-master-trigger" id="fabTrigger">
+              <span class="fab-cross">+</span>
+            </button>
+            <div class="fab-menu-items">
+              <button class="fab-action-item"><span class="f-icon">✨</span><span class="f-lbl">New Prompt</span></button>
+              <button class="fab-action-item"><span class="f-icon">⚡</span><span class="f-lbl">Quick Boost</span></button>
+              <button class="fab-action-item"><span class="f-icon">📊</span><span class="f-lbl">Metrics</span></button>
+              <button class="fab-action-item"><span class="f-icon">⚙️</span><span class="f-lbl">Config</span></button>
+            </div>
+          </div>
+        </div>
+      `;
+      const dock = container.querySelector("#fabDock");
+      const trigger = container.querySelector("#fabTrigger");
+
+      trigger.addEventListener("click", () => {
+        dock.classList.toggle("expanded");
+      });
+    }
+  },
+  {
+    id: "audio-waveform-visualizer",
+    zhName: "波形音频动态可视化",
+    enName: "Audio Waveform Visualizer",
+    category: "反馈",
+    description: "AI 语音助手与播放器交互。多组圆角垂直条柱根据正弦相移算法与声学振幅起伏跳动，真实模拟语音识别与音乐节奏。",
+    enDescription: "Acoustic audio wave bars. Staggered vertical pill bars oscillating dynamically via sine waves to simulate live voice synthesis and audio playback.",
+    prompt: "请帮我实现一个网页动效：波形音频动态可视化（Audio Waveform Visualizer）。使用 CSS keyframes 或 Web Audio API，让一组等间距圆角垂直条柱根据正弦函数错开高度，结合 scaleY(0.2 -> 1.0) 产生起伏有致的声波律动。",
+    enPrompt: "Please help me implement a web motion: Audio Waveform Visualizer. Oscillate array of rounded bars with phase-shifted keyframes and scaleY transforms for voice audio animation.",
+    render: (container) => {
+      container.innerHTML = `
+        <div class="sandbox-waveform-stage">
+          <div class="waveform-card">
+            <div class="waveform-badge">LIVE AUDIO SYNTHESIS</div>
+            <div class="waveform-bars-deck" id="waveDeck"></div>
+            <div class="waveform-meta-info">
+              <div class="track-title">AI Voice Streaming</div>
+              <div class="track-freq">48.0 kHz • 24-bit Lossless</div>
+            </div>
+            <div class="waveform-controls">
+              <button class="btn-wave-action active" id="btnWavePlay">⏸ 暂停</button>
+              <button class="btn-wave-action" id="btnWaveSpeed">⚡ 切换律动速度</button>
+            </div>
+          </div>
+        </div>
+      `;
+      const deck = container.querySelector("#waveDeck");
+      const playBtn = container.querySelector("#btnWavePlay");
+      const speedBtn = container.querySelector("#btnWaveSpeed");
+
+      const barCount = 28;
+      for (let i = 0; i < barCount; i++) {
+        const bar = document.createElement("span");
+        bar.className = "interactive-wave-bar";
+        bar.style.animationDelay = (i * 0.06) + "s";
+        deck.appendChild(bar);
+      }
+
+      let isPlaying = true;
+      playBtn.addEventListener("click", () => {
+        isPlaying = !isPlaying;
+        playBtn.textContent = isPlaying ? "⏸ 暂停" : "▶ 播放";
+        deck.classList.toggle("paused", !isPlaying);
+      });
+
+      let fast = false;
+      speedBtn.addEventListener("click", () => {
+        fast = !fast;
+        deck.classList.toggle("fast-tempo", fast);
+      });
+    }
+  },
+  {
+    id: "circular-progress-meter",
+    zhName: "环形刻度进度仪表",
+    enName: "Circular Radial Progress Meter",
+    category: "反馈",
+    description: "健康指标与性能仪表盘。SVG 圆环通过 stroke-dashoffset 随数值递增顺时针描边填充，内部百分比数字同步累加。",
+    enDescription: "Radial stroke gauge. SVG circle gauge smoothly fills clockwise via stroke-dashoffset with synchronized digital counter and glow accents.",
+    prompt: "请帮我实现一个网页动效：环形刻度进度仪表（Circular Radial Progress Meter）。使用 SVG <circle> 标签计算圆周长 2 * π * r 作为 stroke-dasharray，通过动态修改 stroke-dashoffset 控制进度弧长，中间数字使用 requestAnimationFrame 同步递增累加。",
+    enPrompt: "Please help me implement a web motion: Circular Radial Progress Meter. Animate SVG stroke-dashoffset alongside easing digital counter to create smooth radial gauges.",
+    render: (container) => {
+      container.innerHTML = `
+        <div class="sandbox-radial-stage">
+          <div class="radial-card-box">
+            <div class="radial-gauge-wrap">
+              <svg viewBox="0 0 160 160" class="radial-master-svg">
+                <circle class="gauge-bg" cx="80" cy="80" r="64"/>
+                <circle class="gauge-fill" id="gaugeFill" cx="80" cy="80" r="64"/>
+              </svg>
+              <div class="gauge-center-val">
+                <span class="gauge-number" id="gaugeNum">0</span><span class="gauge-unit">%</span>
+              </div>
+            </div>
+            <div class="gauge-legend">PERFORMANCE SCORE</div>
+            <div class="gauge-actions-bar">
+              <button class="btn-gauge-set" data-val="25">25%</button>
+              <button class="btn-gauge-set" data-val="68">68%</button>
+              <button class="btn-gauge-set" data-val="94">94%</button>
+              <button class="btn-gauge-set" data-val="100">100%</button>
+            </div>
+          </div>
+        </div>
+      `;
+      const fill = container.querySelector("#gaugeFill");
+      const num = container.querySelector("#gaugeNum");
+      const btns = container.querySelectorAll(".btn-gauge-set");
+
+      const circumference = 2 * Math.PI * 64; // ~402.12
+      fill.style.strokeDasharray = circumference;
+      fill.style.strokeDashoffset = circumference;
+
+      const setProgress = (pct) => {
+        const offset = circumference - (pct / 100) * circumference;
+        fill.style.strokeDashoffset = offset;
+
+        let start = parseInt(num.textContent) || 0;
+        const duration = 600;
+        const startTime = performance.now();
+
+        const step = (now) => {
+          const progress = Math.min((now - startTime) / duration, 1);
+          const current = Math.round(start + (pct - start) * progress);
+          num.textContent = current;
+          if (progress < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+      };
+
+      setProgress(88);
+      btns.forEach(btn => {
+        btn.addEventListener("click", () => setProgress(parseInt(btn.dataset.val)));
+      });
+    }
+  },
+  {
+    id: "before-after-slider",
+    zhName: "前后对比滑动擦除",
+    enName: "Before-After Comparison Slider",
+    category: "图片",
+    description: "AI 图像与设计交付神器。两层重叠图像，拖动中间手柄分界线时动态改变上层遮罩 clip-path 或宽度，实现无缝拖拽比对。",
+    enDescription: "Interactive visual comparison. Overlays two images with a draggable separator divider dynamically slicing top layer via clip-path polygon.",
+    prompt: "请帮我实现一个网页动效：前后对比滑动擦除（Before-After Comparison Slider）。两张相同尺寸图片重叠，顶层图片设置 clip-path: polygon(0 0, var(--split-pos) 0, var(--split-pos) 100%, 0 100%)，监听中间手柄拖拽事件动态更新 --split-pos 百分比。",
+    enPrompt: "Please help me implement a web motion: Before-After Comparison Slider. Overlay paired images with draggable divider adjusting top layer clip-path dynamically.",
+    render: (container) => {
+      container.innerHTML = `
+        <div class="sandbox-ba-stage">
+          <div class="ba-interactive-canvas" id="baContainer">
+            <div class="ba-layer ba-after-layer">
+              <div class="ba-content-mock modern">
+                <span class="ba-badge">✨ AFTER (Enhanced)</span>
+                <h2>Clean Motion Experience</h2>
+                <p>Hardware-accelerated CSS transforms and spring physics.</p>
+              </div>
+            </div>
+            <div class="ba-layer ba-before-layer" id="baBeforeLayer">
+              <div class="ba-content-mock legacy">
+                <span class="ba-badge">ORIGINAL (Static)</span>
+                <h2>Clean Motion Experience</h2>
+                <p>Hardware-accelerated CSS transforms and spring physics.</p>
+              </div>
+            </div>
+            <div class="ba-divider-handle" id="baHandle">
+              <div class="ba-handle-knob">↔</div>
+            </div>
+          </div>
+          <div class="ba-hint">拖拽中间分界线滑动比对两层视觉效果</div>
+        </div>
+      `;
+      const containerBox = container.querySelector("#baContainer");
+      const beforeLayer = container.querySelector("#baBeforeLayer");
+      const handle = container.querySelector("#baHandle");
+
+      let isDragging = false;
+      const updatePosition = (clientX) => {
+        const rect = containerBox.getBoundingClientRect();
+        let pct = ((clientX - rect.left) / rect.width) * 100;
+        pct = Math.max(0, Math.min(100, pct));
+        beforeLayer.style.clipPath = `polygon(0 0, ${pct}% 0, ${pct}% 100%, 0 100%)`;
+        handle.style.left = `${pct}%`;
+      };
+
+      containerBox.addEventListener("mousedown", () => isDragging = true);
+      window.addEventListener("mouseup", () => isDragging = false);
+      window.addEventListener("mousemove", (e) => {
+        if (isDragging) updatePosition(e.clientX);
+      });
+      containerBox.addEventListener("click", (e) => updatePosition(e.clientX));
+
+      // Initial pos
+      updatePosition(containerBox.getBoundingClientRect().left + containerBox.offsetWidth * 0.5);
+    }
+  },
+  {
+    id: "organic-morphing-blob",
+    zhName: "流体变形有机泡泡",
+    enName: "Organic Morphing Blob",
+    category: "反馈",
+    description: "单细胞流体生命律动。CSS border-radius 八角独立比例连续缓动形变，赋予形状类似水滴、有机泡泡的生命律动感。",
+    enDescription: "Organic morphing shape. Continuous multi-axis border-radius keyframing that creates amoeba-like, elastic fluid blobs.",
+    prompt: "请帮我实现一个网页动效：流体变形有机泡泡（Organic Morphing Blob）。利用 CSS @keyframes 循环平滑过渡 border-radius 的 8 个控制百分比（如 60% 40% 30% 70% / 60% 30% 70% 40%），配合轻微 rotate 自旋，打造生动的有机水滴/气泡形态。",
+    enPrompt: "Please help me implement a web motion: Organic Morphing Blob. Animate multi-value border-radius continuously with subtle rotation for organic fluid blob effects.",
+    render: (container) => {
+      container.innerHTML = `
+        <div class="sandbox-blob-stage">
+          <div class="blob-fluid-chassis" id="fluidBlob">
+            <span class="blob-core-label">FLUID</span>
+          </div>
+          <div class="blob-controls-bar">
+            <button class="btn-blob-color active" data-grad="sunset">Sunset Glow</button>
+            <button class="btn-blob-color" data-grad="ocean">Ocean Wave</button>
+            <button class="btn-blob-color" data-grad="aurora">Emerald Aurora</button>
+          </div>
+          <p class="blob-hint">点击泡泡产生物理挤压弹性波动</p>
+        </div>
+      `;
+      const blob = container.querySelector("#fluidBlob");
+      const colorBtns = container.querySelectorAll(".btn-blob-color");
+
+      colorBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+          colorBtns.forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+          blob.setAttribute("data-gradient", btn.dataset.grad);
+        });
+      });
+
+      blob.addEventListener("click", () => {
+        blob.classList.add("squishing");
+        setTimeout(() => blob.classList.remove("squishing"), 400);
+      });
+    }
   }
 ];
 

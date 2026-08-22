@@ -719,6 +719,246 @@ const motions = [
     `,
     prompt: "请帮我实现一个网页动效：滚动卡片层叠固化（Card Sticky Stacking）。使用 position: sticky 配合 top 偏移，使多张大卡片在向下滚动时依次吸顶停靠，后一张卡片覆盖上去的同时，前一张卡片通过 scale(0.95) 与 brightness(0.8) 产生纵深层叠堆积感。",
     enPrompt: "Please help me implement a web motion: Card Sticky Stacking. Use position: sticky with progressive top offsets and scale transforms to create stacked card decks on scroll."
+  },
+  {
+    id: "aurora-background",
+    zhName: "极光渐变弥散流光",
+    enName: "Aurora Glow Background",
+    category: "进入",
+    description: "Siri / Apple Intelligence 质感流体光晕。多层高斯模糊与多色径向渐变网格，通过连续流体位移与色相轻微自旋，营造极光般的梦幻背景。",
+    enDescription: "Apple-inspired ethereal flow. Layered radial gradients and high-blur meshes orbiting smoothly to create ambient aurora illumination.",
+    demoHtml: `
+      <div class="preview-aurora-glow">
+        <div class="aurora-blob a1"></div>
+        <div class="aurora-blob a2"></div>
+        <div class="aurora-blob a3"></div>
+      </div>
+    `,
+    prompt: "请帮我实现一个网页动效：极光渐变弥散流光（Aurora Glow Background）。在深色或纯色背景上放置多个带有 filter: blur(60px) 的绝对定位径向渐变色块，运用 @keyframes 结合 transform: translate() rotate() 与 opacity 呼吸律动，创造高级柔和的极光背景动效。",
+    enPrompt: "Please help me implement a web motion: Aurora Glow Background. Combine heavy gaussian blur layers with radial gradients animating along continuous parametric curves."
+  },
+  {
+    id: "meteors-background",
+    zhName: "流星夜空划过特效",
+    enName: "Meteors Shower Background",
+    category: "进入",
+    description: "深邃夜空氛围动效。带有渐变尾迹的倾斜光束以随机延迟和速度从右上角滑向左下角，伴随头部光斑微闪与渐隐。",
+    enDescription: "Ambient cosmic trail. Angled glowing streaks shooting across dark cards with random delays, subtle head glows, and linear trails.",
+    demoHtml: `
+      <div class="preview-meteors-box">
+        <span class="m-beam m1"></span>
+        <span class="m-beam m2"></span>
+        <span class="m-beam m3"></span>
+      </div>
+    `,
+    prompt: "请帮我实现一个网页动效：流星夜空划过特效（Meteors Shower Background）。通过纯 CSS 生成倾斜 215deg 的流星光束，伪元素头部添加圆点发光阴影，主体使用 linear-gradient 尾迹渐变，通过 @keyframes 从屏幕外滑入并淡出消失。",
+    enPrompt: "Please help me implement a web motion: Meteors Shower Background. Render angled meteor streaks with glowing head points and fading gradients shooting across containers."
+  },
+  {
+    id: "typewriter-cycle",
+    zhName: "打字机多词轮播交替",
+    enName: "Typewriter Multi-Text Cycle",
+    category: "进入",
+    description: "大标题标语轮播利器。真实光标伴随敲击节奏逐字键入，停留数秒后反向极速删除，无缝无刷新切换下一个关键词。",
+    enDescription: "Dynamic headline typewriter. Types words character by character with rhythmic pauses and rapid backspace deletion for cycling keywords.",
+    demoHtml: `
+      <div class="preview-typewriter">
+        <span class="tw-text">Designers</span>
+        <span class="tw-cursor"></span>
+      </div>
+    `,
+    prompt: "请帮我实现一个网页动效：打字机多词轮播交替（Typewriter Multi-Text Cycle）。使用 JS 定时器动态截取字符串，实现逐字输入、自然停顿、快速退格删除，并循环切换数组中的关键词，右侧附带闪烁的竖线光标。",
+    enPrompt: "Please help me implement a web motion: Typewriter Multi-Text Cycle. Rhythmic typewriter simulation cycling through word lists with dynamic character slicing and blinking caret."
+  },
+  {
+    id: "twinkling-starfield",
+    zhName: "闪烁微光星空点阵",
+    enName: "Twinkling Starfield Particles",
+    category: "进入",
+    description: "深色卡片魔法高光。随机分布的微型星芒粒子以不同周期呼吸闪烁与自旋，光标移动时产生极轻微的 2.5D 视差推移。",
+    enDescription: "Subtle cosmic sparkle. Multi-sized twinkling star particles breathing and pulsing at varied frequencies with subtle cursor parallax.",
+    demoHtml: `
+      <div class="preview-starfield">
+        <span class="star-pt s1">✦</span>
+        <span class="star-pt s2">✧</span>
+        <span class="star-pt s3">✦</span>
+        <span class="star-pt s4">✧</span>
+      </div>
+    `,
+    prompt: "请帮我实现一个网页动效：闪烁微光星空点阵（Twinkling Starfield Particles）。在容器内生成随机坐标的微型星芒（✦ / ✧），各自分配随机动画延时与缩放呼吸周期，模拟夜空繁星闪烁的静谧高级氛围。",
+    enPrompt: "Please help me implement a web motion: Twinkling Starfield Particles. Scatter glowing multi-frequency star glyphs with staggered keyframe pulsing and parallax."
+  },
+  {
+    id: "cursor-trail",
+    zhName: "光标轨迹动态拖影",
+    enName: "Interactive Cursor Trail",
+    category: "悬停",
+    description: "创意工作室品牌秀场。当鼠标在页面快速滑过时，在历史坐标路径上留下一串带惯性滞后、随时间渐隐消散的微缩缩略图或光斑粒子。",
+    enDescription: "Creative agency gesture trail. Leaves a fluid ribbon of decaying image chips or glowing dots lagging smoothly along the pointer's velocity path.",
+    demoHtml: `
+      <div class="preview-cursor-trail">
+        <div class="trail-ghost g1"></div>
+        <div class="trail-ghost g2"></div>
+        <div class="trail-ghost g3"></div>
+        <div class="trail-head"></div>
+      </div>
+    `,
+    prompt: "请帮我实现一个网页动效：光标轨迹动态拖影（Interactive Cursor Trail）。监听 mousemove 事件并在鼠标移动距离超过阈值时生成历史坐标节点，使用 requestAnimationFrame 驱动历史节点按照生命周期逐步缩小和透明度衰减，并在 500ms 后自动清理 DOM。",
+    enPrompt: "Please help me implement a web motion: Interactive Cursor Trail. Spawn ephemeral trailing nodes on mouse trajectory that scale down and fade with inertia."
+  },
+  {
+    id: "direction-aware-hover",
+    zhName: "方向感知卡片划入",
+    enName: "Direction-Aware Hover Reveal",
+    category: "悬停",
+    description: "智能感知光标切入方向。三角函数计算光标从上/下/左/右何处进入卡片，遮罩层严格从光标进入侧平滑抽出，离开时沿对应方向滑出。",
+    enDescription: "Vector-aware hover overlay. Calculates entry angle via trigonometry so the overlay slides in strictly from the cursor's entry edge and exits accordingly.",
+    demoHtml: `
+      <div class="preview-dir-card">
+        <div class="dir-surface">Hover Direction</div>
+        <div class="dir-curtain"></div>
+      </div>
+    `,
+    prompt: "请帮我实现一个网页动效：方向感知卡片划入（Direction-Aware Hover Reveal）。在 mouseenter / mouseleave 事件中通过 Math.atan2 计算鼠标相对卡片中心的进入角度（0: 上, 1: 右, 2: 下, 3: 左），动态调整浮层的起始与目标 transform: translate()，实现跟随鼠标方向的抽拉效果。",
+    enPrompt: "Please help me implement a web motion: Direction-Aware Hover Reveal. Compute cursor entry/exit quadrants using atan2 to animate drawer overlays from 4 cardinal directions."
+  },
+  {
+    id: "grid-dot-proximity",
+    zhName: "点阵网格近邻感应高亮",
+    enName: "Grid Dot Matrix Proximity",
+    category: "悬停",
+    description: "极客开发控制台背景。整齐排列的微型圆点阵列，当光标靠近时，以光标为中心半径内的点阵产生缩放放大与色彩增亮，远离后平滑衰减。",
+    enDescription: "Proximity dot illumination. Regular matrix of micro-dots that scale and illuminate when the cursor approaches within an activation radius.",
+    demoHtml: `
+      <div class="preview-dot-grid">
+        <div class="d-cell active"></div>
+        <div class="d-cell near"></div>
+        <div class="d-cell"></div>
+        <div class="d-cell near"></div>
+        <div class="d-cell"></div>
+        <div class="d-cell"></div>
+      </div>
+    `,
+    prompt: "请帮我实现一个网页动效：点阵网格近邻感应高亮（Grid Dot Matrix Proximity）。在 Canvas 或 DOM Grid 中绘制均匀点阵，在 mousemove 时计算每个点到光标的距离 d，根据距离映射 scale(1 -> 2.5) 与 opacity(0.2 -> 1.0)，离开时通过 transition 平滑复位。",
+    enPrompt: "Please help me implement a web motion: Grid Dot Matrix Proximity. Scale and illuminate arrayed dots inversely proportional to Euclidean distance from mouse position."
+  },
+  {
+    id: "glass-glare-tilt",
+    zhName: "镜面菲涅尔反光 3D 卡片",
+    enName: "Glass Glare Tilt Card",
+    category: "悬停",
+    description: "高端会员卡与资产卡片。在 3D 透视倾斜基础上叠加对角线物理光斑，卡片转动时光斑在磨砂玻璃表面产生真实的漫反射位移。",
+    enDescription: "Luxury reflective tilt card. Combines 3D perspective orientation with a dynamic specular sheen layer tracking mouse angles.",
+    demoHtml: `
+      <div class="preview-glare-card">
+        <div class="glare-foil"></div>
+        <div class="glare-chip">✦ VIP BLACK</div>
+      </div>
+    `,
+    prompt: "请帮我实现一个网页动效：镜面菲涅尔反光 3D 卡片（Glass Glare Tilt Card）。在卡片 3D 透视旋转的同时，卡片内部叠加一层带 linear-gradient(135deg, rgba(255,255,255,0.4), transparent) 的高光层，高光层根据鼠标相对坐标反向位移，产生逼真的玻璃反光效果。",
+    enPrompt: "Please help me implement a web motion: Glass Glare Tilt Card. Pair 3D perspective rotation with a specular highlight sheen layer translating inversely to simulate glass refraction."
+  },
+  {
+    id: "sliding-indicator-tabs",
+    zhName: "滑动指示器分段标签页",
+    enName: "Sliding Indicator Tabs",
+    category: "反馈",
+    description: "顶流应用标配分段控制器。点击切换 Tab 选项时，背后的药丸高亮胶囊根据目标元素的 offsetLeft 与 offsetWidth，以弹簧阻尼曲线平滑滑动与拉伸变形。",
+    enDescription: "Segmented indicator pill. Active highlight bubble smoothly glides, squashes, and snaps to target tab dimensions using spring physics.",
+    demoHtml: `
+      <div class="preview-sliding-tabs">
+        <div class="tab-pill-active"></div>
+        <span class="tab-opt active">Overview</span>
+        <span class="tab-opt">Docs</span>
+      </div>
+    `,
+    prompt: "请帮我实现一个网页动效：滑动指示器分段标签页（Sliding Indicator Tabs）。Tab 栏内设置一个绝对定位的背景高亮药丸，切换 Tab 时读取目标按钮的 offsetLeft 和 offsetWidth，通过 transform: translateX() 与 width 配合 spring 弹性曲线平滑滑向目标项。",
+    enPrompt: "Please help me implement a web motion: Sliding Indicator Tabs. Measure target tab offsetLeft and offsetWidth to glide an absolute background pill with elastic transition."
+  },
+  {
+    id: "expanding-fab-menu",
+    zhName: "折叠展开浮动操作岛",
+    enName: "Expanding FAB Island Menu",
+    category: "反馈",
+    description: "移动端与 AI 助手绝佳入口。右下角常驻悬浮按钮（FAB），点击后由单点以弹性物理曲线膨胀展开为带有多项快捷动作的卡片面板。",
+    enDescription: "Expanding floating action button. Compact trigger expands with spring damping into an action dock with staggered item reveals.",
+    demoHtml: `
+      <div class="preview-fab-dock">
+        <div class="fab-bubble"><span class="fab-plus">+</span></div>
+      </div>
+    `,
+    prompt: "请帮我实现一个网页动效：折叠展开浮动操作岛（Expanding FAB Island Menu）。初始为右下角圆形悬浮图标，点击时触发 CSS 尺寸膨胀与 border-radius 形变，菜单内部图标按 transition-delay 错峰弹出，再次点击或失焦时平滑收起。",
+    enPrompt: "Please help me implement a web motion: Expanding FAB Island Menu. Morph circular FAB trigger into a responsive action card with staggered menu item entrances."
+  },
+  {
+    id: "audio-waveform-visualizer",
+    zhName: "波形音频动态可视化",
+    enName: "Audio Waveform Visualizer",
+    category: "反馈",
+    description: "AI 语音助手与播放器交互。多组圆角垂直条柱根据正弦相移算法与声学振幅起伏跳动，真实模拟语音识别与音乐节奏。",
+    enDescription: "Acoustic audio wave bars. Staggered vertical pill bars oscillating dynamically via sine waves to simulate live voice synthesis and audio playback.",
+    demoHtml: `
+      <div class="preview-wave-bars">
+        <span class="w-bar b1"></span>
+        <span class="w-bar b2"></span>
+        <span class="w-bar b3"></span>
+        <span class="w-bar b4"></span>
+        <span class="w-bar b5"></span>
+      </div>
+    `,
+    prompt: "请帮我实现一个网页动效：波形音频动态可视化（Audio Waveform Visualizer）。使用 CSS keyframes 或 Web Audio API，让一组等间距圆角垂直条柱根据正弦函数错开高度，结合 scaleY(0.2 -> 1.0) 产生起伏有致的声波律动。",
+    enPrompt: "Please help me implement a web motion: Audio Waveform Visualizer. Oscillate array of rounded bars with phase-shifted keyframes and scaleY transforms for voice audio animation."
+  },
+  {
+    id: "circular-progress-meter",
+    zhName: "环形刻度进度仪表",
+    enName: "Circular Radial Progress Meter",
+    category: "反馈",
+    description: "健康指标与性能仪表盘。SVG 圆环通过 stroke-dashoffset 随数值递增顺时针描边填充，内部百分比数字同步累加。",
+    enDescription: "Radial stroke gauge. SVG circle gauge smoothly fills clockwise via stroke-dashoffset with synchronized digital counter and glow accents.",
+    demoHtml: `
+      <div class="preview-radial-meter">
+        <svg viewBox="0 0 36 36" class="radial-svg">
+          <circle class="r-bg" cx="18" cy="18" r="14"/>
+          <circle class="r-fg" cx="18" cy="18" r="14"/>
+        </svg>
+        <span class="r-txt">85%</span>
+      </div>
+    `,
+    prompt: "请帮我实现一个网页动效：环形刻度进度仪表（Circular Radial Progress Meter）。使用 SVG <circle> 标签计算圆周长 2 * π * r 作为 stroke-dasharray，通过动态修改 stroke-dashoffset 控制进度弧长，中间数字使用 requestAnimationFrame 同步递增累加。",
+    enPrompt: "Please help me implement a web motion: Circular Radial Progress Meter. Animate SVG stroke-dashoffset alongside easing digital counter to create smooth radial gauges."
+  },
+  {
+    id: "before-after-slider",
+    zhName: "前后对比滑动擦除",
+    enName: "Before-After Comparison Slider",
+    category: "图片",
+    description: "AI 图像与设计交付神器。两层重叠图像，拖动中间手柄分界线时动态改变上层遮罩 clip-path 或宽度，实现无缝拖拽比对。",
+    enDescription: "Interactive visual comparison. Overlays two images with a draggable separator divider dynamically slicing top layer via clip-path polygon.",
+    demoHtml: `
+      <div class="preview-ba-slider">
+        <div class="ba-img-after"></div>
+        <div class="ba-img-before"></div>
+        <div class="ba-handle"></div>
+      </div>
+    `,
+    prompt: "请帮我实现一个网页动效：前后对比滑动擦除（Before-After Comparison Slider）。两张相同尺寸图片重叠，顶层图片设置 clip-path: polygon(0 0, var(--split-pos) 0, var(--split-pos) 100%, 0 100%)，监听中间手柄拖拽事件动态更新 --split-pos 百分比。",
+    enPrompt: "Please help me implement a web motion: Before-After Comparison Slider. Overlay paired images with draggable divider adjusting top layer clip-path dynamically."
+  },
+  {
+    id: "organic-morphing-blob",
+    zhName: "流体变形有机泡泡",
+    enName: "Organic Morphing Blob",
+    category: "反馈",
+    description: "单细胞流体生命律动。CSS border-radius 八角独立比例连续缓动形变，赋予形状类似水滴、有机泡泡的生命律动感。",
+    enDescription: "Organic morphing shape. Continuous multi-axis border-radius keyframing that creates amoeba-like, elastic fluid blobs.",
+    demoHtml: `
+      <div class="preview-morph-blob">
+        <div class="blob-fluid"></div>
+      </div>
+    `,
+    prompt: "请帮我实现一个网页动效：流体变形有机泡泡（Organic Morphing Blob）。利用 CSS @keyframes 循环平滑过渡 border-radius 的 8 个控制百分比（如 60% 40% 30% 70% / 60% 30% 70% 40%），配合轻微 rotate 自旋，打造生动的有机水滴/气泡形态。",
+    enPrompt: "Please help me implement a web motion: Organic Morphing Blob. Animate multi-value border-radius continuously with subtle rotation for organic fluid blob effects."
   }
 ];
 
