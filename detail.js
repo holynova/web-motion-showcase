@@ -203,21 +203,28 @@ if (copyPromptBtn) {
     } else {
       textToCopy = getMotionCodeSnippet(currentMotion);
     }
-    copyToClipboard(textToCopy);
+    copyToClipboard(textToCopy, handlePromptCopySuccess, currentLang === "en" ? "Prompt copied to clipboard!" : "提示词已复制到剪贴板！");
   });
 }
 
-function copyToClipboard(text) {
+function copyToClipboard(text, onSuccess, toastMsg) {
+  const notify = () => {
+    if (typeof onSuccess === "function") {
+      onSuccess();
+    }
+    showToast(toastMsg || (currentLang === "en" ? "Copied to clipboard!" : "内容已复制到剪贴板！"));
+  };
+
   if (navigator.clipboard && window.isSecureContext) {
     navigator.clipboard.writeText(text)
-      .then(() => handleCopySuccess())
-      .catch(() => fallbackCopy(text));
+      .then(() => notify())
+      .catch(() => fallbackCopy(text, notify));
   } else {
-    fallbackCopy(text);
+    fallbackCopy(text, notify);
   }
 }
 
-function fallbackCopy(text) {
+function fallbackCopy(text, notify) {
   const textArea = document.createElement("textarea");
   textArea.value = text;
   textArea.style.position = "fixed";
@@ -234,15 +241,15 @@ function fallbackCopy(text) {
   textArea.focus();
   textArea.select();
   try {
-    const successful = document.execCommand("copy");
-    if (successful) handleCopySuccess();
+    document.execCommand("copy");
   } catch (err) {
-    console.error("无法复制提示词，请手动复制: ", err);
+    console.error("无法复制内容，请手动复制: ", err);
   }
   document.body.removeChild(textArea);
+  if (typeof notify === "function") notify();
 }
 
-function handleCopySuccess() {
+function handlePromptCopySuccess() {
   if (copyPromptBtn) {
     copyPromptBtn.classList.add("copied");
     if (copyPromptBtnText) {
@@ -255,15 +262,12 @@ function handleCopySuccess() {
       }
     }, 2000);
   }
-  showToast();
 }
 
 function showToast(msg) {
   if (!toastNotification) return;
-  if (msg) {
-    const toastMsg = toastNotification.querySelector(".toast-message");
-    if (toastMsg) toastMsg.textContent = msg;
-  }
+  const toastMsg = toastNotification.querySelector(".toast-message");
+  if (toastMsg && msg) toastMsg.textContent = msg;
   toastNotification.classList.add("show");
   setTimeout(() => {
     toastNotification.classList.remove("show");
@@ -274,13 +278,7 @@ function showToast(msg) {
 function initTitleCopy() {
   if (!titleCopyTrigger) return;
   
-  const handleTitleCopy = () => {
-    const textToCopy = currentLang === "en"
-      ? `${currentMotion.enName} (${currentMotion.zhName})`
-      : `${currentMotion.zhName} (${currentMotion.enName})`;
-    
-    copyToClipboard(textToCopy);
-    
+  const handleTitleBadgeSuccess = () => {
     if (titleCopyBadge) {
       titleCopyBadge.classList.add("copied");
       if (titleCopyText) {
@@ -302,6 +300,14 @@ function initTitleCopy() {
         }
       }, 1800);
     }
+  };
+
+  const handleTitleCopy = () => {
+    const textToCopy = currentLang === "en"
+      ? `${currentMotion.enName} (${currentMotion.zhName})`
+      : `${currentMotion.zhName} (${currentMotion.enName})`;
+    
+    copyToClipboard(textToCopy, handleTitleBadgeSuccess, currentLang === "en" ? "Name copied to clipboard!" : "动效名称已复制到剪贴板！");
   };
 
   titleCopyTrigger.addEventListener("click", handleTitleCopy);
