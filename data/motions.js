@@ -16,6 +16,16 @@ function getCurrentLang() {
   return "zh";
 }
 
+function prefersReducedMotion() {
+  try {
+    return typeof window !== "undefined"
+      && typeof window.matchMedia === "function"
+      && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  } catch (e) {
+    return false;
+  }
+}
+
 export const motions = [
   {
     id: "fade-in-up",
@@ -1828,6 +1838,11 @@ export const motions = [
         const offset = circumference - (pct / 100) * circumference;
         fill.style.strokeDashoffset = offset;
 
+        if (prefersReducedMotion()) {
+          num.textContent = pct;
+          return;
+        }
+
         let start = parseInt(num.textContent) || 0;
         const duration = 600;
         const startTime = performance.now();
@@ -3360,7 +3375,7 @@ export const motions = [
           const ok = resizeCanvas();
           if (ok) {
             drawGrain();  // show first frame immediately
-            tick();
+            if (!prefersReducedMotion()) tick();
             started = true;
           }
         });
@@ -4057,6 +4072,13 @@ export const motions = [
 
       const target = container.querySelector("#cTarget");
 
+      if (prefersReducedMotion()) {
+        document.body.classList.remove("custom-cursor-body");
+        dot.remove();
+        ring.remove();
+        return;
+      }
+
       const onMouseMove = (e) => {
         mouseX = e.clientX;
         mouseY = e.clientY;
@@ -4204,10 +4226,11 @@ export const motions = [
         });
         animId = requestAnimationFrame(loop);
       };
-      loop();
+      if (!prefersReducedMotion()) loop();
 
       const btn = container.querySelector("#btnConfettiHero");
       btn.addEventListener("click", (e) => {
+        if (prefersReducedMotion()) return;
         const rect = btn.getBoundingClientRect();
         const cRect = container.getBoundingClientRect();
         explode(rect.left - cRect.left + rect.width / 2, rect.top - cRect.top + rect.height / 2);

@@ -4,7 +4,7 @@
  * 
  * Verifies catalog consistency between:
  * 1. data/motions.js (SSOT)
- * 2. README.md (Catalog tables)
+ * 2. README.md (Catalog summary)
  * 3. index.html (Metadata count)
  */
 
@@ -56,23 +56,18 @@ motions.forEach((m, idx) => {
 });
 
 if (propErrors === 0) {
-  console.log(`✅ All 60 motions have complete metadata, demoHtml, and render functions.`);
+  console.log(`✅ All ${motions.length} motions have complete metadata, demoHtml, and render functions.`);
 } else {
   process.exit(1);
 }
 
-// 3. Verify README.md mentions all motion IDs
+// 3. Verify README.md keeps the compact catalog summary
 const readmeContent = fs.readFileSync(path.join(rootDir, "README.md"), "utf8");
-let missingInReadme = 0;
-motions.forEach(m => {
-  if (!readmeContent.includes(m.id)) {
-    console.warn(`⚠️ README.md might be missing motion link for: ${m.id}`);
-    missingInReadme++;
-  }
-});
-
-if (missingInReadme === 0) {
-  console.log(`✅ README.md covers all 60 motion links.`);
+const hasCatalogSummary = readmeContent.includes(`${motions.length}+`) && readmeContent.includes("## 动效目录");
+if (hasCatalogSummary) {
+  console.log(`✅ README.md contains the compact ${motions.length}-motion catalog summary.`);
+} else {
+  console.warn(`⚠️ README.md is missing the compact catalog summary for ${motions.length} motions.`);
 }
 
 console.log(`\n✨ Catalog verification completed successfully!\n`);

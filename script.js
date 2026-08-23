@@ -10,9 +10,15 @@ import { categories, categoryTranslations, uiTranslations, faqData, getThemeMode
    State Variables
    ========================================================================== */
 const urlParams = new URLSearchParams(window.location.search);
-let currentLang = urlParams.get("lang") || localStorage.getItem("lang") || "zh";
-let activeCategory = "全部";
-let searchQuery = "";
+let currentLang = ["zh", "en"].includes(urlParams.get("lang"))
+  ? urlParams.get("lang")
+  : localStorage.getItem("lang") || "zh";
+let activeCategory = categories.includes(urlParams.get("filter") || urlParams.get("category"))
+  ? (urlParams.get("filter") || urlParams.get("category"))
+  : "全部";
+let searchQuery = urlParams.get("q") || urlParams.get("search") || "";
+let renderTimer = null;
+let renderVersion = 0;
 
 /* ==========================================================================
    DOM Elements
@@ -21,6 +27,8 @@ const motionGrid = document.getElementById("motionGrid");
 const filterContainer = document.getElementById("filterContainer");
 const searchInput = document.getElementById("searchInput");
 const emptyState = document.getElementById("emptyState");
+const resultsSummary = document.getElementById("resultsSummary");
+const resetFilters = document.getElementById("resetFilters");
 const toastNotification = document.getElementById("toastNotification");
 const progressBar = document.getElementById("progressBar");
 const navbar = document.getElementById("navbar");
@@ -29,7 +37,39 @@ const navbar = document.getElementById("navbar");
    Functions & Core Logic
    ========================================================================== */
 
-// 1. Render Category Filter Tabs
+function syncUrlState() {
+  const url = new URL(window.location.href);
+  const theme = document.documentElement.getAttribute("data-theme") || "slate";
+  const mode = document.documentElement.getAttribute("data-mode") || "light";
+
+  url.searchParams.set("lang", currentLang);
+  url.searchParams.set("theme", theme);
+  url.searchParams.set("mode", mode);
+
+  if (activeCategory === "全部") url.searchParams.delete("filter");
+  else url.searchParams.set("filter", activeCategory);
+  url.searchParams.delete("category");
+
+  if (searchQuery.trim()) url.searchParams.set("q", searchQuery.trim());
+  else {
+    url.searchParams.delete("q");
+    url.searchParams.delete("search");
+  }
+
+  window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
+}
+
+function getMotionHref(motion) {
+  const url = new URL("./detail.html", window.location.href);
+  url.searchParams.set("id", motion.id);
+  url.searchParams.set("name", motion.enName);
+  url.searchParams.set("lang", currentLang);
+  url.searchParams.set("theme", document.documentElement.getAttribute("data-theme") || "slate");
+  url.searchParams.set("mode", document.documentElement.getAttribute("data-mode") || "light");
+  return url.href;
+}
+
+// 1. Render Category Filters
 function renderFilters() {
   if (!filterContainer) return;
   filterContainer.innerHTML = categories.map(category => {
@@ -37,8 +77,8 @@ function renderFilters() {
     return `
       <button 
         class="filter-btn ${category === activeCategory ? 'active' : ''}" 
-        role="tab" 
-        aria-selected="${category === activeCategory}" 
+        type="button"
+        aria-pressed="${category === activeCategory}"
         data-category="${category}"
       >
         ${displayName}
@@ -46,10 +86,11 @@ function renderFilters() {
     `;
   }).join("");
   
-  // Attach Tab Event Listeners
+  // Attach filter event listeners
   filterContainer.querySelectorAll(".filter-btn").forEach(btn => {
-    btn.addEventListener("click", (e) => {
-      activeCategory = e.target.dataset.category;
+    btn.addEventListener("click", () => {
+      activeCategory = btn.dataset.category;
+      syncUrlState();
       renderFilters();
       renderCards();
     });
@@ -59,6 +100,9 @@ function renderFilters() {
 // 2. Render Motion Cards based on Filters & Search
 function renderCards() {
   if (!motionGrid || !emptyState) return;
+  const renderId = ++renderVersion;
+  if (renderTimer) clearTimeout(renderTimer);
+
   const filteredMotions = motions.filter(motion => {
     const matchesCategory = activeCategory === "全部" || motion.category === activeCategory;
     const searchString = `${motion.zhName} ${motion.enName} ${(currentLang === 'en' ? motion.enDescription : motion.description)} ${motion.category}`.toLowerCase();
@@ -66,10 +110,22 @@ function renderCards() {
     return matchesCategory && matchesSearch;
   });
 
+  const t = uiTranslations[currentLang];
+  if (resultsSummary) {
+    resultsSummary.textContent = t.resultsSummary
+      .replace("{visible}", filteredMotions.length)
+      .replace("{total}", motions.length);
+  }
+  if (resetFilters) {
+    resetFilters.hidden = activeCategory === "全部" && !searchQuery.trim();
+    resetFilters.textContent = t.resetFilters;
+  }
+
   // Toggle Empty State
   if (filteredMotions.length === 0) {
     motionGrid.style.opacity = "0";
-    setTimeout(() => {
+    renderTimer = setTimeout(() => {
+      if (renderId !== renderVersion) return;
       motionGrid.style.display = "none";
       emptyState.style.display = "block";
     }, 200);
@@ -79,13 +135,14 @@ function renderCards() {
     
     // Smooth transition list re-render
     motionGrid.style.opacity = "0";
-    setTimeout(() => {
+    renderTimer = setTimeout(() => {
+      if (renderId !== renderVersion) return;
       motionGrid.innerHTML = filteredMotions.map(motion => {
         const catName = categoryTranslations[currentLang][motion.category] || motion.category;
         const descText = currentLang === "en" ? (motion.enDescription || motion.description) : motion.description;
-        const promptText = currentLang === "en" ? (motion.enPrompt || motion.prompt) : motion.prompt;
         const ariaLabel = currentLang === "en" ? `${motion.enName} motion demo simulation` : `${motion.zhName} 动效演示模拟`;
         const copyTitle = uiTranslations[currentLang].copyPromptTitle;
+        const cardLabel = currentLang === "en" ? motion.enName : motion.zhName;
         
         let titleHtml = "";
         if (currentLang === "en") {
@@ -101,21 +158,23 @@ function renderCards() {
         }
 
         return `
-          <article class="motion-card" id="card-${motion.id}" tabindex="0" role="link" aria-label="${currentLang === "en" ? motion.enName : motion.zhName}">
-            <div class="preview-canvas" aria-label="${ariaLabel}">
-              ${motion.demoHtml}
-            </div>
-            <div class="card-content">
-              <span class="card-tag">${catName}</span>
-              <div class="card-title-row">
-                ${titleHtml}
+          <article class="motion-card" id="card-${motion.id}">
+            <a class="motion-card-link" href="${getMotionHref(motion)}" aria-label="${cardLabel}">
+              <div class="preview-canvas" aria-hidden="true">
+                ${motion.demoHtml}
               </div>
-              <p class="card-desc">${descText}</p>
-              <div class="card-actions">
-                <button class="btn-copy-prompt" type="button" data-prompt="${promptText}" title="${copyTitle}" aria-label="${copyTitle}">
-                  <span class="copy-icon" aria-hidden="true"><svg class="icon icon-copy" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></span>
-                </button>
+              <div class="card-content">
+                <span class="card-tag">${catName}</span>
+                <div class="card-title-row">
+                  ${titleHtml}
+                </div>
+                <p class="card-desc">${descText}</p>
               </div>
+            </a>
+            <div class="card-actions">
+              <button class="btn-copy-prompt" type="button" data-motion-id="${motion.id}" title="${copyTitle}" aria-label="${copyTitle}">
+                <span class="copy-icon" aria-hidden="true"><svg class="icon icon-copy" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 0 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></span>
+              </button>
             </div>
           </article>
         `;
@@ -126,31 +185,10 @@ function renderCards() {
       // Bind copy buttons in grid
       motionGrid.querySelectorAll(".btn-copy-prompt").forEach(button => {
         button.addEventListener("click", () => {
-          const promptText = button.getAttribute("data-prompt");
+          const motion = motions.find(item => item.id === button.dataset.motionId);
+          if (!motion) return;
+          const promptText = currentLang === "en" ? (motion.enPrompt || motion.prompt) : motion.prompt;
           copyToClipboard(promptText);
-        });
-      });
-      
-      // Bind card click and keyboard navigation to detail page
-      motionGrid.querySelectorAll(".motion-card").forEach(card => {
-        const navigateToDetail = () => {
-          const motionId = card.id.replace("card-", "");
-          const motion = motions.find(m => m.id === motionId);
-          const nameParam = motion && motion.enName ? `&name=${encodeURIComponent(motion.enName)}` : "";
-          window.open(`detail.html?id=${motionId}${nameParam}`, '_blank');
-        };
-
-        card.addEventListener("click", (e) => {
-          if (e.target.closest(".btn-copy-prompt")) return;
-          navigateToDetail();
-        });
-
-        card.addEventListener("keydown", (e) => {
-          if (e.target.closest(".btn-copy-prompt")) return;
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            navigateToDetail();
-          }
         });
       });
       
@@ -256,6 +294,23 @@ function handleScroll() {
       navbar.classList.remove("scrolled");
     }
   }
+
+  const navItems = document.querySelectorAll(".nav-links .nav-item[href^='#']");
+  const sections = [...navItems]
+    .map(link => ({ link, section: document.querySelector(link.getAttribute("href")) }))
+    .filter(item => item.section);
+  let activeSection = sections[0];
+  sections.forEach(item => {
+    if (item.section.getBoundingClientRect().top <= window.innerHeight * 0.35) {
+      activeSection = item;
+    }
+  });
+  sections.forEach(item => {
+    const isActive = item === activeSection;
+    item.link.classList.toggle("active", isActive);
+    if (isActive) item.link.setAttribute("aria-current", "page");
+    else item.link.removeAttribute("aria-current");
+  });
   
   sessionStorage.setItem("home_scroll_y", scrollTop);
 }
@@ -277,8 +332,10 @@ function initTheme() {
   themeDots.forEach(dot => {
     if (dot.dataset.themeOpt === theme) {
       dot.classList.add("active");
+      dot.setAttribute("aria-checked", "true");
     } else {
       dot.classList.remove("active");
+      dot.setAttribute("aria-checked", "false");
     }
   });
   
@@ -302,10 +359,13 @@ function setupThemeEvents() {
       themeDots.forEach(d => {
         if (d.dataset.themeOpt === selectedTheme) {
           d.classList.add("active");
+          d.setAttribute("aria-checked", "true");
         } else {
           d.classList.remove("active");
+          d.setAttribute("aria-checked", "false");
         }
       });
+      syncUrlState();
     });
   });
   
@@ -322,6 +382,7 @@ function setupThemeEvents() {
       if (icon) {
         icon.innerHTML = getThemeModeIcon(nextMode);
       }
+      syncUrlState();
     });
   }
 }
@@ -330,6 +391,7 @@ function setupThemeEvents() {
 function setLanguage(lang) {
   currentLang = lang;
   localStorage.setItem("lang", lang);
+  syncUrlState();
   translatePage();
 }
 
@@ -383,6 +445,9 @@ function translatePage() {
     searchInput.setAttribute("aria-label", currentLang === "zh" ? "搜索动效" : "Search motions");
   }
 
+  const galleryStatus = document.getElementById("galleryStatus");
+  if (galleryStatus) galleryStatus.setAttribute("aria-label", currentLang === "zh" ? "筛选结果" : "Filter results");
+
   const slateDot = document.querySelector(".theme-dot[data-theme-opt='slate']");
   if (slateDot) {
     slateDot.title = currentLang === "en" ? "Slate Theme" : "石板灰主题";
@@ -404,7 +469,7 @@ function translatePage() {
     modeBtn.setAttribute("aria-label", currentLang === "en" ? "Toggle Dark / Light Mode" : "切换深浅模式");
   }
   
-  const emptyH3 = document.querySelector("#emptyState h3");
+  const emptyH3 = document.querySelector("#emptyState h2, #emptyState h3");
   if (emptyH3) emptyH3.textContent = t.emptyTitle;
   const emptyP = document.querySelector("#emptyState p");
   if (emptyP) emptyP.textContent = t.emptyDesc;
@@ -454,7 +519,20 @@ function preloadImages() {
 if (searchInput) {
   searchInput.addEventListener("input", (e) => {
     searchQuery = e.target.value;
+    syncUrlState();
     renderCards();
+  });
+}
+
+if (resetFilters) {
+  resetFilters.addEventListener("click", () => {
+    activeCategory = "全部";
+    searchQuery = "";
+    if (searchInput) searchInput.value = "";
+    syncUrlState();
+    renderFilters();
+    renderCards();
+    searchInput?.focus();
   });
 }
 
@@ -489,15 +567,7 @@ function init() {
     });
   });
   
-  const filterParam = urlParams.get("filter") || urlParams.get("category");
-  if (filterParam && categories.includes(filterParam)) {
-    activeCategory = filterParam;
-  }
-  const searchParam = urlParams.get("q") || urlParams.get("search");
-  if (searchParam) {
-    searchQuery = searchParam;
-    if (searchInput) searchInput.value = searchParam;
-  }
+  if (searchInput) searchInput.value = searchQuery;
 
   setLanguage(currentLang);
   

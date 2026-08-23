@@ -16,7 +16,7 @@
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
   
   <!-- Primary Meta Tags -->
-  <title>网页 UI 动效灵感库 | Web Motion Showcase - 34+ 经典与现代网页动效与 AI 提示词</title>
+  <title>网页 UI 动效灵感库 | Web Motion Showcase - 60+ 经典与现代网页动效与 AI 提示词</title>
   <meta name="title" content="网页 UI 动效灵感库 | Web Motion Showcase - 60+ 经典与现代网页动效与 AI 提示词">
   <meta name="description" content="专为网页设计初学者与前端开发者量身打造的互动式动效科普与灵感库。精选收录 60 种克制优雅的网页 UI 动效，提供中英双语解析、全屏可交互沙盒预览与一键复制的 AI 开发提示词（支持 Claude, Cursor, DeepSeek, ChatGPT）。">
   <meta name="keywords" content="网页动效, UI动效, Web Motion, CSS动画, 交互设计, 前端开发, AI提示词, Cursor动效, Tailwind CSS, 极光流光, 流星雨, 打字机, 光标拖影, 镜面反光卡片, 环形进度条, prefers-reduced-motion">
@@ -41,7 +41,7 @@
   <meta property="twitter:image" content="https://raw.githubusercontent.com/holynova/web-motion-showcase/main/screenshot.png">
 
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="./styles.css?v=3.2.3">
+  <link rel="stylesheet" href="./styles.css?v=3.2.5">
 
   <!-- JSON-LD Structured Data for Search & AI Engines (GEO / SEO) -->
   <script type="application/ld+json">
@@ -154,7 +154,7 @@
             "name": "什么是 Web Motion Showcase（网页 UI 动效灵感库）？",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Web Motion Showcase 是一个专为网页设计初学者与前端开发者设计的开源互动式动效科普与提示词灵感库。精选收录 34 种经典且克制的网页动效，提供中英双语介绍、全屏可交互沙盒预览，并内置一键复制的 AI 开发提示词（支持 Claude, Cursor, ChatGPT, DeepSeek 等）。"
+              "text": "Web Motion Showcase 是一个专为网页设计初学者与前端开发者设计的开源互动式动效科普与提示词灵感库。精选收录 60 种经典且克制的网页动效，提供中英双语介绍、全屏可交互沙盒预览，并内置一键复制的 AI 开发提示词（支持 Claude, Cursor, ChatGPT, DeepSeek 等）。"
             }
           },
           {
@@ -200,9 +200,9 @@
       <div class="nav-actions">
         <div class="theme-selector-container">
           <div class="theme-options" role="radiogroup" aria-label="选择色彩主题">
-            <button class="theme-dot" data-theme-opt="slate" type="button" aria-label="石板灰主题" title="石板灰主题" style="--dot-color: #3b82f6;"></button>
-            <button class="theme-dot" data-theme-opt="green" type="button" aria-label="莫兰迪绿主题" title="莫兰迪绿主题" style="--dot-color: #387a4b;"></button>
-            <button class="theme-dot" data-theme-opt="sand" type="button" aria-label="秋叶暖沙主题" title="秋叶暖沙主题" style="--dot-color: #b86d3b;"></button>
+            <button class="theme-dot" data-theme-opt="slate" type="button" role="radio" aria-checked="false" aria-label="石板灰主题" title="石板灰主题" style="--dot-color: #3b82f6;"></button>
+            <button class="theme-dot" data-theme-opt="green" type="button" role="radio" aria-checked="false" aria-label="莫兰迪绿主题" title="莫兰迪绿主题" style="--dot-color: #387a4b;"></button>
+            <button class="theme-dot" data-theme-opt="sand" type="button" role="radio" aria-checked="false" aria-label="秋叶暖沙主题" title="秋叶暖沙主题" style="--dot-color: #b86d3b;"></button>
           </div>
           <button class="theme-mode-btn" id="modeToggle" type="button" aria-label="切换深浅模式" title="切换深/浅色模式">
             <span class="mode-icon" aria-hidden="true"><svg class="icon icon-sun" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.60" y2="5.60"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.60" y2="18.36"></line><line x1="18.36" y1="5.60" x2="19.78" y2="4.22"></line></svg></span>
@@ -237,13 +237,17 @@
             <span class="search-icon" aria-hidden="true"><svg class="icon icon-search" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></span>
             <input type="search" id="searchInput" placeholder="搜索动效名称或描述..." aria-label="搜索动效">
           </div>
-          <div class="filter-tags" id="filterContainer" role="tablist" aria-label="动效分类">
+          <div class="filter-tags" id="filterContainer" role="group" aria-label="动效分类">
             <!-- Dynamically populated categories -->
+          </div>
+          <div class="gallery-status" id="galleryStatus">
+            <p class="results-summary" id="resultsSummary" aria-live="polite" aria-atomic="true"></p>
+            <button class="reset-filters" id="resetFilters" type="button" hidden>重置筛选</button>
           </div>
         </div>
 
         <!-- Grid Container -->
-        <div class="motion-grid" id="motionGrid" aria-live="polite">
+        <div class="motion-grid" id="motionGrid">
           <!-- Dynamically populated motion cards -->
         </div>
 
@@ -307,6 +311,6 @@
     <span class="toast-message">提示词已复制到剪贴板！</span>
   </div>
 
-  <script type="module" src="./script.js?v=3.2.3"></script>
+  <script type="module" src="./script.js?v=3.2.4"></script>
 </body>
 </html>

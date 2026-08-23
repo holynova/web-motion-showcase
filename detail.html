@@ -39,7 +39,7 @@
   <meta property="twitter:description" content="网页 UI 动效全屏沉浸式体验，支持参数调整与一键复制 AI 提示词。">
   <meta property="twitter:image" content="https://raw.githubusercontent.com/holynova/web-motion-showcase/main/screenshot.png">
 
-  <link rel="stylesheet" href="./detail.css?v=3.2.3">
+  <link rel="stylesheet" href="./detail.css?v=3.2.11">
 
   <!-- JSON-LD Breadcrumb & TechArticle -->
   <script type="application/ld+json">
@@ -119,14 +119,14 @@
     <!-- AI Prompt & Source Code Snippet Box -->
     <div class="prompt-box-card">
       <div class="prompt-box-header">
-        <div class="prompt-tab-switch" role="tablist" aria-label="提示词与源代码切换">
+        <div class="prompt-tab-switch" role="tablist" aria-label="提示词与实现示例切换">
           <button class="tab-chip active" id="tabPromptBtn" role="tab" aria-selected="true" type="button">
             <svg class="icon-sparkle" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L15 9L22 12L15 15L12 22L9 15L2 12L9 9Z"></path></svg>
             <span id="promptCardLabel">AI 提示词</span>
           </button>
           <button class="tab-chip" id="tabCodeBtn" role="tab" aria-selected="false" type="button">
             <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-            <span id="codeCardLabel">源代码</span>
+            <span id="codeCardLabel">实现示例</span>
           </button>
         </div>
         <button class="btn-copy-chip" id="copyPromptBtn" type="button" title="复制内容到剪贴板">
@@ -138,7 +138,7 @@
         <p class="prompt-code-text" id="promptText">正在生成提示词...</p>
       </div>
       <div class="prompt-code-wrap" id="codeViewWrap" style="display: none;">
-        <pre class="prompt-code-text code-syntax-block"><code id="codeText">/* 正在加载源代码... */</code></pre>
+            <pre class="prompt-code-text code-syntax-block"><code id="codeText">/* 正在加载实现示例... */</code></pre>
       </div>
     </div>
 

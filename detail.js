@@ -113,18 +113,19 @@ function navigateMotion(offset) {
 function getMotionCodeSnippet(motion) {
   const isEn = currentLang === "en";
   const titleComment = isEn ? `${motion.enName} (${motion.zhName})` : `${motion.zhName} (${motion.enName})`;
-  const labelText = isEn ? `${motion.enName} Sample` : `${motion.zhName} 动效示例`;
+  const implementationNote = isEn
+    ? "This is the reusable preview markup and a minimal CSS starting point. The complete interactive sandbox renderer lives in data/motions.js."
+    : "这是可复用的预览标记与最小 CSS 起点。完整的交互式沙盒渲染逻辑位于 data/motions.js。";
   const reducedMotionComment = isEn ? "Accessibility: Graceful fallback for reduced motion preference" : "无障碍支持：系统减少动态效果模式优雅降级";
 
   return `<!-- ${titleComment} -->
-<div class="${motion.id}-wrapper">
-  <div class="${motion.id}-element">
-    <span>${labelText}</span>
-  </div>
+<!-- ${implementationNote} -->
+<div class="${motion.id}-preview">
+  ${motion.demoHtml.trim()}
 </div>
 
 <style>
-.${motion.id}-wrapper {
+.${motion.id}-preview {
   position: relative;
   display: flex;
   align-items: center;
@@ -132,7 +133,7 @@ function getMotionCodeSnippet(motion) {
   padding: 32px;
 }
 
-.${motion.id}-element {
+.${motion.id}-preview > * {
   border-radius: 12px;
   padding: 16px 28px;
   background: var(--bg-secondary, #1e293b);
@@ -141,14 +142,15 @@ function getMotionCodeSnippet(motion) {
   transition: all 250ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.${motion.id}-element:hover {
+.${motion.id}-preview > *:hover {
   transform: translateY(-3px);
   box-shadow: 0 20px 35px -5px rgba(0, 0, 0, 0.3);
 }
 
 /* ${reducedMotionComment} */
 @media (prefers-reduced-motion: reduce) {
-  .${motion.id}-element {
+  .${motion.id}-preview,
+  .${motion.id}-preview > * {
     animation: none !important;
     transition: none !important;
     transform: none !important;
@@ -386,6 +388,7 @@ function translatePage() {
 function replayMotion() {
   if (!demoCanvas) return;
   window.scrollTo({ top: 0, behavior: "instant" });
+  demoCanvas.dataset.reducedMotion = String(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
   demoCanvas.dispatchEvent(new CustomEvent("cleanup"));
   demoCanvas.innerHTML = "";
   setTimeout(() => {
@@ -398,6 +401,9 @@ function replayMotion() {
 // 9. Core initialization call
 function init() {
   initTheme();
+  if (demoCanvas) {
+    demoCanvas.dataset.reducedMotion = String(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  }
   
   if (panelCollapseBtn) {
     panelCollapseBtn.addEventListener("click", () => togglePanel(true));
@@ -411,6 +417,12 @@ function init() {
       if (window.opener) {
         e.preventDefault();
         window.close();
+        return;
+      }
+      const referrer = document.referrer ? new URL(document.referrer) : null;
+      if (referrer && referrer.origin === window.location.origin && referrer.pathname.endsWith("/index.html")) {
+        e.preventDefault();
+        window.history.back();
       }
     });
   }
@@ -445,7 +457,12 @@ function init() {
       if (window.opener) {
         window.close();
       } else {
-        window.location.href = "index.html";
+        const referrer = document.referrer ? new URL(document.referrer) : null;
+        if (referrer && referrer.origin === window.location.origin && referrer.pathname.endsWith("/index.html")) {
+          window.history.back();
+        } else {
+          window.location.href = "index.html";
+        }
       }
     }
   });
