@@ -155,6 +155,48 @@
   color: var(--text-inverse, #f8fafc) !important;
 }
 
+@media (max-width: 640px) {
+  .container {
+    padding-inline: 16px;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .navbar-inner,
+  .nav-actions {
+    gap: 6px;
+  }
+
+  .brand {
+    gap: 6px;
+    font-size: 1rem;
+  }
+
+  .brand-logo {
+    font-size: 1.2rem;
+  }
+
+  .theme-selector-container {
+    gap: 6px;
+    padding-inline: 8px 6px;
+  }
+
+  .theme-options {
+    gap: 6px;
+  }
+
+  .theme-dot {
+    width: 14px;
+    height: 14px;
+  }
+
+  .lang-btn {
+    padding-inline: 8px;
+  }
+}
+
 .theme-options {
   display: flex;
   align-items: center;
@@ -603,7 +645,7 @@
 
 /* Card Visual Preview Canvas */
 .preview-canvas {
-  height: 195px;
+  height: clamp(220px, 22vw, 280px);
   background-color: var(--bg-tertiary);
   border-bottom: 1px solid var(--border-color);
   position: relative;
@@ -621,7 +663,7 @@
 
 /* Card Content Area */
 .card-content {
-  padding: 24px 24px 76px;
+  padding: 20px 22px 68px;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -637,57 +679,85 @@
   border-radius: var(--radius-sm);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .card-title-row {
   display: flex;
   align-items: baseline;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 10px;
-}
-
-.card-title-zh {
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: var(--text-primary);
+  gap: 4px;
+  margin-bottom: 9px;
 }
 
 .card-title-en {
-  font-size: 0.85rem;
-  font-weight: 500;
+  font-size: 1.08rem;
+  line-height: 1.25;
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.card-title-zh {
+  font-size: 0.76rem;
+  line-height: 1.35;
+  font-weight: 600;
   color: var(--text-muted);
+  white-space: nowrap;
 }
 
 .card-desc {
-  font-size: 0.9rem;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  font-size: 0.84rem;
   color: var(--text-secondary);
-  line-height: 1.5;
-  margin-bottom: 24px;
-  flex-grow: 1;
+  line-height: 1.45;
+  margin: 0;
 }
 
 /* Card Actions */
 .card-actions {
   position: absolute;
-  right: 24px;
-  bottom: 24px;
+  right: 22px;
+  bottom: 20px;
+  display: flex;
+  justify-content: flex-end;
+  padding: 0;
   z-index: 1;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(6px);
+  pointer-events: none;
+  transition: opacity var(--transition-fast), transform var(--transition-fast), visibility var(--transition-fast);
+}
+
+.motion-card:hover .card-actions,
+.motion-card:focus-within .card-actions {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
 .btn-copy-prompt {
-  width: 36px;
-  height: 36px;
+  width: auto;
+  min-height: 36px;
+  padding: 0 12px;
   background-color: var(--bg-secondary);
   border: 1px solid var(--border-color);
   color: var(--text-primary);
-  border-radius: 50%;
+  border-radius: var(--radius-md);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all var(--transition-fast);
+  gap: 8px;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
 }
 
 .btn-copy-prompt:hover {
@@ -700,8 +770,18 @@
   transform: scale(0.92);
 }
 
+.btn-copy-prompt.copied {
+  background-color: var(--accent-soft);
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+}
+
 .copy-icon {
   font-size: 0.95rem;
+}
+
+.copy-label {
+  white-space: nowrap;
 }
 
 /* Empty State */

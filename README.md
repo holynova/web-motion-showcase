@@ -10,6 +10,10 @@
 
 ![Web Motion Showcase](./screenshot.png)
 
+<a href="https://holynova.github.io/web-motion-showcase/"><img src="github-pages-qr.png" width="180" alt="扫描访问 Web Motion Showcase" /></a>
+
+手机扫描二维码即可访问在线演示。
+
 ## 项目简介
 
 Web Motion Showcase 是一个纯原生的网页动效灵感库，面向网页设计师和前端开发者。

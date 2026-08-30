@@ -139,23 +139,14 @@ function renderCards() {
       if (renderId !== renderVersion) return;
       motionGrid.innerHTML = filteredMotions.map(motion => {
         const catName = categoryTranslations[currentLang][motion.category] || motion.category;
-        const descText = currentLang === "en" ? (motion.enDescription || motion.description) : motion.description;
+        const descText = getCompactCardDescription(motion);
         const ariaLabel = currentLang === "en" ? `${motion.enName} motion demo simulation` : `${motion.zhName} 动效演示模拟`;
-        const copyTitle = uiTranslations[currentLang].copyPromptTitle;
-        const cardLabel = currentLang === "en" ? motion.enName : motion.zhName;
-        
-        let titleHtml = "";
-        if (currentLang === "en") {
-          titleHtml = `
-            <h3 class="card-title-zh">${motion.enName}</h3>
-            <span class="card-title-en">${motion.zhName}</span>
-          `;
-        } else {
-          titleHtml = `
-            <h3 class="card-title-zh">${motion.zhName}</h3>
-            <span class="card-title-en">${motion.enName}</span>
-          `;
-        }
+        const copyTitle = uiTranslations[currentLang].cardCopyPromptTitle
+          || (currentLang === "en" ? "Copy this motion's AI prompt" : "复制这个动效的 AI Prompt");
+        const copyLabel = uiTranslations[currentLang].cardCopyPromptBtnText
+          || uiTranslations[currentLang].copyPromptBtnText
+          || (currentLang === "en" ? "Copy AI Prompt" : "复制 AI Prompt");
+        const cardLabel = `${motion.enName}，${motion.zhName}`;
 
         return `
           <article class="motion-card" id="card-${motion.id}">
@@ -166,7 +157,8 @@ function renderCards() {
               <div class="card-content">
                 <span class="card-tag">${catName}</span>
                 <div class="card-title-row">
-                  ${titleHtml}
+                  <h3 class="card-title-en">${motion.enName}</h3>
+                  <span class="card-title-zh">${motion.zhName}</span>
                 </div>
                 <p class="card-desc">${descText}</p>
               </div>
@@ -174,6 +166,7 @@ function renderCards() {
             <div class="card-actions">
               <button class="btn-copy-prompt" type="button" data-motion-id="${motion.id}" title="${copyTitle}" aria-label="${copyTitle}">
                 <span class="copy-icon" aria-hidden="true"><svg class="icon icon-copy" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 0 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></span>
+                <span class="copy-label">${copyLabel}</span>
               </button>
             </div>
           </article>
@@ -188,7 +181,22 @@ function renderCards() {
           const motion = motions.find(item => item.id === button.dataset.motionId);
           if (!motion) return;
           const promptText = currentLang === "en" ? (motion.enPrompt || motion.prompt) : motion.prompt;
-          copyToClipboard(promptText);
+          copyToClipboard(promptText, () => {
+            const label = button.querySelector(".copy-label");
+            if (label) {
+              label.textContent = uiTranslations[currentLang].cardCopyPromptSuccessText
+                || uiTranslations[currentLang].copyPromptSuccessText
+                || (currentLang === "en" ? "Prompt Copied" : "已复制 Prompt");
+            }
+            button.classList.add("copied");
+            window.clearTimeout(button.copyResetTimer);
+            button.copyResetTimer = window.setTimeout(() => {
+              if (label) label.textContent = uiTranslations[currentLang].cardCopyPromptBtnText
+                || uiTranslations[currentLang].copyPromptBtnText
+                || (currentLang === "en" ? "Copy AI Prompt" : "复制 AI Prompt");
+              button.classList.remove("copied");
+            }, 1800);
+          });
         });
       });
       
@@ -197,6 +205,16 @@ function renderCards() {
       
     }, 200);
   }
+}
+
+function getCompactCardDescription(motion) {
+  const source = currentLang === "en"
+    ? (motion.enDescription || motion.description)
+    : motion.description;
+  const match = currentLang === "en"
+    ? source.match(/^.*?[.!?](?:\s|$)/)
+    : source.match(/^.*?[。！？]/);
+  return (match ? match[0] : source).trim();
 }
 
 // Helper to run JS-driven preview simulations if any (e.g. number counting up)
@@ -235,17 +253,22 @@ function initDynamicSimulations() {
 }
 
 // 3. Clipboard copy helper with browser fallback
-function copyToClipboard(text) {
+function copyToClipboard(text, onSuccess) {
+  const notifySuccess = () => {
+    showToast();
+    if (typeof onSuccess === "function") onSuccess();
+  };
+
   if (navigator.clipboard && window.isSecureContext) {
     navigator.clipboard.writeText(text)
-      .then(() => showToast())
-      .catch(() => fallbackCopy(text));
+      .then(notifySuccess)
+      .catch(() => fallbackCopy(text, notifySuccess));
   } else {
-    fallbackCopy(text);
+    fallbackCopy(text, notifySuccess);
   }
 }
 
-function fallbackCopy(text) {
+function fallbackCopy(text, onSuccess) {
   const textArea = document.createElement("textarea");
   textArea.value = text;
   textArea.style.position = "fixed";
@@ -263,7 +286,7 @@ function fallbackCopy(text) {
   textArea.select();
   try {
     const successful = document.execCommand('copy');
-    if (successful) showToast();
+    if (successful && typeof onSuccess === "function") onSuccess();
   } catch (err) {
     console.error("无法复制提示词，请手动复制: ", err);
   }
