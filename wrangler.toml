@@ -1,0 +1,5 @@
+name = "web-motion-showcase"
+compatibility_date = "2026-09-04"
+
+[assets]
+directory = "."
