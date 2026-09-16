@@ -24,7 +24,13 @@ Web Motion Showcase 是一个纯原生的网页动效灵感库，面向网页设
 - 支持 `prefers-reduced-motion`，减少动态效果时自动降级。
 - 无构建步骤，无第三方运行时依赖。
 
+## 先体验一个动效
+
+打开 [倾斜卡片沙盒](https://holynova.github.io/web-motion-showcase/detail.html?id=tilt-card&lang=zh&theme=slate&mode=light)，移动指针观察反馈，再复制页面提供的 AI Prompt。需要其他效果时返回首页，按分类或关键词筛选。
+
 ## 快速开始
+
+需要 Python 3；使用 `npm` 脚本与目录检查时还需 Node.js。
 
 ```bash
 npm run dev
@@ -98,4 +104,4 @@ It includes interactive detail sandboxes, bilingual descriptions, copy-ready AI 
 
 ## License
 
-[ISC License](./package.json) · Author: [holynova](https://github.com/holynova)
+[MIT 标记（package.json）](./package.json) · Author: [holynova](https://github.com/holynova)
