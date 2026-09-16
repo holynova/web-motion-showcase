@@ -2,6 +2,11 @@
 
 60+ 个克制、可复用的 Web UI 动效示例，配套全屏交互沙盒和 AI 开发提示词。
 
+<p align="center">
+  <img src="assets/readme/hero.svg" width="100%" alt="Web Motion Showcase: 60+ 个克制、可复用的 Web UI 动效示例，配套全屏交互沙盒和 AI 开发提示词。">
+</p>
+
+
 [![Motions Included](https://img.shields.io/badge/Motions-60%2B%20Catalog-orange?style=flat-square)](https://holynova.github.io/web-motion-showcase/)
 [![Zero Dependency](https://img.shields.io/badge/Dependencies-0%20Vanilla%20JS-success?style=flat-square)](https://github.com/holynova/web-motion-showcase)
 [![AI Ready](https://img.shields.io/badge/AI%20Prompts-Claude%20%7C%20Cursor%20%7C%20DeepSeek-purple?style=flat-square)](https://holynova.github.io/web-motion-showcase/)
