@@ -2,6 +2,11 @@
 
 60+ 个克制、可复用的 Web UI 动效示例，配套全屏交互沙盒和 AI 开发提示词。
 
+<p align="center">
+  <img src="assets/readme/hero.svg" width="100%" alt="Web Motion Showcase: 60+ 个克制、可复用的 Web UI 动效示例，配套全屏交互沙盒和 AI 开发提示词。">
+</p>
+
+
 [![Motions Included](https://img.shields.io/badge/Motions-60%2B%20Catalog-orange?style=flat-square)](https://holynova.github.io/web-motion-showcase/)
 [![Zero Dependency](https://img.shields.io/badge/Dependencies-0%20Vanilla%20JS-success?style=flat-square)](https://github.com/holynova/web-motion-showcase)
 [![AI Ready](https://img.shields.io/badge/AI%20Prompts-Claude%20%7C%20Cursor%20%7C%20DeepSeek-purple?style=flat-square)](https://holynova.github.io/web-motion-showcase/)
@@ -24,7 +29,13 @@ Web Motion Showcase 是一个纯原生的网页动效灵感库，面向网页设
 - 支持 `prefers-reduced-motion`，减少动态效果时自动降级。
 - 无构建步骤，无第三方运行时依赖。
 
+## 先体验一个动效
+
+打开 [倾斜卡片沙盒](https://holynova.github.io/web-motion-showcase/detail.html?id=tilt-card&lang=zh&theme=slate&mode=light)，移动指针观察反馈，再复制页面提供的 AI Prompt。需要其他效果时返回首页，按分类或关键词筛选。
+
 ## 快速开始
+
+需要 Python 3；使用 `npm` 脚本与目录检查时还需 Node.js。
 
 ```bash
 npm run dev
@@ -98,4 +109,4 @@ It includes interactive detail sandboxes, bilingual descriptions, copy-ready AI 
 
 ## License
 
-[ISC License](./package.json) · Author: [holynova](https://github.com/holynova)
+[MIT 标记（package.json）](./package.json) · Author: [holynova](https://github.com/holynova)
