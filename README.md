@@ -1,101 +1,91 @@
-# Web Motion Showcase
+<p align="center">
+  <img src="./assets/readme/hero.svg" width="100%" alt="Web Motion Showcase — 克制的网页动效灵感库：浅色标题，右侧一张 3D 倾斜的卡片与一条缓动曲线">
+</p>
 
-60+ 个克制、可复用的 Web UI 动效示例，配套全屏交互沙盒和 AI 开发提示词。
+<p align="center">
+  <a href="https://holynova.github.io/web-motion-showcase/">▶ 在线浏览 Browse Online</a>
+  ·
+  <a href="https://github.com/holynova/web-motion-showcase">GitHub 仓库</a>
+</p>
 
-[![Motions Included](https://img.shields.io/badge/Motions-60%2B%20Catalog-orange?style=flat-square)](https://holynova.github.io/web-motion-showcase/)
-[![Zero Dependency](https://img.shields.io/badge/Dependencies-0%20Vanilla%20JS-success?style=flat-square)](https://github.com/holynova/web-motion-showcase)
-[![AI Ready](https://img.shields.io/badge/AI%20Prompts-Claude%20%7C%20Cursor%20%7C%20DeepSeek-purple?style=flat-square)](https://holynova.github.io/web-motion-showcase/)
+Web Motion Showcase 是一个纯原生的网页动效灵感库：60 个克制、可复用的 Web UI 动效，面向网页设计师和前端开发者。每条动效都有首页预览、全屏交互沙盒、中英双语说明和一键复制的 AI 开发提示词——看到喜欢的动效，直接把提示词交给 Claude、Cursor、DeepSeek 或 ChatGPT 就能复现。
 
-[🌐 在线演示](https://holynova.github.io/web-motion-showcase/) · [📖 GEO 优化报告](./docs/GEO_OPTIMIZATION_REPORT.md) · [English](#english)
+Web Motion Showcase is a dependency-free gallery of 60 restrained, reusable Web UI motions for designers and frontend developers. Every motion comes with a live preview, a full-screen interactive sandbox, bilingual notes, and a copy-ready AI prompt — hand it to Claude, Cursor, DeepSeek, or ChatGPT and reproduce the effect.
 
-![Web Motion Showcase](./screenshot.png)
+## 截图 / Screenshots
 
-<a href="https://holynova.github.io/web-motion-showcase/"><img src="github-pages-qr.png" width="180" alt="扫描访问 Web Motion Showcase" /></a>
+<p align="center">
+  <img src="./assets/readme/screenshot-home.png" width="100%" alt="首页：克制的网页动效灵感，60 种动效，搜索框与 6 个分类筛选，下方是动效卡片">
+</p>
 
-手机扫描二维码即可访问在线演示。
+<p align="center">
+  <img src="./assets/readme/screenshot-detail.png" width="100%" alt="详情沙盒：卡片 3D 倾斜，左侧可交互的大卡片，右侧是说明与 AI 提示词面板">
+</p>
 
-## 项目简介
+## 动效目录 / Catalog
 
-Web Motion Showcase 是一个纯原生的网页动效灵感库，面向网页设计师和前端开发者。
+60 条动效，分 6 类（数量按 `data/motions.js` 实数）：
 
-- 60+ 条动效，覆盖进入、滚动、悬停、反馈、图片和布局。
-- 每条动效都有首页预览、详情沙盒、中英双语说明和 AI Prompt。
-- 支持 Slate、Sage Green、Warm Sand 三组主题，以及浅色和深色模式。
-- 支持 `prefers-reduced-motion`，减少动态效果时自动降级。
-- 无构建步骤，无第三方运行时依赖。
+| 分类 | 数量 | 适合观察的交互问题 |
+| :--- | :---: | :--- |
+| 进入 | 12 | 首屏显现、内容加载、文字入场 |
+| 滚动 | 8 | 阅读进度、视差、叙事节奏 |
+| 悬停 | 12 | 可点击性、聚焦、指针反馈 |
+| 反馈 | 19 | 点击状态、通知、成功与错误 |
+| 图片 | 4 | 图片加载、遮罩、质感变化 |
+| 布局 | 5 | 网格重排、卡片层叠、空间切换 |
 
-## 快速开始
+首页支持搜索（`?q=card`）与分类筛选（`?filter=滚动`）；详情页按 `35 / 60` 这样的序号前后翻页。
+
+## 功能 / Features
+
+- **交互沙盒**：点进任意动效，全屏可交互体验（悬停、点击、滚动都真实响应），可重播效果。
+- **AI 提示词**：每条动效配中英双语提示词，一键复制；详情页另有「实现示例」可对照代码。
+- **三主题 × 深浅模式**：Slate、Sage Green、Warm Sand 三组主题，各有浅色与深色模式，右上角一键切换。
+- **中英双语界面**：界面语言可切（`?lang=zh` / `?lang=en`），动效名称与说明均为双语。
+- **无障碍**：支持 `prefers-reduced-motion`，用户设置减少动态效果时自动降级；移动端自适应。
+
+## 快速开始 / Quick Start
+
+零构建，零第三方运行时依赖：
 
 ```bash
 npm run dev
+# 打开 http://127.0.0.1:4173/index.html
+# 或：python3 -m http.server 4173 --bind 127.0.0.1
 ```
 
-然后打开 <http://127.0.0.1:4173/index.html>。
+URL 参数：`?lang=zh`（语言）· `?theme=slate`（主题：slate / green / sand）· `?mode=light`（模式：light / dark）· `?filter=滚动`（分类）· `?q=card`（搜索）。详情页示例：`detail.html?id=tilt-card&lang=zh&theme=slate&mode=light`。
 
-也可以直接运行：
+## 技术 / Tech
 
-```bash
-python3 -m http.server 4173 --bind 127.0.0.1
+- 纯原生 HTML + CSS + JS，零构建、零依赖；`data/motions.js` 是动效的单一数据源（60 条，每条含中英名称、说明、提示词与渲染函数）。
+- 目录一致性检查：`npm test`（`node scripts/sync-catalog.mjs`）校验动效 ID 唯一性、元数据完整性与目录数量。
+- 页面含 Schema.org JSON-LD（`ItemList`、`FAQPage`），GEO 相关说明见 [`docs/GEO_OPTIMIZATION_REPORT.md`](./docs/GEO_OPTIMIZATION_REPORT.md)。
+
 ```
-
-## URL 参数
-
-```text
-?lang=zh              界面语言：zh / en
-?theme=slate          主题：slate / green / sand
-?mode=light           模式：light / dark
-?filter=滚动           按分类筛选
-?q=card               搜索动效
-```
-
-详情页示例：
-
-```text
-detail.html?id=tilt-card&lang=zh&theme=slate&mode=light
-```
-
-## 动效目录
-
-完整目录和可交互预览请直接访问[首页](https://holynova.github.io/web-motion-showcase/)。当前分类包括：
-
-| 分类 | 适合观察的交互问题 |
-| :--- | :--- |
-| 进入 | 首屏显现、内容加载、文字入场 |
-| 滚动 | 阅读进度、视差、叙事节奏 |
-| 悬停 | 可点击性、聚焦、指针反馈 |
-| 反馈 | 点击状态、通知、成功与错误 |
-| 图片 | 图片加载、遮罩、质感变化 |
-| 布局 | 网格重排、卡片层叠、空间切换 |
-
-## 项目结构
-
-```text
 index.html                  首页目录
-detail.html                 动效详情沙盒
-data/motions.js             动效单一数据源
+detail.html / detail.js     动效详情沙盒
+data/motions.js             动效单一数据源（60 条）
+data/translations.js        界面双语翻译
 script.js                   首页交互与筛选
-detail.js                   详情页渲染与复制逻辑
 css/                        首页组件与预览样式
 detail.css                  详情页与沙盒样式
 scripts/sync-catalog.mjs    目录一致性检查
+docs/screenshots/           历史截图（保留）
 ```
-
-## 开发检查
-
-```bash
-npm test
-```
-
-检查动效 ID 唯一性、元数据完整性和目录数量。
-
-项目使用 `Schema.org` JSON-LD、`ItemList` 和 `FAQPage`，相关 GEO 说明见 [GEO 优化报告](./docs/GEO_OPTIMIZATION_REPORT.md)。
 
 ## English
 
-Web Motion Showcase is a dependency-free catalog of 60+ restrained Web UI motions for designers and frontend developers.
+**Web Motion Showcase** is a dependency-free catalog of 60 restrained Web UI motions for designers and frontend developers.
 
-It includes interactive detail sandboxes, bilingual descriptions, copy-ready AI prompts, theme switching, dark mode, search, filters, and reduced-motion support.
+- **Catalog**: 60 motions in 6 categories — entrance (12), scroll (8), hover (12), feedback (19), image (4), layout (5). Search and filter on the homepage; detail pages flip through by index (e.g. 35 / 60).
+- **Interactive sandboxes**: every motion opens full-screen and responds to real hover, click, and scroll, with replay.
+- **AI prompts**: each motion ships with bilingual (Chinese + English) copy-ready prompts, plus an implementation example on the detail page.
+- **Themes & language**: 3 themes (Slate, Sage Green, Warm Sand) × light/dark modes; bilingual UI (`?lang=zh` / `?lang=en`); respects `prefers-reduced-motion`.
+- **Run it**: `npm run dev` (or any static server) — no build step, zero runtime dependencies. `npm test` checks catalog consistency.
+- **Tech**: vanilla HTML/CSS/JS; `data/motions.js` is the single source of truth for all 60 motions.
 
-## License
+## 许可 / License
 
-[ISC License](./package.json) · Author: [holynova](https://github.com/holynova)
+MIT，见 `package.json` 声明（仓库内无单独 LICENSE 文件）。
